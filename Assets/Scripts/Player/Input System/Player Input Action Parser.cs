@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,7 +10,7 @@ public class PlayerInputActionParser : MonoBehaviour
     public InputBuffer<object> InputBuffer;
     private void Awake()
     {
-        InputBuffer = new InputBuffer<object> ();
+        InputBuffer = InputBuffer<object>.CreateInstance();
     }
     void StoreInputBool(InputAction.CallbackContext recievedValue)
     {
@@ -39,16 +40,6 @@ public class PlayerInputActionParser : MonoBehaviour
     {
         taxt.text = InputBuffer.List();
     }
-
-
-    void _()
-    {
-
-    }
-
-
-
-
 }
 
 

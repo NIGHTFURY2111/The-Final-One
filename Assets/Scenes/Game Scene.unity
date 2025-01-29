@@ -138,6 +138,7 @@ GameObject:
   - component: {fileID: 535251162}
   - component: {fileID: 535251157}
   - component: {fileID: 535251163}
+  - component: {fileID: 535251164}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -480,6 +481,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   taxt: {fileID: 4151603241643232170}
   defaultBufferTime: 2
+--- !u!114 &535251164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 535251156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e305247b8f982d44887387b7e9ef3004, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0

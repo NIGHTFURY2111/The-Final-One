@@ -28,7 +28,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             ""id"": ""36808d7f-ac57-45bc-9bdc-6aa3c39589c7"",
             ""actions"": [
                 {
-                    ""name"": ""movement"",
+                    ""name"": ""Movement"",
                     ""type"": ""Value"",
                     ""id"": ""673d676c-0076-463b-aacb-72fb45a313e7"",
                     ""expectedControlType"": ""Vector2"",
@@ -37,7 +37,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""camera"",
+                    ""name"": ""Camera"",
                     ""type"": ""Value"",
                     ""id"": ""2a7a496d-2ef1-4453-9eff-f19bd8ca7709"",
                     ""expectedControlType"": ""Vector2"",
@@ -46,7 +46,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""dash"",
+                    ""name"": ""Dash"",
                     ""type"": ""Button"",
                     ""id"": ""57ee4f81-2279-4986-8333-0c20c3f17ffd"",
                     ""expectedControlType"": ""Button"",
@@ -55,7 +55,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""jump"",
+                    ""name"": ""Jump"",
                     ""type"": ""Button"",
                     ""id"": ""56f6b3e2-a7b3-4191-a795-9bd34302decc"",
                     ""expectedControlType"": ""Button"",
@@ -64,7 +64,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""slide"",
+                    ""name"": ""Slide"",
                     ""type"": ""Button"",
                     ""id"": ""5a9084cd-43a9-499e-9d36-2bcccb6d2823"",
                     ""expectedControlType"": ""Button"",
@@ -126,7 +126,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""movement"",
+                    ""action"": ""Movement"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -137,7 +137,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""movement"",
+                    ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -148,7 +148,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""movement"",
+                    ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -159,7 +159,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""movement"",
+                    ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -170,7 +170,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""movement"",
+                    ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -181,7 +181,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""camera"",
+                    ""action"": ""Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -192,7 +192,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""dash"",
+                    ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -203,7 +203,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""jump"",
+                    ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -214,7 +214,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""slide"",
+                    ""action"": ""Slide"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -857,11 +857,11 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
 }");
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
-        m_Player_movement = m_Player.FindAction("movement", throwIfNotFound: true);
-        m_Player_camera = m_Player.FindAction("camera", throwIfNotFound: true);
-        m_Player_dash = m_Player.FindAction("dash", throwIfNotFound: true);
-        m_Player_jump = m_Player.FindAction("jump", throwIfNotFound: true);
-        m_Player_slide = m_Player.FindAction("slide", throwIfNotFound: true);
+        m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
+        m_Player_Camera = m_Player.FindAction("Camera", throwIfNotFound: true);
+        m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
+        m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
+        m_Player_Slide = m_Player.FindAction("Slide", throwIfNotFound: true);
         m_Player_Grapple = m_Player.FindAction("Grapple", throwIfNotFound: true);
         m_Player_GrappleHold = m_Player.FindAction("GrappleHold", throwIfNotFound: true);
         m_Player_HatThrowStatic = m_Player.FindAction("HatThrowStatic", throwIfNotFound: true);
@@ -940,11 +940,11 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
     // Player
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
-    private readonly InputAction m_Player_movement;
-    private readonly InputAction m_Player_camera;
-    private readonly InputAction m_Player_dash;
-    private readonly InputAction m_Player_jump;
-    private readonly InputAction m_Player_slide;
+    private readonly InputAction m_Player_Movement;
+    private readonly InputAction m_Player_Camera;
+    private readonly InputAction m_Player_Dash;
+    private readonly InputAction m_Player_Jump;
+    private readonly InputAction m_Player_Slide;
     private readonly InputAction m_Player_Grapple;
     private readonly InputAction m_Player_GrappleHold;
     private readonly InputAction m_Player_HatThrowStatic;
@@ -954,11 +954,11 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
     {
         private @PlayerInputAction m_Wrapper;
         public PlayerActions(@PlayerInputAction wrapper) { m_Wrapper = wrapper; }
-        public InputAction @movement => m_Wrapper.m_Player_movement;
-        public InputAction @camera => m_Wrapper.m_Player_camera;
-        public InputAction @dash => m_Wrapper.m_Player_dash;
-        public InputAction @jump => m_Wrapper.m_Player_jump;
-        public InputAction @slide => m_Wrapper.m_Player_slide;
+        public InputAction @Movement => m_Wrapper.m_Player_Movement;
+        public InputAction @Camera => m_Wrapper.m_Player_Camera;
+        public InputAction @Dash => m_Wrapper.m_Player_Dash;
+        public InputAction @Jump => m_Wrapper.m_Player_Jump;
+        public InputAction @Slide => m_Wrapper.m_Player_Slide;
         public InputAction @Grapple => m_Wrapper.m_Player_Grapple;
         public InputAction @GrappleHold => m_Wrapper.m_Player_GrappleHold;
         public InputAction @HatThrowStatic => m_Wrapper.m_Player_HatThrowStatic;
@@ -973,21 +973,21 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_PlayerActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_PlayerActionsCallbackInterfaces.Add(instance);
-            @movement.started += instance.OnMovement;
-            @movement.performed += instance.OnMovement;
-            @movement.canceled += instance.OnMovement;
-            @camera.started += instance.OnCamera;
-            @camera.performed += instance.OnCamera;
-            @camera.canceled += instance.OnCamera;
-            @dash.started += instance.OnDash;
-            @dash.performed += instance.OnDash;
-            @dash.canceled += instance.OnDash;
-            @jump.started += instance.OnJump;
-            @jump.performed += instance.OnJump;
-            @jump.canceled += instance.OnJump;
-            @slide.started += instance.OnSlide;
-            @slide.performed += instance.OnSlide;
-            @slide.canceled += instance.OnSlide;
+            @Movement.started += instance.OnMovement;
+            @Movement.performed += instance.OnMovement;
+            @Movement.canceled += instance.OnMovement;
+            @Camera.started += instance.OnCamera;
+            @Camera.performed += instance.OnCamera;
+            @Camera.canceled += instance.OnCamera;
+            @Dash.started += instance.OnDash;
+            @Dash.performed += instance.OnDash;
+            @Dash.canceled += instance.OnDash;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
+            @Slide.started += instance.OnSlide;
+            @Slide.performed += instance.OnSlide;
+            @Slide.canceled += instance.OnSlide;
             @Grapple.started += instance.OnGrapple;
             @Grapple.performed += instance.OnGrapple;
             @Grapple.canceled += instance.OnGrapple;
@@ -1007,21 +1007,21 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
 
         private void UnregisterCallbacks(IPlayerActions instance)
         {
-            @movement.started -= instance.OnMovement;
-            @movement.performed -= instance.OnMovement;
-            @movement.canceled -= instance.OnMovement;
-            @camera.started -= instance.OnCamera;
-            @camera.performed -= instance.OnCamera;
-            @camera.canceled -= instance.OnCamera;
-            @dash.started -= instance.OnDash;
-            @dash.performed -= instance.OnDash;
-            @dash.canceled -= instance.OnDash;
-            @jump.started -= instance.OnJump;
-            @jump.performed -= instance.OnJump;
-            @jump.canceled -= instance.OnJump;
-            @slide.started -= instance.OnSlide;
-            @slide.performed -= instance.OnSlide;
-            @slide.canceled -= instance.OnSlide;
+            @Movement.started -= instance.OnMovement;
+            @Movement.performed -= instance.OnMovement;
+            @Movement.canceled -= instance.OnMovement;
+            @Camera.started -= instance.OnCamera;
+            @Camera.performed -= instance.OnCamera;
+            @Camera.canceled -= instance.OnCamera;
+            @Dash.started -= instance.OnDash;
+            @Dash.performed -= instance.OnDash;
+            @Dash.canceled -= instance.OnDash;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
+            @Slide.started -= instance.OnSlide;
+            @Slide.performed -= instance.OnSlide;
+            @Slide.canceled -= instance.OnSlide;
             @Grapple.started -= instance.OnGrapple;
             @Grapple.performed -= instance.OnGrapple;
             @Grapple.canceled -= instance.OnGrapple;

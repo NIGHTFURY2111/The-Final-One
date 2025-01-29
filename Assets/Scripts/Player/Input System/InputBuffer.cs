@@ -1,14 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Windows;
 
 #region InputStruct defination
 struct InputStruct<T>
 {
-    private string name;
-    private float time;
-    private T value;
-    private bool used;
-    private float bufferTime;
+    string name;
+    T value;
+    float time; 
+    float bufferTime;
+    bool used;
 
     public InputStruct(string name, T value, float bufferTime)
     {
@@ -54,14 +55,18 @@ struct InputStruct<T>
 
 public class InputBuffer<T>
 {
-    public static InputBuffer<T> reference;
+    public static InputBuffer<T> Reference { get; private set; }
 
-    public InputBuffer()
+    public static InputBuffer<T> CreateInstance()
     {
-        reference = this;
+        if (Reference == null)
+        {
+            Reference = new InputBuffer<T>();
+        }
+        return Reference;
     }
 
-    private Dictionary<string, InputStruct<T>> buffer = new Dictionary<string, InputStruct<T>>();
+    private Dictionary<string, InputStruct<T>> buffer = new ();
 
     /// <summary>
     /// Adds or updates an input in the buffer with a specific buffer time.
@@ -108,21 +113,18 @@ public class InputBuffer<T>
     /// </summary>
     public bool MarkInputAsUsed(string name)
     {
-        if (buffer.ContainsKey(name))
-        {
-            InputStruct<T> input = buffer[name];
+        if (!buffer.TryGetValue(name, out InputStruct<T> input))
+            return false; // Input does not exist
 
-            // Mark as used regardless of expiration status
-            input.MarkAsUsed();
-            buffer[name] = input;
+        if (input.IsExpired())
+            return false; // Input expired, cannot be marked as used
 
-            // Return true if the input was valid and not expired, false otherwise
-            return !input.IsExpired();
-        }
+        input.MarkAsUsed();
+        buffer[name] = input; // Ensure struct update is applied
 
-        // Return false if the input does not exist
-        return false;
+        return true; // Successfully marked as used
     }
+
 
     /// <summary>
     /// Clears the entire buffer.
@@ -141,7 +143,8 @@ public class InputBuffer<T>
         foreach (var kvp in buffer)
         {
             var input = kvp.Value;
-            outp += $"{input.Name}\t{input.Value}\t{input.Used}\t{input.InputTime}\t{input.BufferTime}\n";
+            //outp += $"{input.Name}\t{input.Value}\t{input.Used}\t{input.InputTime}\t{input.BufferTime}\n";
+            outp += kvp.ToString()+"\n";
         }
         return outp;
     }
