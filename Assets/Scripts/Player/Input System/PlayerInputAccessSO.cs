@@ -2,10 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInputAccess : MonoBehaviour
+[CreateAssetMenu(fileName = "Input Accessor", menuName = "Input/Input Accessors")]
+
+public class PlayerInputAccessSO : ScriptableObject
 {
-    InputBuffer<object> buffer = InputBuffer<object>.CreateInstance();
+    public InputReaderSO ReadInput;
+
+    InputBuffer<object> buffer => ReadInput.InputBuffer;
     public bool ConsumeInput(string ActionName) => buffer.MarkInputAsUsed(ActionName);
+
+    public string ListInputs() => buffer.List();
+
 
     #region Movement
     public bool Movement( out object value ) 

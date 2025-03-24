@@ -137,8 +137,7 @@ GameObject:
   - component: {fileID: 535251158}
   - component: {fileID: 535251162}
   - component: {fileID: 535251157}
-  - component: {fileID: 535251163}
-  - component: {fileID: 535251164}
+  - component: {fileID: 535251165}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -153,7 +152,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 535251156}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
@@ -213,7 +212,7 @@ MonoBehaviour:
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 535251163}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PlayerInputActionParser, Assembly-CSharp
         m_MethodName: StoreInputVector2
         m_Mode: 0
@@ -229,7 +228,7 @@ MonoBehaviour:
     m_ActionName: Player/movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 535251163}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PlayerInputActionParser, Assembly-CSharp
         m_MethodName: StoreInputVector2
         m_Mode: 0
@@ -245,7 +244,7 @@ MonoBehaviour:
     m_ActionName: Player/camera[/Mouse/delta]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 535251163}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PlayerInputActionParser, Assembly-CSharp
         m_MethodName: StoreInputFloat
         m_Mode: 0
@@ -261,7 +260,7 @@ MonoBehaviour:
     m_ActionName: Player/dash[/Keyboard/shift]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 535251163}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PlayerInputActionParser, Assembly-CSharp
         m_MethodName: StoreInputFloat
         m_Mode: 0
@@ -277,7 +276,7 @@ MonoBehaviour:
     m_ActionName: Player/jump[/Keyboard/space]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 535251163}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PlayerInputActionParser, Assembly-CSharp
         m_MethodName: StoreInputFloat
         m_Mode: 0
@@ -301,7 +300,7 @@ MonoBehaviour:
     m_ActionName: Player/GrappleHold[/Keyboard/f]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 535251163}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PlayerInputActionParser, Assembly-CSharp
         m_MethodName: StoreInputFloat
         m_Mode: 0
@@ -317,7 +316,7 @@ MonoBehaviour:
     m_ActionName: Player/HatThrowStatic[/Keyboard/q]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 535251163}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PlayerInputActionParser, Assembly-CSharp
         m_MethodName: StoreInputFloat
         m_Mode: 0
@@ -333,7 +332,7 @@ MonoBehaviour:
     m_ActionName: Player/HatThrowDynamic[/Keyboard/e]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 535251163}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PlayerInputActionParser, Assembly-CSharp
         m_MethodName: StoreInputFloat
         m_Mode: 0
@@ -467,7 +466,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &535251163
+--- !u!114 &535251165
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -476,23 +475,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 535251156}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1154576c75b7d34f93f411d4311e655, type: 3}
+  m_Script: {fileID: 11500000, guid: 3a1ab5a0d6e183e4e99ec67f2ffac61b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  taxt: {fileID: 4151603241643232170}
-  defaultBufferTime: 2
---- !u!114 &535251164
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 535251156}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e305247b8f982d44887387b7e9ef3004, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  AccessPlayerInput: {fileID: 11400000, guid: c4b30f4e049c13e4c9c218b599c91d7c, type: 2}
+  text: {fileID: 4151603241643232170}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0

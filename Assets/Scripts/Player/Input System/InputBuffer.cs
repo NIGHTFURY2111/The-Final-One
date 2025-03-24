@@ -55,16 +55,16 @@ struct InputStruct<T>
 
 public class InputBuffer<T>
 {
-    public static InputBuffer<T> Reference { get; private set; }
+    //public static InputBuffer<T> Reference { get; private set; }
 
-    public static InputBuffer<T> CreateInstance()
-    {
-        if (Reference == null)
-        {
-            Reference = new InputBuffer<T>();
-        }
-        return Reference;
-    }
+    //public static InputBuffer<T> CreateInstance()
+    //{
+    //    if (Reference == null)
+    //    {
+    //        Reference = new InputBuffer<T>();
+    //    }
+    //    return Reference;
+    //}
 
     private Dictionary<string, InputStruct<T>> buffer = new ();
 
@@ -143,8 +143,8 @@ public class InputBuffer<T>
         foreach (var kvp in buffer)
         {
             var input = kvp.Value;
-            //outp += $"{input.Name}\t{input.Value}\t{input.Used}\t{input.InputTime}\t{input.BufferTime}\n";
-            outp += kvp.ToString()+"\n";
+            outp += $"{input.Name}\t{input.Value}\t{input.Used}\t{input.InputTime}\t{input.BufferTime}\n";
+            //outp += kvp.ToString()+"\n";
         }
         return outp;
     }
