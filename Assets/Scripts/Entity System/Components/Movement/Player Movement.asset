@@ -12,18 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a24ffb2b3440dbf4789fc927c8bec534, type: 3}
   m_Name: Player Movement
   m_EditorClassIdentifier: 
-  playerinput: {fileID: 11400000, guid: c4b30f4e049c13e4c9c218b599c91d7c, type: 2}
+  entity: {fileID: 0}
+  LookSpeed: 0.8
+  inputAccessSO: {fileID: 11400000, guid: c4b30f4e049c13e4c9c218b599c91d7c, type: 2}
   stateManager:
-    rid: 1313339407883042816
+    rid: 1313339419740864512
   references:
     version: 2
     RefIds:
-    - rid: 1313339407883042816
+    - rid: 1313339419740864512
       type: {class: PlayerStateManager, ns: , asm: Assembly-CSharp}
       data:
         _context: {fileID: 11400000}
         stateholders:
-        - state: {fileID: 11400000, guid: df38e49289b83d648aeb30c238c0e239, type: 2}
-          stateEnum: -1
-        initial: 2
-        currentState: {fileID: 11400000, guid: df38e49289b83d648aeb30c238c0e239, type: 2}
+        - {fileID: 11400000, guid: 2d220b8155a96c74ea5693eee9e69461, type: 2}
+        - {fileID: 11400000, guid: df38e49289b83d648aeb30c238c0e239, type: 2}
+        initial: 1
+        currentState: {fileID: 11400000, guid: 2d220b8155a96c74ea5693eee9e69461, type: 2}

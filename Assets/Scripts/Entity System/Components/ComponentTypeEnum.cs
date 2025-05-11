@@ -4,8 +4,10 @@ using System;
 
 public enum ComponentType
 {
-    Health = 1 << 1,
-    Movement = 1 << 2,
-    Animation = 1 << 3,
-    Audio = 1 << 4
+    Movement = 1 << 0,
+    Camera = 1 << 1,
+    RigidBody = 1 << 2,
+    Health = 1 << -1,
+    Animation = 1 << -1,
+    Audio = 1 << -1
 }

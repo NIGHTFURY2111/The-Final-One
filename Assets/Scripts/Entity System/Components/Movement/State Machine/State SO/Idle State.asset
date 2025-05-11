@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Idle State
   m_EditorClassIdentifier: 
   ctx: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
-  next: 0
+  next: 62
   stateTypeEnum: 1

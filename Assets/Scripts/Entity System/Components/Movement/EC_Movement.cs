@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,63 +9,43 @@ using UnityEngine.InputSystem;
 public class EC_Movement : AC_Component
 {
     public override ComponentType componentType => ComponentType.Movement;
+    [SerializeField] float LookSpeed = 0.8f;      
 
-
-    PlayerInputAction PlayerIA;
-    public InputAction move;
-    public InputAction jump;
-    public InputAction dash;
-    public InputAction camera;
-    InputAction grappleAction;
-    InputAction grappleHoldAction;
-    InputAction hatThrowStaticAction;
-    InputAction hatThrowDynamicAction;
-
-
-
-    public MonoBehaviour entity;
-
+    [SerializeField] public InputAccessSO inputAccessSO;
     [SerializeReferenceDropdown]
     [SerializeReference] public StateManager stateManager;
 
+    public Action<Vector2> OnCameraMove;
 
-    public void ComponentAwake()
+    public override void ComponentAwake()
     {
         stateManager.setPrerequisites();
-        Debug.Log("StateManager set");
-
-        move = PlayerIA.Player.Movement;
-        jump = PlayerIA.Player.Jump;
-        dash = PlayerIA.Player.Dash;
-        camera = PlayerIA.Player.Camera;
     }
 
-    public void OnEnable()
+
+    public override void ComponentStart()
     {
-        move.Enable();
-        jump.Enable();
-        dash.Enable();
-        camera.Enable();
     }
 
-    public void OnDisable()
-    {
-        move.Disable();
-        jump.Disable();
-        dash.Disable();
-        camera.Disable();
-    }
-
-
-
-    public void Start()
+    public void ProcessMouseInput()
     {
 
+        OnCameraMove?.Invoke(cameraInput() * LookSpeed);
+        Debug.Log(cameraInput());
+
     }
 
-    public void Update()
+
+    Vector2 cameraInput()
+    {
+        Vector2 outp = Vector2.zero;
+        inputAccessSO.Camera(out outp); 
+        return outp;
+    }
+
+    public override void ComponentUpdate()
     {
         stateManager.Update();
-        //Debug.Log(playerinput.ListInputs());
+        ProcessMouseInput();
     }
 }
