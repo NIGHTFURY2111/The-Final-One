@@ -86,7 +86,6 @@ public class InputBuffer
             input.UpdateValue(value);
             input.UpdateBufferTime(bufferTime); // Optionally update buffer time
             buffer[name] = input; // Update the struct back in the dictionary
-            Debug.Log($"Updating input: {name} with value: {buffer[name].Value}");
         }
         else
         {

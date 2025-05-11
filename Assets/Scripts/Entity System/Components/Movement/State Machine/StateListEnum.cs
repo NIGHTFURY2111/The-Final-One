@@ -10,3 +10,8 @@ public enum StateListEnum
     dash = 1 << 4,
     wallslide = 1 << 5,
 }
+[Flags]
+public enum TransitionListEnum
+{
+    idleToJump = 1 << 0
+}

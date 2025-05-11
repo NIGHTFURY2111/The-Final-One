@@ -5,12 +5,21 @@ using UnityEngine;
 
 public class PlayerEntity : Entity
 {
+    public TMP_Text playerNameText;
+
+    private void Awake()
+    {
+        movementSO.entity = this;
+        movementSO.ComponentAwake();
+    }
     public override void Start()
     {
+        movementSO.Start();
     }
 
     public override void Update()
     {
+        playerNameText.text = movementSO.stateManager._currentState.name;
         movementSO.Update();
     }
 

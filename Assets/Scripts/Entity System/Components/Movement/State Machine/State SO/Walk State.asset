@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 644d3928cfbec7d4ebe88dd6666d9853, type: 3}
   m_Name: Walk State
   m_EditorClassIdentifier: 
-  ctx: {fileID: 0}
+  ctx: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
   next: 0
+  stateTypeEnum: 1

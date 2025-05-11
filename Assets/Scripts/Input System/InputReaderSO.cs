@@ -85,7 +85,7 @@ public class InputReaderSO : ScriptableObject, PlayerInputAction.IPlayerActions
         if (context.action.WasPerformedThisFrame())
         {
             //there is no actual way to check if the input is a bool or not thanks to unity in all its glory
-            _InputBuffer.AddInput(context.action.name, context.ReadValue<float>()>0.5f, bufferTime == float.NaN ? defaultBufferTime : bufferTime);
+            _InputBuffer.AddInput(context.action.name, context.performed, bufferTime == float.NaN ? defaultBufferTime : bufferTime);
         }
     }
 

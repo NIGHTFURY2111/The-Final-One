@@ -12,21 +12,21 @@ public class WalkState : BaseState
 
     public override void EnterState()
     {
-        throw new System.NotImplementedException();
+        Debug.Log("entered Walk");  
     }
 
     public override void ExitState()
     {
-        throw new System.NotImplementedException();
+        Debug.Log("exited Walk");
     }
 
     public override bool SwitchCondintion()
     {
-        throw new System.NotImplementedException();
+        return ctx.move.WasPressedThisFrame();
     }
 
     public override void UpdateState()
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Walking");
     }
 }

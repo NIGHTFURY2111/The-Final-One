@@ -11,22 +11,20 @@ public class stateholder
     [SerializeReference]
     public BaseState state;
     public StateListEnum stateEnum;
-
 }
 
 [Serializable]
 public class StateManager
 {
     [SerializeField] EC_Movement _context;
-    [SerializeField] List<stateholder> stateholders = new();
+    [SerializeField] List<BaseState> stateholders = new();
     [SerializeField] StateListEnum initial;
     [SerializeField] BaseState currentState;
 
     public void Update()
     {
         currentState.UpdateState();
-        switchCheck(currentState.next);
-        Debug.Log(currentState);
+        //switchCheck(currentState.next);
     }
 
     public void FixedUpdate()
@@ -35,24 +33,27 @@ public class StateManager
     }
     protected void switchCheck(StateListEnum next)
     {
-
         foreach (var holder in stateholders)
         {
-            if (next.HasFlag(holder.stateEnum) && holder.state.SwitchCondintion())
+            //if (holder.state == currentState)
+            //{
+            //    return;
+            //}
+            Debug.Log(holder.name + "   "  + (next.HasFlag(holder.stateTypeEnum)) +"   "+holder.SwitchCondintion() );
+            if (next.HasFlag(holder.stateTypeEnum) && holder.SwitchCondintion())
             {
-                SwitchState(holder.state);
+                SwitchState(holder);
                 return;
             }
         }
-
     }
     protected BaseState fetch(StateListEnum exitStates)
     {
         foreach (var holder in stateholders)
         {
-            if (exitStates.HasFlag(holder.stateEnum))
+            if (exitStates.HasFlag(holder.stateTypeEnum))
             {
-                return holder.state;
+                return holder;
             }
         }
         return null;
@@ -68,10 +69,6 @@ public class StateManager
 
     public void setPrerequisites()
     {
-        foreach (stateholder holder in stateholders)
-        {
-            holder.state.prerequisites(_context);
-        }
         currentState = fetch(initial);
     }
 

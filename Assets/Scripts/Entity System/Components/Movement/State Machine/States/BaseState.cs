@@ -6,7 +6,10 @@ public abstract class BaseState: ScriptableObject
     [SerializeField] protected EC_Movement ctx;
 
     //idk if this needs to be [SerializeField] or not, it was to begin with but i dont see a use for it
-    public StateListEnum next { get; protected set; }
+    [SerializeField] public StateListEnum next;
+    [SerializeField] public StateListEnum stateTypeEnum;
+
+    public Action toSwitch;
     public BaseState(EC_Movement ctx)
     {
 
@@ -27,10 +30,5 @@ public abstract class BaseState: ScriptableObject
     //    //factory._currentState = next;
     //    //factory._currentState.EnterState();
     //}
-
-    public void prerequisites(EC_Movement ctx)
-    {
-        this.ctx = ctx;
-    }
 
 }
