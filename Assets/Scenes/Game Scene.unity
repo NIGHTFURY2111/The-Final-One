@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 535251158}
   - component: {fileID: 535251162}
   - component: {fileID: 535251157}
-  - component: {fileID: 535251165}
+  - component: {fileID: 535251163}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -466,7 +466,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &535251165
+--- !u!114 &535251163
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -475,11 +475,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 535251156}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a1ab5a0d6e183e4e99ec67f2ffac61b, type: 3}
+  m_Script: {fileID: 11500000, guid: 887974ceb2e0b5a4ca07b37d95716d66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AccessPlayerInput: {fileID: 11400000, guid: c4b30f4e049c13e4c9c218b599c91d7c, type: 2}
-  text: {fileID: 4151603241643232170}
+  movementSO: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0

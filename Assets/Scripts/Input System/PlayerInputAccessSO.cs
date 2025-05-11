@@ -1,14 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Input Accessor", menuName = "Input/Input Accessors")]
+[CreateAssetMenu(fileName = "Input Accessor", menuName = "Scriptable Object/Input/Input Accessors")]
 
-public class PlayerInputAccessSO : ScriptableObject
+public class InputAccessSO : ScriptableObject
 {
     public InputReaderSO ReadInput;
-
-    InputBuffer<object> buffer => ReadInput.InputBuffer;
+    InputBuffer buffer => ReadInput.InputBuffer;
     public bool ConsumeInput(string ActionName) => buffer.MarkInputAsUsed(ActionName);
 
     public string ListInputs() => buffer.List();

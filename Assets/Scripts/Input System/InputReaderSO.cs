@@ -4,12 +4,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[CreateAssetMenu(fileName = "InputReader", menuName = "Input/Input Reader")]
+[CreateAssetMenu(fileName = "InputReader", menuName = "Scriptable Object/Input/Input Reader")]
 public class InputReaderSO : ScriptableObject, PlayerInputAction.IPlayerActions
 {
     [SerializeField] float defaultBufferTime;
-    private InputBuffer<object> _InputBuffer;
-    public InputBuffer<object> InputBuffer => _InputBuffer; 
+    private InputBuffer _InputBuffer;
+    public InputBuffer InputBuffer => _InputBuffer; 
 
     PlayerInputAction input;
     private void OnEnable()
