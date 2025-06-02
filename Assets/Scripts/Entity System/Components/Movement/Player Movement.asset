@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Player Movement
   m_EditorClassIdentifier: 
   entity: {fileID: 0}
-  LookSpeed: 0.8
+  LookSpeed: 0.15
   inputAccessSO: {fileID: 11400000, guid: c4b30f4e049c13e4c9c218b599c91d7c, type: 2}
+  EC_Rigidbody: {fileID: 11400000, guid: 7079a5ae2acd7c54680237a23d93ad55, type: 2}
   stateManager:
     rid: 1313339419740864512
   references:
@@ -27,5 +28,6 @@ MonoBehaviour:
         stateholders:
         - {fileID: 11400000, guid: 2d220b8155a96c74ea5693eee9e69461, type: 2}
         - {fileID: 11400000, guid: df38e49289b83d648aeb30c238c0e239, type: 2}
+        - {fileID: 11400000, guid: 1d2127f17848c7d438692913b9479f15, type: 2}
+        - {fileID: 11400000, guid: 98043ac65b6434347ace738dca7c5df7, type: 2}
         initial: 1
-        currentState: {fileID: 11400000, guid: 2d220b8155a96c74ea5693eee9e69461, type: 2}

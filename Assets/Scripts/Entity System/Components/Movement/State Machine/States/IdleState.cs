@@ -12,17 +12,15 @@ public class IdleState : BaseState
 
     public override void EnterState()
     {
-        Debug.Log("entered Idle");
     }
 
     public override void ExitState()
     {
-        Debug.Log("exited Idle");
     }
 
     public override bool SwitchCondintion()
     {
-        return (!ctx.move.IsInProgress());
+        return ctx.inputAccessSO.Movement() == Vector2.zero && ctx.IsGrounded;
     }
 
     public override void UpdateState()

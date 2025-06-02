@@ -12,10 +12,13 @@ public class EC_Movement : AC_Component
     [SerializeField] float LookSpeed = 0.8f;      
 
     [SerializeField] public InputAccessSO inputAccessSO;
+    [SerializeField] public EC_Rigidbody EC_Rigidbody;
     [SerializeReferenceDropdown]
     [SerializeReference] public StateManager stateManager;
 
     public Action<Vector2> OnCameraMove;
+    public Action<Vector2> OnPlayerMove;
+
 
     public override void ComponentAwake()
     {
@@ -26,13 +29,16 @@ public class EC_Movement : AC_Component
     public override void ComponentStart()
     {
     }
+    public override void ComponentUpdate()
+    {
+        stateManager.Update();
+        ProcessMouseInput();
+        Debug.Log(EC_Rigidbody.isgrounded);
+    }
 
     public void ProcessMouseInput()
     {
-
         OnCameraMove?.Invoke(cameraInput() * LookSpeed);
-        Debug.Log(cameraInput());
-
     }
 
 
@@ -43,9 +49,7 @@ public class EC_Movement : AC_Component
         return outp;
     }
 
-    public override void ComponentUpdate()
-    {
-        stateManager.Update();
-        ProcessMouseInput();
-    }
+    public void MovePlayer(Vector2 moveVector) => OnPlayerMove?.Invoke(moveVector);
+    public bool IsGrounded => EC_Rigidbody.isgrounded;
+
 }

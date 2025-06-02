@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 public abstract class Entity : MonoBehaviour
 {
+    public Action OnStartTick;
+    public Action OnUpdateTick;
 
-    [SerializeField] protected EC_Movement movementSO;
     //TODO: public HealthSystemSO;
     //TODO: public MovementStateMachineSO;
     //TODO: public AnimationSystemSO;

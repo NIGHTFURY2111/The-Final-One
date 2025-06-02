@@ -19,12 +19,12 @@ public class StateManager
     [SerializeField] EC_Movement _context;
     [SerializeField] List<BaseState> stateholders = new();
     [SerializeField] StateListEnum initial;
-    [SerializeField] BaseState currentState;
+    [SerializeField] public BaseState currentState { get; private set; }
 
     public void Update()
     {
         currentState.UpdateState();
-        //switchCheck(currentState.next);
+        switchCheck(currentState.next);
     }
 
     public void FixedUpdate()
@@ -39,7 +39,7 @@ public class StateManager
             //{
             //    return;
             //}
-            Debug.Log(holder.name + "   "  + (next.HasFlag(holder.stateTypeEnum)) +"   "+holder.SwitchCondintion() );
+            //Debug.Log(holder.name + "   "  + (next.HasFlag(holder.stateTypeEnum)) +"   "+holder.SwitchCondintion() );
             if (next.HasFlag(holder.stateTypeEnum) && holder.SwitchCondintion())
             {
                 SwitchState(holder);
@@ -47,6 +47,15 @@ public class StateManager
             }
         }
     }
+
+
+    public void SwitchState(BaseState next)
+    {
+        currentState.ExitState();
+        currentState = next;
+        currentState.EnterState();
+    }
+
     protected BaseState fetch(StateListEnum exitStates)
     {
         foreach (var holder in stateholders)
@@ -58,20 +67,11 @@ public class StateManager
         }
         return null;
     }
-
-
-    public void SwitchState(BaseState next)
-    {
-        currentState.ExitState();
-        currentState = next;
-        currentState.EnterState();
-    }
-
     public void setPrerequisites()
     {
         currentState = fetch(initial);
     }
 
-    public BaseState _currentState { get => currentState; set => currentState = value; }
+    //public BaseState currentState { get => currentState; set => currentState
 
 }

@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 [CreateAssetMenu(fileName = "Input Accessor", menuName = "Scriptable Object/Input/Input Accessors")]
 
@@ -15,15 +18,17 @@ public class InputAccessSO : ScriptableObject
 
 
     #region Movement
-    public bool Movement( out object value ) 
-    {
-        bool output = buffer.GetInput("Movement", out value);
-        return output;
-    }
+    public bool Movement( out object value ) => buffer.GetInput("Movement", out value);
 
-    public bool Movement()
+    //public bool Movement()
+    //{
+    //    Movement(out object val);
+    //    return val != null && !val.Equals(Vector2.zero);
+    //}
+    public Vector2 Movement()
     {
-        return Movement(out object _);
+        Movement(out object val);
+        return val.IsUnityNull() ? Vector2.zero : (Vector2)val;
     }
     #endregion
 
@@ -31,15 +36,11 @@ public class InputAccessSO : ScriptableObject
     public bool Camera( out Vector2 value ) 
     {
         bool output = buffer.GetInput("Camera", out object val);
-        value = (Vector2)val;
+        value = val.IsUnityNull() ? Vector2.zero : (Vector2)val;
         return output;
-
     }
 
-    public bool Camera()
-    {
-        return Camera(out Vector2 val);
-    }
+    public bool Camera() => Camera(out Vector2 value);
     #endregion
 
     #region Jump

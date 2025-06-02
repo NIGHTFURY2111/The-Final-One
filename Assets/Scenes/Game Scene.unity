@@ -479,8 +479,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 887974ceb2e0b5a4ca07b37d95716d66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSO: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
   playerNameText: {fileID: 4151603241643232170}
+  movementSO: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
   cameraSO: {fileID: 11400000, guid: ac5d7e53b4e9cb042b247d1a37e46d0c, type: 2}
   rigidbodySO: {fileID: 11400000, guid: 7079a5ae2acd7c54680237a23d93ad55, type: 2}
 --- !u!1 &705507993
@@ -680,7 +680,7 @@ GameObject:
   - component: {fileID: 1290845626}
   - component: {fileID: 1290845625}
   - component: {fileID: 1290845624}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}

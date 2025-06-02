@@ -9,11 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac8e1e07bcc3fbd4a8f4dceaeacde5d4, type: 3}
-  m_Name: Player Rigidbody
+  m_Script: {fileID: 11500000, guid: d2a11962871d2f54ca9f36417e23fae7, type: 3}
+  m_Name: Fall State
   m_EditorClassIdentifier: 
-  entity: {fileID: 0}
-  Ground:
-    serializedVersion: 2
-    m_Bits: 64
-  gravity: 9.8
+  ctx: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
+  next: 3
+  stateTypeEnum: 8

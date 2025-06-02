@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -8,13 +5,13 @@ public class PlayerEntity : Entity
 {
     public TMP_Text playerNameText;
 
+    [SerializeField] protected EC_Movement movementSO;
     [SerializeField] private EC_Camera cameraSO;
     [SerializeField] private EC_Rigidbody rigidbodySO;
 
     AC_Component[] components;
 
-    public Action OnStartTick;
-    public Action OnUpdateTick;
+
 
     private void Awake()
     {
@@ -29,7 +26,7 @@ public class PlayerEntity : Entity
 
     public override void Update()
     {
-        playerNameText.text = movementSO.stateManager._currentState.name;
+        playerNameText.text = movementSO.stateManager.currentState.name;
         //movementSO.ComponentUpdate();
         OnUpdateTick?.Invoke();
     }
@@ -38,6 +35,7 @@ public class PlayerEntity : Entity
     {
         movementSO.OnCameraMove += cameraSO.UpdateCameraTransform;
         movementSO.OnCameraMove += rigidbodySO.RotateGameObject;
+        movementSO.OnPlayerMove += rigidbodySO.Move;
 
     }
 

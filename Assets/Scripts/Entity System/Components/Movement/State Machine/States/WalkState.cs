@@ -6,27 +6,27 @@ using UnityEngine;
 
 public class WalkState : BaseState
 {
+    [SerializeField] float walkSpeed;
     public WalkState(EC_Movement ctx) : base(ctx)
     {
     }
 
     public override void EnterState()
     {
-        Debug.Log("entered Walk");  
     }
 
     public override void ExitState()
     {
-        Debug.Log("exited Walk");
     }
 
     public override bool SwitchCondintion()
     {
-        return ctx.move.WasPressedThisFrame();
+        return ctx.inputAccessSO.Movement() != Vector2.zero && ctx.IsGrounded;
     }
 
     public override void UpdateState()
     {
-        Debug.Log("Walking");
+        Debug.Log("Walking with input: " + ctx.inputAccessSO.Movement());
+        ctx.MovePlayer(ctx.inputAccessSO.Movement().normalized * walkSpeed);
     }
 }

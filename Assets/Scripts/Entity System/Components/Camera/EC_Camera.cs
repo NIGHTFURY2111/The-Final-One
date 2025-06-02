@@ -12,6 +12,8 @@ public class EC_Camera : AC_Component
     public override void ComponentAwake()
     {
         camera = Camera.main;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     public override void ComponentStart() { }
@@ -21,7 +23,6 @@ public class EC_Camera : AC_Component
     public void UpdateCameraTransform(Vector2 rotation)
     {
 
-        Debug.Log(rotation);
         rotationX += -rotation.y;
 
         rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);

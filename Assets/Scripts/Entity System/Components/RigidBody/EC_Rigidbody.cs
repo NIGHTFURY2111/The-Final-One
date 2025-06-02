@@ -48,4 +48,22 @@ public class EC_Rigidbody : AC_Component
     {
         rb.transform.rotation *= Quaternion.Euler(0, Rotation.x, 0);
     }
+    public void Jump( float force)
+    {
+        rb.velocity = (rb.transform.up * force);
+    }
+
+    public void Move(Vector2 moveVector)
+    {
+        
+        rb.velocity = rb.transform.forward * moveVector.y + rb.transform.right * moveVector.x;
+        //if (isgrounded)
+        //{
+        //    rb.velocity = moveDirection * rb.velocity.magnitude;
+        //}
+        //else
+        //{
+        //    rb.velocity = new Vector3(moveDirection.x * rb.velocity.magnitude, rb.velocity.y, moveDirection.z * rb.velocity.magnitude);
+        //}
+    }
 }
