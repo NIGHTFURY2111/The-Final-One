@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Windows;
 
 #region InputStruct
 // Represents a single input entry in the buffer
-class InputStruct
+class InputBufferBase
 {
     public string Name { get; private set; }
+    public InputAction inputAction { get; private set; }
     public object Value { get; private set; }
     public float InputTime { get; private set; }
     public float BufferTime { get; private set; }
@@ -19,9 +21,10 @@ class InputStruct
     /// <summary>
     /// Initializes a new instance of the InputStruct class.
     /// </summary>
-    public InputStruct(string name, object value, float bufferTime)
+    public InputBufferBase(InputAction Action, object value, float bufferTime)
     {
-        Name = name;
+        inputAction = Action;
+        Name = Action.name;
         InputTime = Time.time;
         Value = value;
         Used = false;
@@ -66,21 +69,21 @@ class InputStruct
 // Manages a buffer of input entries
 public class InputBuffer
 {
-    private readonly Dictionary<string, InputStruct> buffer = new();
+    private readonly Dictionary<string, InputBufferBase> buffer = new();
 
     /// <summary>
     /// Adds or updates an input in the buffer.
     /// </summary>
-    public void AddInput(string name, object value, float bufferTime = float.NaN)
+    public void AddInput(InputAction Action, object value, float bufferTime = float.NaN)
     {
-        if (buffer.TryGetValue(name, out var input))
+        if (buffer.TryGetValue(Action.name, out var input))
         {
             input.UpdateValue(value);
             input.UpdateBufferTime(bufferTime);
         }
         else
         {
-            buffer[name] = new InputStruct(name, value, bufferTime);
+            buffer[Action.name] = new InputBufferBase(Action, value, bufferTime);
         }
     }
 
@@ -95,6 +98,21 @@ public class InputBuffer
             return true;
         }
         value = null;
+        return false;
+    }
+
+
+    /// <summary>
+    /// Retrieves the current value of the input
+    /// </summary>
+    public bool GetInputValueThisFrame(string name, out InputAction action)
+    {
+        if (buffer.TryGetValue(name, out var input) && !input.Used && !input.IsExpired)
+        {
+            action = input.inputAction;
+            return true;
+        }
+        action = null;
         return false;
     }
 

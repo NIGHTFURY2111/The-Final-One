@@ -1,13 +1,14 @@
 using TMPro;
 using UnityEngine;
 
-public class PlayerEntity : Entity
+public class PlayerEntity : AC_Entity
 {
     public TMP_Text playerNameText;
 
     [SerializeField] protected EC_Movement movementSO;
     [SerializeField] private EC_Camera cameraSO;
     [SerializeField] private EC_Rigidbody rigidbodySO;
+    [SerializeField] private Def_Gun Gun;
 
     AC_Component[] components;
 
@@ -26,7 +27,7 @@ public class PlayerEntity : Entity
 
     public override void Update()
     {
-        playerNameText.text = movementSO.stateManager.currentState.name;
+        playerNameText.text = movementSO.stateManager.currentState.name +"\n"+ movementSO.inputAccessSO.ListInputs();
         //movementSO.ComponentUpdate();
         OnUpdateTick?.Invoke();
     }
@@ -34,8 +35,11 @@ public class PlayerEntity : Entity
     public override void EventLinker()
     {
         movementSO.OnCameraMove += cameraSO.UpdateCameraTransform;
-        movementSO.OnCameraMove += rigidbodySO.RotateGameObject;
+        movementSO.OnCameraMove += rigidbodySO.RotatePlayer;
         movementSO.OnPlayerMove += rigidbodySO.Move;
+        OnTriggerEnterTick += Gun.TriggerEnter;
+        OnTriggerExitsTick += Gun.TriggerExit;
+
 
     }
 
@@ -55,7 +59,22 @@ public class PlayerEntity : Entity
 
             OnStartTick += component.ComponentStart;
             OnUpdateTick += component.ComponentUpdate;
+            OnFixedUpdateTick += component.ComponentFixedUpdate;
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        OnTriggerEnterTick?.Invoke(other);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        OnTriggerExitsTick?.Invoke(other);
+    }
+
+    public override void FixedUpdate()
+    {
+        OnFixedUpdateTick?.Invoke();
+    }
 }

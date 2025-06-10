@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5219deb12afa6e749a10240ce8baff38, type: 3}
+  m_Name: Slide State
+  m_EditorClassIdentifier: 
+  ctx: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
+  stateTypeEnum: 64
+  next: 0800000001000000100000000400000002000000
+  SlideSpeed: 25
