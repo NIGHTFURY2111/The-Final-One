@@ -29,7 +29,13 @@ public class SO_InputAccess : ScriptableObject
     public Vector2 Movement()
     {
         Movement(out object val);
-        return val.IsUnityNull() ? Vector2.zero : (Vector2)val;
+        if (val == null)
+            return Vector2.zero;
+        
+        if (((Vector2)val).magnitude > 1f)
+            return ((Vector2)val).normalized;
+
+        return (Vector2)val;
     }
     #endregion
 

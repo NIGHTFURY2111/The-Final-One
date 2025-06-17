@@ -15,5 +15,5 @@ MonoBehaviour:
   ctx: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
   stateTypeEnum: 1
   next: 1000000008000000
-  JumpPower: 5
-  JumpTime: 0.2
+  JumpPower: 3
+  JumpTime: 0.001

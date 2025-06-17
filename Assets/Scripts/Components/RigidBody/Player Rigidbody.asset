@@ -13,7 +13,12 @@ MonoBehaviour:
   m_Name: Player Rigidbody
   m_EditorClassIdentifier: 
   entity: {fileID: 0}
+  _GRAVITY: 9.81
+  _CHECK_GRAVITY: 1
   Ground:
     serializedVersion: 2
     m_Bits: 64
-  _GRAVITY: 9.81
+  GCRayLength: 0.61
+  RideHeight: 0.65
+  RideSpringStrength: 300
+  RideSpringDamper: 8

@@ -27,6 +27,6 @@ public class SO_WalkState : AC_BaseState
     public override void UpdateState()
     {
         //Debug.Log("Walking with input: " + ctx.inputAccessSO.Movement());
-        ctx.MovePlayer(ctx.inputAccessSO.Movement().normalized * walkSpeed);
+        ctx.MovePlayer(ctx.inputAccessSO.Movement() * walkSpeed);
     }
 }

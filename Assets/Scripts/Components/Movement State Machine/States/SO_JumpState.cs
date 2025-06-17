@@ -16,11 +16,13 @@ public class SO_JumpState : AC_BaseState
     }
     public override void EnterState()
     {
+        ctx.EC_Rigidbody._CHECK_GRAVITY = false;
         //ctx.EC_Rigidbody.Jump(JumpPower);
     }
 
     public override void ExitState()
     {
+        ctx.EC_Rigidbody._CHECK_GRAVITY = true;
     }
 
     public override bool SwitchCondintion()
@@ -34,6 +36,7 @@ public class SO_JumpState : AC_BaseState
     {
         ctx.EC_Rigidbody.Jump(JumpPower);
         await Task.Delay((int)(JumpTime * 1000));
+
     }
 
     public override void UpdateState()

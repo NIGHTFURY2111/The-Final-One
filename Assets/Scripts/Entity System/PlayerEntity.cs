@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class PlayerEntity : AC_Entity
 {
-    public TMP_Text playerNameText;
-
     [SerializeField] protected EC_Movement movementSO;
     [SerializeField] private EC_Camera cameraSO;
     [SerializeField] private EC_Rigidbody rigidbodySO;
@@ -27,7 +25,8 @@ public class PlayerEntity : AC_Entity
 
     public override void Update()
     {
-        playerNameText.text = movementSO.stateManager.currentState.name +"\n"+ movementSO.inputAccessSO.ListInputs();
+        ST_debug.displayString = movementSO.stateManager.currentState.name + "\n" + movementSO.inputAccessSO.ListInputs();
+        //playerNameText.text = movementSO.stateManager.currentState.name +"\n"+ movementSO.inputAccessSO.ListInputs();
         //movementSO.ComponentUpdate();
         OnUpdateTick?.Invoke();
     }
