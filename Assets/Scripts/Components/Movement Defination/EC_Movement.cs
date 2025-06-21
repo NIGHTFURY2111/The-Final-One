@@ -54,5 +54,4 @@ public class EC_Movement : AC_Component
 
     public void MovePlayer(Vector2 moveVector) => OnPlayerMove?.Invoke(moveVector);
     public bool IsGrounded => EC_Rigidbody.isgrounded;
-
 }

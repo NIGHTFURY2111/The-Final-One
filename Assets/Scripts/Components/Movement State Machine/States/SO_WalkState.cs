@@ -21,7 +21,7 @@ public class SO_WalkState : AC_BaseState
 
     public override bool SwitchCondintion()
     {
-        return ctx.inputAccessSO.Movement() != Vector2.zero && ctx.IsGrounded;
+        return p_Input.Movement() != Vector2.zero && ctx.IsGrounded;
     }
 
     public override void UpdateState()

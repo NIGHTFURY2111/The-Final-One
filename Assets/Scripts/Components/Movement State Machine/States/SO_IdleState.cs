@@ -20,12 +20,12 @@ public class SO_IdleState : AC_BaseState
 
     public override bool SwitchCondintion()
     {
-        return ctx.inputAccessSO.Movement() == Vector2.zero && ctx.IsGrounded;
+        return p_Input.Movement() == Vector2.zero && ctx.IsGrounded;
     }
 
     public override void UpdateState()
     {
         //Debug.Log(ctx.move.IsPressed());
-
+        p_Rigidbody.Move(Vector3.zero);
     }
 }

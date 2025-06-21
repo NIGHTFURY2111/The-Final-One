@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
+using UnityEngine.Rendering;
 
 [CreateAssetMenu(fileName = "Player Rigidbody", menuName = "Scriptable Object/Component/Player Rigidbody")]
 public class EC_Rigidbody : AC_Component
@@ -14,15 +15,21 @@ public class EC_Rigidbody : AC_Component
     [SerializeField] float RideHeight;
     [SerializeField] float RideSpringStrength;
     [SerializeField] float RideSpringDamper;
+    [SerializeField] float playerMaxSpeed;
+    [SerializeField] Vector3Int playerPlane;
+
+    [SerializeField] float Acceleration;
+    [SerializeField] AnimationCurve AccelerationFactorFromDot;
+    [SerializeField] float MaxAccel;
+    [SerializeField] AnimationCurve MaxAccelerationFactorFromDot;
 
 
-
-
-    [SerializeField] float RBMaxSpeed;
-    [SerializeField] float RBSpeedFactor;
+    //[SerializeField] float RBSpeedFactor;
 
     public  float GRAVITY { get => _GRAVITY; }
             float appliedGravity;
+    Vector3 m_GoalVel = Vector3.zero;
+
     public bool isgrounded { get; private set; }
     Rigidbody _RB;
     CapsuleCollider collider;
@@ -143,9 +150,9 @@ public class EC_Rigidbody : AC_Component
     }
 
 
-    public void MoveInSpecifiedDirection(Vector3 moveVector)
+    public void MoveInSpecifiedDirection(Vector3 moveVector, float moveSpeed)
     {
-        PlayerVelocity = moveVector;
+        PlayerVelocity = moveVector * moveSpeed;
     }
 
     public Vector3 DirectionRespectiveToPlayer(Vector2 moveVector, bool AccountForZeroMagnitude = false)
@@ -158,24 +165,33 @@ public class EC_Rigidbody : AC_Component
     }
 
 
-    public void MoveInPlayerPlane(Vector3 planeVector, float clampMaxVelocity = float.NaN)
+    public void MoveInPlayerPlane(Vector3 planeVector, float maxAccelFactor = 1f, float clampMaxVelocity = float.NaN, ForceMode forceMode = ForceMode.Acceleration)
     {
-        //moves player without changing anything related to the gravity axis
-        // Project movement onto the plane perpendicular to DownDir (removes any DownDir component)
-        Vector3 moveOnPlane = Vector3.ProjectOnPlane(planeVector, PlayerDown);
 
-        // Preserve the current velocity along DownDir
-        float downSpeed = Vector3.Dot(_RB.velocity, PlayerDown);
-        Vector3 downVelocity = PlayerDown * downSpeed;
 
-        // Combine planar movement with preserved DownDir velocity
+        Vector3 moveOnPlane = Vector3.Scale(planeVector, playerPlane);
 
-        if(clampMaxVelocity != float.NaN)
-        {
-            moveOnPlane = moveOnPlane.normalized * Mathf.Clamp(moveOnPlane.magnitude, 0, clampMaxVelocity);
-        }
 
-        PlayerVelocity = moveOnPlane + downVelocity;
+        Vector3 unitVel =Vector3.Scale( m_GoalVel.normalized, playerPlane);
+        float velDot = Vector3.Dot(moveOnPlane, unitVel);
+        float accel = Acceleration * AccelerationFactorFromDot.Evaluate(velDot);
+
+        Vector3 goalVel = moveOnPlane;
+
+        m_GoalVel = Vector3.MoveTowards(m_GoalVel, goalVel, accel);
+
+
+
+        Vector3 neededAccel = m_GoalVel - Vector3.Scale(PlayerVelocity, playerPlane);
+        //Vector3 neededAccel = (moveOnPlane - Vector3.Scale(PlayerVelocity, playerPlane)) / Time.deltaTime;  dividing by deltaTime is the issue, the Video is dividing by soemthing else enitrely, ignore this for now
+        float maxAccel = MaxAccel * MaxAccelerationFactorFromDot.Evaluate(velDot) * maxAccelFactor;
+
+
+        neededAccel = Vector3.ClampMagnitude(neededAccel, (clampMaxVelocity == float.NaN) ? float.MaxValue : clampMaxVelocity);
+
+        _RB.AddForce(neededAccel, forceMode);
+
+        //PlayerVelocity = moveOnPlane + downVelocity;
     }
 
     public Vector3 PlayerForward => _RB.transform.forward;

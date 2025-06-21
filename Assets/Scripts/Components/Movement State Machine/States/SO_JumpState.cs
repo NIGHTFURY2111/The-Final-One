@@ -16,25 +16,25 @@ public class SO_JumpState : AC_BaseState
     }
     public override void EnterState()
     {
-        ctx.EC_Rigidbody._CHECK_GRAVITY = false;
+        p_Rigidbody._CHECK_GRAVITY = false;
         //ctx.EC_Rigidbody.Jump(JumpPower);
     }
 
     public override void ExitState()
     {
-        ctx.EC_Rigidbody._CHECK_GRAVITY = true;
+        p_Rigidbody._CHECK_GRAVITY = true;
     }
 
     public override bool SwitchCondintion()
     {
-        return ctx.inputAccessSO.Jump() && ctx.IsGrounded;
+        return p_Input.Jump() && ctx.IsGrounded;
     }
 
     public override bool CanExit() => canExit;
 
     private async Task JumpTask()
     {
-        ctx.EC_Rigidbody.Jump(JumpPower);
+        p_Rigidbody.Jump(JumpPower);
         await Task.Delay((int)(JumpTime * 1000));
 
     }

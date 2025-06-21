@@ -14,7 +14,7 @@ public class SO_SlideState : AC_BaseState
     }
     public override void EnterState()
     {
-        SlideDirection = ctx.EC_Rigidbody.DirectionRespectiveToPlayer(ctx.inputAccessSO.Movement(), true).normalized * SlideSpeed;
+        SlideDirection = p_Rigidbody.DirectionRespectiveToPlayer(ctx.inputAccessSO.Movement(), true).normalized;
     }
 
     public override void ExitState()
@@ -23,18 +23,18 @@ public class SO_SlideState : AC_BaseState
 
     public override bool SwitchCondintion()
     {
-        return ctx.inputAccessSO.Slide() && ctx.IsGrounded;
+        return p_Input.Slide() && ctx.IsGrounded;
     }
 
     public override void UpdateState()
     {
-        ctx.EC_Rigidbody.MoveInSpecifiedDirection(SlideDirection);
+        p_Rigidbody.MoveInSpecifiedDirection(SlideDirection, SlideSpeed);
     }
 
     public override bool CanExit()
     {
         //Debug.Log("Can Exit Slide State: " + (!ctx.inputAccessSO.Slide() || ctx.inputAccessSO.Jump()));
-        ctx.inputAccessSO.Slide(out InputAction action);
-        return action.WasReleasedThisFrame() || ctx.inputAccessSO.Jump();
+        p_Input.Slide(out InputAction action);
+        return action.WasReleasedThisFrame() || p_Input.Jump();
     }
 }

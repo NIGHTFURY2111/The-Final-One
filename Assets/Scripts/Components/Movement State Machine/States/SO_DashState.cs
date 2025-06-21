@@ -18,28 +18,28 @@ public class SO_DashState : AC_BaseState
 
     public override async void EnterState()
     {
-        dashDirection = ctx.EC_Rigidbody.DirectionRespectiveToPlayer(ctx.inputAccessSO.Movement(),true);
+        dashDirection = p_Rigidbody.DirectionRespectiveToPlayer(p_Input.Movement(),true);
         await DashCoroutine(dashDirection);
     }
 
     async Task DashCoroutine(Vector3 direction)
     {
         canExit = false;
-        ctx.EC_Rigidbody.setGravity(0);
-        ctx.EC_Rigidbody.MoveInSpecifiedDirection(dashDirection * dashSpeed);
+        p_Rigidbody.setGravity(0);
+        p_Rigidbody.MoveInSpecifiedDirection(dashDirection, dashSpeed);
         await Task.Delay((int)(dashDuration *1000));
-        ctx.EC_Rigidbody.setGravity(ctx.EC_Rigidbody.GRAVITY);
+        p_Rigidbody.setGravity(ctx.EC_Rigidbody.GRAVITY);
         canExit = true;
     }
 
     public override void ExitState()
     {
-        ctx.EC_Rigidbody.Move(Vector2.zero);
+        p_Rigidbody.MoveInSpecifiedDirection(Vector3.zero, 0f);
     }
 
     public override bool SwitchCondintion()
     {
-        return ctx.inputAccessSO.Dash();
+        return p_Input.Dash();
     }
 
     public override bool CanExit() => canExit;
