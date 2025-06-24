@@ -7,14 +7,18 @@ using UnityEngine.InputSystem;
 
 public class SO_SlideState : AC_BaseState
 {
-    [SerializeField] float SlideSpeed;
+    [SerializeField] float SlideFactor, overrideFactor;
     Vector3 SlideDirection;
     public SO_SlideState(EC_Movement ctx) : base(ctx)
     {
     }
     public override void EnterState()
     {
-        SlideDirection = p_Rigidbody.DirectionRespectiveToPlayer(ctx.inputAccessSO.Movement(), true).normalized;
+        SlideDirection = p_Rigidbody.DirectionRespectiveToPlayer( p_Input.Movement(), true).normalized;
+    }
+    public override void UpdateState()
+    {
+        p_Rigidbody.Move(SlideDirection, SlideFactor, overrideFactor, false);
     }
 
     public override void ExitState()
@@ -26,10 +30,6 @@ public class SO_SlideState : AC_BaseState
         return p_Input.Slide() && ctx.IsGrounded;
     }
 
-    public override void UpdateState()
-    {
-        p_Rigidbody.MoveInSpecifiedDirection(SlideDirection, SlideSpeed);
-    }
 
     public override bool CanExit()
     {

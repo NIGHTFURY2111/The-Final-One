@@ -22,8 +22,10 @@ MonoBehaviour:
   RideHeight: 0.65
   RideSpringStrength: 300
   RideSpringDamper: 8
-  playerMaxSpeed: NaN
   playerPlane: {x: 1, y: 0, z: 1}
+  baseSpeed: 20
+  maxSpeed: 0
+  Speedfactor: 4
   Acceleration: 200
   AccelerationFactorFromDot:
     serializedVersion: 2
@@ -38,10 +40,10 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.122161865
-      value: 1.72406
-      inSlope: -0.5
-      outSlope: -0.5
+      time: -0.002272524
+      value: 0.9976449
+      inSlope: 0
+      outSlope: 0
       tangentMode: 136
       weightedMode: 0
       inWeight: 0.33333334
@@ -49,8 +51,8 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: -0.8248218
-      outSlope: -0.8248218
+      inSlope: 0.002349759
+      outSlope: 0.002349759
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -61,7 +63,38 @@ MonoBehaviour:
   MaxAccel: 0
   MaxAccelerationFactorFromDot:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: -1
+      value: 2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 2
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: -0.002272524
+      value: 0.9976449
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  responsivenessFactor: 3
+  WallMask:
+    serializedVersion: 2
+    m_Bits: 0

@@ -48,7 +48,6 @@ public class Def_Gun : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(InputAccessSO.Shoot());
         if (InputAccessSO.Shoot())
         {
             Shoot();

@@ -88,6 +88,7 @@ public class StateManager
         currentState.ExitState();
         currentState = next;
         currentState.EnterState();
+        _context.UpdateGoalVel();
     }
 
     protected AC_BaseState fetch(Enum_StateList exitStates)

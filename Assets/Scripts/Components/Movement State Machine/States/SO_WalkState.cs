@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class SO_WalkState : AC_BaseState
 {
-    [SerializeField] float walkSpeed;
+    [SerializeField] float walkFactor, overrideFactor;
+
     public SO_WalkState(EC_Movement ctx) : base(ctx)
     {
     }
@@ -27,6 +28,6 @@ public class SO_WalkState : AC_BaseState
     public override void UpdateState()
     {
         //Debug.Log("Walking with input: " + ctx.inputAccessSO.Movement());
-        ctx.MovePlayer(ctx.inputAccessSO.Movement() * walkSpeed);
+        ctx.MovePlayer(ctx.inputAccessSO.Movement(), walkFactor,overrideFactor);
     }
 }

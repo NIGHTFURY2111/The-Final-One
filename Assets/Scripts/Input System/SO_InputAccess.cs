@@ -92,7 +92,7 @@ public class SO_InputAccess : ScriptableObject
     public bool Slide()
     {
         Slide(out InputAction val);
-        return val != null && val.WasPressedThisFrame();
+        return val != null && val.IsInProgress();
     }
     #endregion
 

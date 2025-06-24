@@ -25,7 +25,7 @@ public class PlayerEntity : AC_Entity
 
     public override void Update()
     {
-        ST_debug.displayString = movementSO.stateManager.currentState.name + "\n" + movementSO.inputAccessSO.ListInputs();
+        //ST_debug.displayString = movementSO.stateManager.currentState.name + "\n" + movementSO.inputAccessSO.ListInputs();
         //playerNameText.text = movementSO.stateManager.currentState.name +"\n"+ movementSO.inputAccessSO.ListInputs();
         //movementSO.ComponentUpdate();
         OnUpdateTick?.Invoke();

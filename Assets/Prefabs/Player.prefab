@@ -49,7 +49,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 887974ceb2e0b5a4ca07b37d95716d66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerNameText: {fileID: 0}
   movementSO: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
   cameraSO: {fileID: 11400000, guid: ac5d7e53b4e9cb042b247d1a37e46d0c, type: 2}
   rigidbodySO: {fileID: 11400000, guid: 7079a5ae2acd7c54680237a23d93ad55, type: 2}

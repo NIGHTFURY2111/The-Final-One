@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ctx: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
   stateTypeEnum: 8
-  next: 1000000001000000020000004000000004000000
-  AirSpeed: 1
-  MaxAdditionVel: 0
+  next: 1000000040000000010000000200000004000000
+  AirMoveFactor: 1
+  overrideFactor: 1.3

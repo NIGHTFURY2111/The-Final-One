@@ -19,10 +19,10 @@ public class SO_DashState : AC_BaseState
     public override async void EnterState()
     {
         dashDirection = p_Rigidbody.DirectionRespectiveToPlayer(p_Input.Movement(),true);
-        await DashCoroutine(dashDirection);
+        await DashTask(dashDirection);
     }
 
-    async Task DashCoroutine(Vector3 direction)
+    async Task DashTask(Vector3 direction)
     {
         canExit = false;
         p_Rigidbody.setGravity(0);

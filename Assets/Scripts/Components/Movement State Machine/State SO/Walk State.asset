@@ -15,4 +15,5 @@ MonoBehaviour:
   ctx: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
   stateTypeEnum: 4
   next: 0200000010000000010000004000000008000000
-  walkSpeed: 10
+  walkFactor: 1
+  overrideFactor: 1
