@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class SO_WalkState : AC_BaseState
 {
-    [SerializeField] float walkFactor, overrideFactor;
+    [SerializeField] PlayerMovementValues WalkValue;
 
     public SO_WalkState(EC_Movement ctx) : base(ctx)
     {
@@ -22,12 +22,16 @@ public class SO_WalkState : AC_BaseState
 
     public override bool SwitchCondintion()
     {
-        return p_Input.Movement() != Vector2.zero && ctx.IsGrounded;
+        return !p_Input.Movement().Equals(Vector2.zero) && ctx.IsGrounded;
     }
 
     public override void UpdateState()
     {
         //Debug.Log("Walking with input: " + ctx.inputAccessSO.Movement());
-        ctx.MovePlayer(ctx.inputAccessSO.Movement(), walkFactor,overrideFactor);
+    }
+
+    public override void FixedUpdate()
+    {
+        p_Rigidbody.Move(WalkValue.UpdateDirection(p_Input.Movement()));
     }
 }

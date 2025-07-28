@@ -8,7 +8,7 @@ public abstract class AC_Entity : MonoBehaviour
     public Action OnUpdateTick;
     public Action OnFixedUpdateTick;
     public Action<Collider> OnTriggerEnterTick;
-    public Action<Collider> OnTriggerExitsTick;
+    public Action<Collider> OnTriggerExitTick;
 
     //TODO: public HealthSystemSO;
     //TODO: public MovementStateMachineSO;

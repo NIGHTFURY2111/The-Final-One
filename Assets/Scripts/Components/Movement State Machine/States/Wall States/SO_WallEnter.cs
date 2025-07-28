@@ -2,13 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Fall State", menuName = "Scriptable Object/State Machine/Fall State")]
-
-public class SO_FallState : AC_BaseState
+[CreateAssetMenu(fileName = "Wall Enter", menuName = "Scriptable Object/State Machine/Wall Enter")]
+public class SO_WallEnter : SO_FallState
 {
-    [SerializeField]protected PlayerMovementValues FallValue;
 
-    public SO_FallState(EC_Movement ctx) : base(ctx)
+    public SO_WallEnter(EC_Movement ctx) : base(ctx)
     {
     }
 
@@ -22,15 +20,15 @@ public class SO_FallState : AC_BaseState
 
     public override bool SwitchCondintion()
     {
-        return !ctx.IsGrounded && !p_Rigidbody.isWall;
+     return /*!ctx.IsGrounded && */p_Rigidbody.isWall && !p_Input.Movement().Equals(Vector2.zero);
     }
 
     public override void UpdateState()
     {
     }
-
     public override void FixedUpdate()
     {
         p_Rigidbody.Move(FallValue.UpdateDirection(p_Input.Movement()));
     }
+
 }

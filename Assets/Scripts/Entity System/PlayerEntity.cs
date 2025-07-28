@@ -25,7 +25,7 @@ public class PlayerEntity : AC_Entity
 
     public override void Update()
     {
-        //ST_debug.displayString = movementSO.stateManager.currentState.name + "\n" + movementSO.inputAccessSO.ListInputs();
+        ST_debug.LogState(movementSO.stateManager.currentState.name /*+ "\n" + movementSO.inputAccessSO.ListInputs()*/);
         //playerNameText.text = movementSO.stateManager.currentState.name +"\n"+ movementSO.inputAccessSO.ListInputs();
         //movementSO.ComponentUpdate();
         OnUpdateTick?.Invoke();
@@ -35,10 +35,9 @@ public class PlayerEntity : AC_Entity
     {
         movementSO.OnCameraMove += cameraSO.UpdateCameraTransform;
         movementSO.OnCameraMove += rigidbodySO.RotatePlayer;
-        movementSO.OnPlayerMove += rigidbodySO.Move;
+        //movementSO.OnPlayerMove += rigidbodySO.Move;
         OnTriggerEnterTick += Gun.TriggerEnter;
-        OnTriggerExitsTick += Gun.TriggerExit;
-
+        OnTriggerExitTick += Gun.TriggerExit;
 
     }
 
@@ -69,7 +68,7 @@ public class PlayerEntity : AC_Entity
 
     private void OnTriggerExit(Collider other)
     {
-        OnTriggerExitsTick?.Invoke(other);
+        OnTriggerExitTick?.Invoke(other);
     }
 
     public override void FixedUpdate()

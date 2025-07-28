@@ -14,6 +14,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ctx: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
   stateTypeEnum: 1
-  next: 1000000008000000
-  JumpPower: 3
-  JumpTime: 0.001
+  next: 1000000008000000800000000200000004000000
+  JumpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.00033569336
+      value: 0.9937897
+      inSlope: 92.42966
+      outSlope: 92.42966
+      tangentMode: 0
+      weightedMode: 2
+      inWeight: 0.33333334
+      outWeight: 0.19979641
+    - serializedVersion: 3
+      time: 0.2
+      value: -0.50564575
+      inSlope: 10.403315
+      outSlope: -16.372046
+      tangentMode: 1
+      weightedMode: 1
+      inWeight: 0.62997144
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  JumpPower: 2.6
+  forceType: 1

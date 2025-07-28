@@ -7,17 +7,21 @@ using UnityEngine;
 
 public class SO_JumpState : AC_BaseState
 {
+    [SerializeField] AnimationCurve JumpCurve;
     [SerializeField] float JumpPower;
-    [SerializeField] float JumpTime;
+    [SerializeField] ForceMode forceType;
+    float JumpTime;
     bool canExit;
     public SO_JumpState(EC_Movement ctx) : base(ctx)
     {
-        canExit = false;
     }
     public override void EnterState()
     {
+        canExit = false;
         p_Rigidbody._CHECK_GRAVITY = false;
-        //ctx.EC_Rigidbody.Jump(JumpPower);
+        JumpTime = JumpCurve.keys[^1].time;
+        p_Rigidbody.MoveInSpecifiedDirection(p_Rigidbody.PlayerPlaneVel,1f);
+        //Debug.Log(p_Rigidbody.PlayerVelocity);
     }
 
     public override void ExitState()
@@ -34,9 +38,9 @@ public class SO_JumpState : AC_BaseState
 
     private async Task JumpTask()
     {
-        p_Rigidbody.Jump(JumpPower);
+        p_Rigidbody.Jump(JumpCurve,JumpPower,forceType);
         await Task.Delay((int)(JumpTime * 1000));
-
+        canExit = true;
     }
 
     public override void UpdateState()
@@ -46,6 +50,5 @@ public class SO_JumpState : AC_BaseState
     public override async void FixedUpdate()
     {
         await JumpTask();
-        canExit = true;
     }
 }

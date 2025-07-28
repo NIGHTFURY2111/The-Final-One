@@ -2,36 +2,42 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-
 public class ST_debug : MonoBehaviour
 {
-    static ST_debug instance;
+    private static ST_debug instance;
     [SerializeField] TMP_Text debugText;
+    [SerializeField] TMP_Text stateText;
 
-    string _displayString = "";
+    private static readonly List<(Vector3 position, float radius, Color color)> spheres = new();
+    private static string _displayString = "";
+    private static string _stateString = "";
 
-    public static string displayString
+    private void Awake()
     {
-        get => instance._displayString;
-        set => instance._displayString = value + "\n";
-    }
-    public ST_debug()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
+        instance = this;
     }
 
-    //public void AddString(string str)
-    //{
-    //    debugText.text += str + "\n";
-    //}
+    public static void Log(string msg) => _displayString += msg + "\n";
+    public static void LogState(string msg) => _stateString += msg + "\n";
+    public static void DrawSphere(Vector3 position, float radius, Color? color = null) => spheres.Add((position, radius, color ?? Color.red));
+    public static void ClearSpheres() => spheres.Clear();
 
     private void Update()
     {
-        debugText.text = displayString;
+        ClearSpheres();
+        if (stateText) stateText.text = _stateString;
+        if (debugText) debugText.text = _displayString;
+        _displayString = "";
+        _stateString = "";
     }
 
-
+    private void OnDrawGizmos()
+    {
+        foreach (var (position, radius, color) in spheres)
+        {
+            Gizmos.color = color;
+            Gizmos.DrawSphere(position, radius);
+        }
+        // Do NOT clear spheres here!
+    }
 }

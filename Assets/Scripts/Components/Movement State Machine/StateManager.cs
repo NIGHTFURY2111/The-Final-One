@@ -56,30 +56,6 @@ public class StateManager
                 return;
             }
         }
-        //if (nextStates == null) return;
-
-        //foreach (var state in nextStates) 
-        //{
-        //    if (stateholders.)
-        //}
-
-
-
-
-        foreach (var holder in stateholders)
-        {
-
-            //if (holder.state == currentState)
-            //{
-            //    return;
-            //}
-            //Debug.Log(holder.name + "   "  + (next.HasFlag(holder.stateTypeEnum)) +"   "+holder.SwitchCondintion() );
-            //if (next.HasFlag(holder.stateTypeEnum) && holder.SwitchCondintion())
-            //{
-            //    SwitchState(holder);
-            //    return;
-            //}
-        }
     }
 
 

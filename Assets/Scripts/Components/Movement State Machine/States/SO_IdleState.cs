@@ -26,6 +26,6 @@ public class SO_IdleState : AC_BaseState
     public override void UpdateState()
     {
         //Debug.Log(ctx.move.IsPressed());
-        p_Rigidbody.Move(Vector3.zero,0f,0f);
+        p_Rigidbody.Move(PlayerMovementValues.zero);
     }
 }

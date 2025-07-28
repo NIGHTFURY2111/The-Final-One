@@ -8,8 +8,11 @@ public enum Enum_StateList
     walk = 1 << 2,
     fall = 1 << 3,
     dash = 1 << 4,
-    wallslide = 1 << 5,
     slide = 1 << 6,
+    wallEnter = 1 << 7,
+    wallSlide = 1 << 5,
+    wallRun = 1 << 8,
+    wallJump = 1 << 9,
 }
 [Flags]
 public enum Enum_TransitionList

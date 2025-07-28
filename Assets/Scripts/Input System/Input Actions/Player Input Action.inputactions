@@ -98,7 +98,7 @@
             ],
             "bindings": [
                 {
-                    "name": "2D Vector",
+                    "name": "WASD",
                     "id": "926d8e80-00f5-4fae-a19a-c389ff713ef1",
                     "path": "2DVector",
                     "interactions": "",
@@ -153,7 +153,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "2D Vector",
+                    "name": "Arrow keys",
                     "id": "6b50497c-8f3f-49e1-b7d7-d24cd86d76f7",
                     "path": "2DVector",
                     "interactions": "",
@@ -209,11 +209,33 @@
                 },
                 {
                     "name": "",
+                    "id": "8e643351-49e7-4a7e-901e-0d7f5b77ad2f",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "546f9a36-d876-4a34-857e-90bb8d26e473",
                     "path": "<Mouse>/delta",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
+                    "action": "Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a28866fb-c3eb-449b-8de8-3627305e8445",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "ScaleVector2(x=7.5,y=7.5)",
+                    "groups": "Gamepad",
                     "action": "Camera",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -231,6 +253,17 @@
                 },
                 {
                     "name": "",
+                    "id": "05f70efa-0fe7-4f56-9842-1f752affb8ea",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "980d02da-e5ff-4d03-8a13-de80e92a8705",
                     "path": "<Keyboard>/space",
                     "interactions": "",
@@ -242,11 +275,33 @@
                 },
                 {
                     "name": "",
+                    "id": "57ac06cf-ab37-4f15-b966-7005c13c4995",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "a123e397-5d82-4e7d-bae6-8110b3ecd909",
                     "path": "<Keyboard>/ctrl",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
+                    "action": "Slide",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ad8860c9-7c26-4cc9-a129-9e72c753480c",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
                     "action": "Slide",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -302,6 +357,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
+                    "action": "Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e8a838ee-179b-4678-9d98-fa64d3a46a04",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
                     "action": "Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false

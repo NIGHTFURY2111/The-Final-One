@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2a11962871d2f54ca9f36417e23fae7, type: 3}
-  m_Name: Fall State
+  m_Script: {fileID: 11500000, guid: b74a5a06f6b58af4da18495c7ebeb83b, type: 3}
+  m_Name: Wall Enter
   m_EditorClassIdentifier: 
   ctx: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
-  stateTypeEnum: 8
-  next: 100000004000000001000000020000000400000080000000
+  stateTypeEnum: 128
+  next: 1000000000020000000100002000000008000000
   FallValue:
     baseFactor: 1
     overrideFactor: 1.2
@@ -52,5 +52,5 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    clampMaxVelocity: NaN
+    clampMaxVelocity: 0
     forceMode: 5
