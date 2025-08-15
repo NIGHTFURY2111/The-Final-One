@@ -31,7 +31,7 @@ public class SO_WallSlideDown : AC_BaseState
 
     public override bool CanExit()
     {
-        return !p_Rigidbody.isWall || p_Rigidbody.isGrounded;
+        return !p_Rigidbody.isWall || p_Input.Jump() || p_Rigidbody.isGrounded;
     }
     public override void UpdateState()
     {

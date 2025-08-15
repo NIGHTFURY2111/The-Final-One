@@ -24,7 +24,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 64
     GCRayLength: 0.61
-    RideHeight: 0.65
+    RideHeight: 1
     RideSpringStrength: 500
     RideSpringDamper: 20
   wallValues:

@@ -25,6 +25,10 @@ public class SO_WallRun : AC_BaseState
 
     public override void EnterState()
     {
+        p_Rigidbody._CHECK_GRAVITY = false;
+
+        wallRunTimer = 0f;
+
         // Store wall normal and calculate run direction
         wallNormal = p_Rigidbody.wallHit.normal;
 
@@ -35,17 +39,8 @@ public class SO_WallRun : AC_BaseState
         if (Vector3.Dot(wallRunDirection, p_Rigidbody.PlayerVelocity) < 0)
             wallRunDirection = -wallRunDirection;
 
-        // Disable gravity
-        p_Rigidbody._CHECK_GRAVITY = false;
-
-        // Reset wall run timer
-        wallRunTimer = 0f;
-
-        // Debug
         ST_debug.LogState("WALL RUN");
-        ST_debug.DrawSphere(p_Rigidbody.wallHit.point, 0.2f, Color.blue);
 
-        // Create wall run movement value
         wallRunValue = new PlayerMovementValues(
             wallRunDirection,
             1.0f,
@@ -57,22 +52,46 @@ public class SO_WallRun : AC_BaseState
         );
     }
 
+    private void RecalculateRunDirection()
+    {
+        if (!p_Rigidbody.isWall) return;
+
+        Vector3 wallNormal = p_Rigidbody.wallHit.normal;
+        Vector3 newDirection = Vector3.Cross(wallNormal, Vector3.up).normalized;
+
+        // Only switch direction if it's a large change, or first calculation
+        if (wallRunDirection == Vector3.zero ||
+            Vector3.Angle(newDirection, wallRunDirection) > 30f)
+        {
+            // Ensure we're going in the right direction
+            if (Vector3.Dot(newDirection, p_Rigidbody.PlayerVelocity) < 0)
+                newDirection = -newDirection;
+
+            wallRunDirection = newDirection;
+        }
+
+        // Debug wall normal
+        ST_debug.DrawSphere(
+            p_Rigidbody.wallHit.point,
+            0.1f,
+            Color.blue,
+            0.1f
+        );
+    }
+
     public override void ExitState()
     {
-        // Re-enable gravity
         p_Rigidbody.setGravity(p_Rigidbody.GRAVITY);
         p_Rigidbody._CHECK_GRAVITY = true;
     }
 
     public override bool SwitchCondintion()
     {
-        // Check if we're hitting a wall and have enough velocity
         if (!p_Rigidbody.isWall) return false;
 
         // Get velocity component parallel to the wall
         Vector3 wallParallelVelocity = Vector3.ProjectOnPlane(p_Rigidbody.PlayerVelocity, p_Rigidbody.wallHit.normal);
 
-        // Check if we have enough velocity to wall run
         return wallParallelVelocity.magnitude >= minWallRunVelocity;
     }
 
@@ -81,44 +100,35 @@ public class SO_WallRun : AC_BaseState
         // Calculate current speed along the wall direction
         float speedAlongWall = Vector3.Dot(p_Rigidbody.PlayerVelocity, wallRunDirection);
 
-        // Exit if wall ends, player is grounded, time expires, OR speed drops below entry threshold
         return !p_Rigidbody.isWall ||
                p_Rigidbody.isGrounded ||
+               p_Input.Jump() || 
                wallRunTimer >= wallRunDuration ||
                speedAlongWall < minWallRunVelocity;
     }
 
     public override void UpdateState()
     {
-        // Update wall run direction based on input
         Vector2 input = p_Input.Movement();
 
-        // Only use the forward/backward component of input
         float forwardInput = Vector3.Dot(new Vector3(input.x, 0, input.y), wallRunDirection);
 
-        // Adjust wall run direction based on input
         Vector3 adjustedDirection = wallRunDirection * Mathf.Max(forwardInput, 0.4f); // Always keep some forward momentum
 
         wallRunValue = wallRunValue.UpdateDirection(adjustedDirection);
 
-        // Debug visualization
-        ST_debug.DrawSphere(p_Rigidbody.PlayerTransform.position, 0.2f, Color.yellow);
         ST_debug.Log($"Wall Run: {wallRunTimer:F1}s");
     }
 
     public override void FixedUpdate()
     {
-        // Update timer
         wallRunTimer += Time.fixedDeltaTime;
 
-        // Apply wall stick force
         p_Rigidbody.ApplyForce(-p_Rigidbody.wallHit.normal * wallStickForce, ForceMode.Force);
 
-        // Apply slight upward force based on curve
         float upwardMultiplier = wallRunCurve.Evaluate(wallRunTimer / wallRunDuration);
         p_Rigidbody.ApplyForce(Vector3.up * upwardForce * upwardMultiplier, ForceMode.Force);
 
-        // Move along the wall
         p_Rigidbody.MoveInSpecifiedDirection(wallRunDirection,
             wallRunSpeed * wallRunCurve.Evaluate(wallRunTimer / wallRunDuration));
     }

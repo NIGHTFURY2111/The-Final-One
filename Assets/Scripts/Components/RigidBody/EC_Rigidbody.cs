@@ -5,7 +5,7 @@ using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 
 [Serializable]
-public struct PlayerMovementValues
+public class PlayerMovementValues
 {
     public Vector3 planeVector { get; private set; }
     public float baseFactor;
@@ -182,9 +182,11 @@ public class EC_Rigidbody : AC_Component
         if (!isGrounded || !_CHECK_GRAVITY)
         {
             ApplyGravity(PlayerDown);
-            return; 
+            return;
         }
 
+        //ApplySpringPull(_rayHit);
+        #region depreciate this into a generic function, mentioned below
         Rigidbody other = _rayHit.rigidbody;
         Vector3 otherVel = other != null ? other.velocity : Vector3.zero;
 
@@ -193,6 +195,9 @@ public class EC_Rigidbody : AC_Component
 
         float relativeVel = rayDirVel - otherDirVel;
 
+        //float x = Vector3.Distance(_RB.transform.position,SpringPoint) - GroundValues.RideHeight;
+        // Alternative to _rayHit.distance
+
         float x = _rayHit.distance - GroundValues.RideHeight;
         float springForce = (x * GroundValues.RideSpringStrength) - (relativeVel * GroundValues.RideSpringDamper);
 
@@ -200,9 +205,40 @@ public class EC_Rigidbody : AC_Component
 
         Debug.DrawLine(_RB.transform.position, _RB.transform.position + (PlayerDown * GroundValues.GCRayLength), Color.yellow);
 
-        if (other != null) 
+        if (other != null)
         {
             other.AddForceAtPosition(PlayerDown * -springForce, _rayHit.point);
+        }
+
+        #endregion
+    }
+
+    public void ApplySpringPull(RaycastHit _rayHit) => ApplySpringPull(_rayHit.rigidbody, -_rayHit.normal, _rayHit.point);
+    public void ApplySpringPull(Rigidbody otherRB, Vector3 springDirection, Vector3 SpringPoint)
+    {
+        springDirection = springDirection.normalized;
+        Rigidbody other = otherRB;
+        Vector3 otherVel = other != null ? other.velocity : Vector3.zero;
+
+        float rayDirVel = Vector3.Dot(springDirection, PlayerVelocity);
+        float otherDirVel = Vector3.Dot(springDirection, otherVel);
+
+        float relativeVel = rayDirVel - otherDirVel;
+
+        //float x = Vector3.Distance(_RB.transform.position,SpringPoint) - GroundValues.RideHeight;
+        // Alternative to _rayHit.distance
+        Vector3 toPoint = SpringPoint - _RB.transform.position;
+        float perpendicularDistance = Vector3.Dot(toPoint, springDirection);
+        float x = perpendicularDistance - GroundValues.RideHeight;
+        float springForce = (x * GroundValues.RideSpringStrength) - (relativeVel * GroundValues.RideSpringDamper);
+
+        _RB.AddForce(springDirection * springForce);
+
+        Debug.DrawLine(_RB.transform.position, _RB.transform.position + (springDirection * GroundValues.GCRayLength), Color.yellow);
+
+        if (other != null)
+        {
+            other.AddForceAtPosition(springDirection * -springForce, SpringPoint);
         }
     }
 

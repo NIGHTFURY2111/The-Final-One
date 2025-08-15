@@ -16,7 +16,7 @@ MonoBehaviour:
   stateTypeEnum: 256
   next: 10000000000200000800000002000000
   minWallRunVelocity: 10
-  wallRunSpeed: 20
+  wallRunSpeed: 10
   wallRunDuration: 5
   wallStickForce: 3
   wallRunCurve:
@@ -24,18 +24,18 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
-      inSlope: 19
-      outSlope: 19
-      tangentMode: 34
+      value: 1.5
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 1
-      value: 20
-      inSlope: 19
-      outSlope: 19
+      time: 2.5
+      value: 1
+      inSlope: -0.2
+      outSlope: -0.2
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334

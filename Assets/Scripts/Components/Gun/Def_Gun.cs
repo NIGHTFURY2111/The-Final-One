@@ -11,7 +11,6 @@ public class Def_Gun : MonoBehaviour
     public Material debugSelectedMaterial;
     public Material debugSeenMaterial;
     public Material debugNotMaterial;
-    public GameObject debugPoint;
 
 
     [SerializeField] ParticleSystem ShootingSystem;
@@ -153,7 +152,7 @@ public class Def_Gun : MonoBehaviour
                 bounceImpact = false;
             }
 
-            debugPoint.transform.position = hit.point;
+           ST_debug.DrawSphere(hit.point, .5f, Color.yellow,1f);
             //Debug.Log(hit.point.ToString());
 
             //(The discard _ = is used to call the async method without awaiting it.)

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ctx: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
   stateTypeEnum: 128
-  next: 1000000000020000000100002000000008000000
+  next: 10000000000200000001000008000000
   FallValue:
     baseFactor: 1
     overrideFactor: 1.2
