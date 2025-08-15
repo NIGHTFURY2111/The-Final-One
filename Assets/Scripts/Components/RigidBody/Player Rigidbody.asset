@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac8e1e07bcc3fbd4a8f4dceaeacde5d4, type: 3}
+  m_Name: Player Rigidbody
+  m_EditorClassIdentifier: 
+  entity: {fileID: 0}
+  _GRAVITY: 9.81
+  _CHECK_GRAVITY: 1
+  playerPlane: {x: 1, y: 0, z: 1}
+  movementDirectionCollisionCheckDistance: 0.31
+  radius: 0.26
+  PlayerInput: {fileID: 11400000, guid: c4b30f4e049c13e4c9c218b599c91d7c, type: 2}
+  GroundValues:
+    GroundLayer:
+      serializedVersion: 2
+      m_Bits: 64
+    GCRayLength: 0.61
+    RideHeight: 1
+    RideSpringStrength: 500
+    RideSpringDamper: 20
+  wallValues:
+    rotationAngle: 30
+    WallRayCastDistance: 1
+    WallMask:
+      serializedVersion: 2
+      m_Bits: 64
+  movementValues:
+    baseSpeed: 15
+    maxSpeed: 0
+    Speedfactor: 3
+    Acceleration: 200
+    AccelerationFactorFromDot:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: -1
+        value: 2
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    MaxAccel: 0
+    MaxAccelerationFactorFromDot:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: -1
+        value: 2
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    responsivenessFactor: 3

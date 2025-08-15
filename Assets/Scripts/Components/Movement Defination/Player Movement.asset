@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a24ffb2b3440dbf4789fc927c8bec534, type: 3}
+  m_Name: Player Movement
+  m_EditorClassIdentifier: 
+  entity: {fileID: 0}
+  LookSpeed: 0.15
+  inputAccessSO: {fileID: 11400000, guid: c4b30f4e049c13e4c9c218b599c91d7c, type: 2}
+  EC_Rigidbody: {fileID: 11400000, guid: 7079a5ae2acd7c54680237a23d93ad55, type: 2}
+  stateManager:
+    rid: 1313339419740864512
+  references:
+    version: 2
+    RefIds:
+    - rid: 1313339419740864512
+      type: {class: PlayerStateManager, ns: , asm: Assembly-CSharp}
+      data:
+        _context: {fileID: 11400000}
+        stateholders:
+        - {fileID: 11400000, guid: 75f20c5b444154941a30c5b6e99557ee, type: 2}
+        - {fileID: 11400000, guid: 2d220b8155a96c74ea5693eee9e69461, type: 2}
+        - {fileID: 11400000, guid: df38e49289b83d648aeb30c238c0e239, type: 2}
+        - {fileID: 11400000, guid: 1d2127f17848c7d438692913b9479f15, type: 2}
+        - {fileID: 11400000, guid: 98043ac65b6434347ace738dca7c5df7, type: 2}
+        - {fileID: 11400000, guid: a8aa044dd7eadca47a2370dea3fee71e, type: 2}
+        - {fileID: 11400000, guid: 1e71a1d2db5cc734da0d41944012287c, type: 2}
+        - {fileID: 11400000, guid: d9d71b8550f5f7c48bffd3506103d1b1, type: 2}
+        - {fileID: 11400000, guid: 841c7149ca26a5645827647d18c56d51, type: 2}
+        - {fileID: 11400000, guid: eb344355b8be41943b1a367fcf1f3ed4, type: 2}
+        initial: 2
