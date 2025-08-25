@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class SO_FallState : AC_BaseState
 {
-    [SerializeField]protected PlayerMovementValues FallValue;
+    [SerializeField] PlayerMovementValues FallValue;
 
     public SO_FallState(EC_Movement ctx) : base(ctx)
     {
@@ -28,7 +28,6 @@ public class SO_FallState : AC_BaseState
     public override void UpdateState()
     {
     }
-
     public override void FixedUpdate()
     {
         p_Rigidbody.Move(FallValue.UpdateDirection(p_Input.Movement()));

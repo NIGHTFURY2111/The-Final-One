@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Wall Enter", menuName = "Scriptable Object/State Machine/Wall Enter")]
-public class SO_WallEnter : SO_FallState
+
+public class SO_WallEnter : AC_BaseState
 {
+    [SerializeField] PlayerMovementValues FallValue;
 
     public SO_WallEnter(EC_Movement ctx) : base(ctx)
     {
@@ -20,7 +22,7 @@ public class SO_WallEnter : SO_FallState
 
     public override bool SwitchCondintion()
     {
-     return /*!ctx.IsGrounded && */p_Rigidbody.isWall && !p_Input.Movement().Equals(Vector2.zero);
+     return /*!ctx.IsGrounded && */p_Rigidbody.isWall;
     }
 
     public override void UpdateState()

@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ctx: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
   stateTypeEnum: 16
-  next: 020000000800000004000000
+  next: 08000000800000000400000002000000
   dashSpeed: 75
   dashDuration: 0.25

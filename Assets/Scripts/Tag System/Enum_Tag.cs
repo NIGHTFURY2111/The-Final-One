@@ -4,6 +4,7 @@ using System;
 public enum Enum_Tag
 {
     canRespawn = 1 << 0,
+    entity = 1 << 14,
     enemy = 1 << 1,
     player = 1 << 2,
 

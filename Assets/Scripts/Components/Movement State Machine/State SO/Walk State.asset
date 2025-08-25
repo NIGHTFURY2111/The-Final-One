@@ -25,17 +25,17 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 1
-        inSlope: 0
-        outSlope: 0
+        inSlope: -0.125
+        outSlope: -0.125
         tangentMode: 34
         weightedMode: 0
         inWeight: 0
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 2
-        value: 1
-        inSlope: 0
-        outSlope: 0
+        value: 0.75
+        inSlope: -0.25
+        outSlope: -0.25
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
@@ -53,4 +53,4 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     clampMaxVelocity: NaN
-    forceMode: 5
+    forceMode: 0

@@ -26,7 +26,7 @@ public class SO_DashState : AC_BaseState
     {
         canExit = false;
         p_Rigidbody.setGravity(0);
-        p_Rigidbody.MoveInSpecifiedDirection(dashDirection, dashSpeed);
+        p_Rigidbody.MoveInSpecifiedDirection(dashDirection, p_Rigidbody.PlayerPlaneVel.magnitude+dashSpeed);
         await Task.Delay((int)(dashDuration *1000));
         p_Rigidbody.setGravity(ctx.EC_Rigidbody.GRAVITY);
         canExit = true;
@@ -34,7 +34,8 @@ public class SO_DashState : AC_BaseState
 
     public override void ExitState()
     {
-        p_Rigidbody.MoveInSpecifiedDirection(Vector3.zero, 0f);
+        //p_Rigidbody.MoveInSpecifiedDirection(Vector3.zero, 0f);
+        //p_Rigidbody.MoveInSpecifiedDirection(Vector3.zero, 0f);
     }
 
     public override bool SwitchCondintion()

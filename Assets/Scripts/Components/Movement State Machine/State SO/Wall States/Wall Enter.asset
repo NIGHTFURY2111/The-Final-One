@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ctx: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
   stateTypeEnum: 128
-  next: 10000000000200000001000008000000
+  next: 100000000002000000010000080000000400000002000000
   FallValue:
     baseFactor: 1
     overrideFactor: 1.2
@@ -25,17 +25,17 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 1
-        inSlope: 0
-        outSlope: 0
+        inSlope: -0.125
+        outSlope: -0.125
         tangentMode: 34
         weightedMode: 0
         inWeight: 0
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 2
-        value: 1
-        inSlope: 0
-        outSlope: 0
+        value: 0.75
+        inSlope: -0.25
+        outSlope: -0.25
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
@@ -52,5 +52,5 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    clampMaxVelocity: 0
+    clampMaxVelocity: NaN
     forceMode: 5

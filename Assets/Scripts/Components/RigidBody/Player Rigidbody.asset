@@ -17,7 +17,7 @@ MonoBehaviour:
   _CHECK_GRAVITY: 1
   playerPlane: {x: 1, y: 0, z: 1}
   movementDirectionCollisionCheckDistance: 0.31
-  radius: 0.26
+  radius: 0.35
   PlayerInput: {fileID: 11400000, guid: c4b30f4e049c13e4c9c218b599c91d7c, type: 2}
   GroundValues:
     GroundLayer:
@@ -36,7 +36,7 @@ MonoBehaviour:
   movementValues:
     baseSpeed: 15
     maxSpeed: 0
-    Speedfactor: 3
+    Speedfactor: 3.5
     Acceleration: 200
     AccelerationFactorFromDot:
       serializedVersion: 2
@@ -87,4 +87,4 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    responsivenessFactor: 3
+    responsivenessFactor: 3.5

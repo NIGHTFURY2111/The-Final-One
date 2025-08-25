@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ctx: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
   stateTypeEnum: 256
-  next: 10000000000200000800000002000000
+  next: 1000000000020000080000000400000002000000
   minWallRunVelocity: 10
   wallRunSpeed: 10
   wallRunDuration: 5

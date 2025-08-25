@@ -75,4 +75,9 @@ public class PlayerEntity : AC_Entity
     {
         OnFixedUpdateTick?.Invoke();
     }
+
+    public override void Ondeath()
+    {
+        OnDeathTrigger.Invoke();
+    }
 }

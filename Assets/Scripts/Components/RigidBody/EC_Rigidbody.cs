@@ -1,8 +1,5 @@
-using JetBrains.Annotations;
 using System;
-using System.Threading.Tasks;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 [Serializable]
 public class PlayerMovementValues
@@ -12,7 +9,7 @@ public class PlayerMovementValues
     public float overrideFactor;
     public float DecayFactor;
     public AnimationCurve DelayCurve;
-    public float clampMaxVelocity;
+    public float clampMaxVelocity = float.NaN;
     public ForceMode forceMode;
 
     public PlayerMovementValues(float baseFactor, float overrideFactor, AnimationCurve delayCurve, float DecayFactor = default)
@@ -43,8 +40,6 @@ public class PlayerMovementValues
         return this;
     }
 }
-
-
 
 
 [CreateAssetMenu(fileName = "Player Rigidbody", menuName = "Scriptable Object/Component/Player Rigidbody")]
@@ -126,21 +121,20 @@ public class EC_Rigidbody : AC_Component
 
     bool updateGoalVel = false;
     float appliedGravity;
-    float currentGoalSpeed = 0f;
+    float currentGoalSpeedFactor = 0f;
     float StateSwitchTime;
     Vector3 m_GoalVel = Vector3.zero;
     Rigidbody _RB;
     CapsuleCollider collider;
-    #endregion
     public override Enum_ComponentType componentType => Enum_ComponentType.RigidBody;
 
+    #endregion
     public override void ComponentAwake()
     {
         _RB = entity.GetComponent<Rigidbody>();
         collider = entity.GetComponent<CapsuleCollider>();
         setGravity(GRAVITY);
-        //QualitySettings.vSyncCount = 0;
-        //Application.targetFrameRate = 60;
+
     }
     public override void ComponentStart(){}
     public override void ComponentUpdate()
@@ -148,34 +142,14 @@ public class EC_Rigidbody : AC_Component
         //Debug.Log(Vector3.Dot(PlayerVelocity, PlayerDown));
         ST_debug.Log(_RB.velocity.ToString("F2"));
         ST_debug.Log(PlayerPlaneVel.magnitude.ToString("F2"));
-        GroundCheck();
+        CheckGrounded();
         CheckWallHit();
     }
     public override void ComponentFixedUpdate()
     {
         PlayerGravityhandler(_rayHit);
     }
-    public void RotatePlayer(Vector2 Rotation)
-    {
-        _RB.transform.rotation *= Quaternion.Euler(0, Rotation.x, 0);
-    }
     
-    public void setGravity(float gravity)
-    {
-        appliedGravity = gravity;
-    }
-    
-    void GroundCheck()
-    {
-        isGrounded =  Physics.SphereCast(
-            _RB.transform.position,
-            collider.radius * 0.5f,
-            PlayerDown,
-            out _rayHit,
-            collider.height * 0.5f + GroundValues.GCRayLength,
-            GroundValues.GroundLayer
-        );
-    }
 
     private void PlayerGravityhandler(RaycastHit _rayHit)
     {
@@ -268,10 +242,6 @@ public class EC_Rigidbody : AC_Component
         MoveInPlayerPlane(value);
     }
 
-    public void MoveInSpecifiedDirection(Vector3 moveVector, float moveSpeed)
-    {
-        PlayerVelocity = moveVector * moveSpeed;
-    }
 
     public Vector3 DirectionRespectiveToPlayer(Vector2 moveVector, bool AccountForZeroMagnitude = false)
     {
@@ -284,6 +254,7 @@ public class EC_Rigidbody : AC_Component
 
     public void MoveInPlayerPlane(PlayerMovementValues value)
     {
+        //Debug.Log((value.baseFactor, value.DecayFactor));
         //convert movement into a usable value
         Vector3 moveOnPlane = Vector3.Scale(value.planeVector, playerPlane);
         Debug.DrawRay(_RB.transform.position, moveOnPlane * movementDirectionCollisionCheckDistance, Color.blue);
@@ -302,9 +273,9 @@ public class EC_Rigidbody : AC_Component
         float accel = movementValues.Acceleration * movementValues.AccelerationFactorFromDot.Evaluate(velDot);
 
         //calcuate new actual goal
-        if(updateGoalVel)   CalculateNewGoalVel(value.baseFactor, value.overrideFactor);
-        else                decayVelocity(value.baseFactor, value.DecayFactor, value.DelayCurve);
-        Vector3 goalVel = moveOnPlane * currentGoalSpeed * movementValues.Speedfactor;
+        currentGoalSpeedFactor = updateGoalVel ?  CalculateNewGoalVel(value.baseFactor, value.overrideFactor):
+                                            decayVelocity(value.baseFactor, value.DecayFactor, value.DelayCurve);
+        Vector3 goalVel = moveOnPlane *movementValues.baseSpeed * currentGoalSpeedFactor * movementValues.Speedfactor;
 
         m_GoalVel = Vector3.MoveTowards(m_GoalVel, goalVel, accel);
 
@@ -351,31 +322,38 @@ public class EC_Rigidbody : AC_Component
         updateGoalVel = true;
         StateSwitchTime = Time.time;
     }
-    void CalculateNewGoalVel(float basefactor, float newFactor)
+    float CalculateNewGoalVel(float basefactor, float newFactor)
     {
-        if (PlayerPlaneVel.magnitude < movementValues.baseSpeed * basefactor)
-        {
-            currentGoalSpeed = movementValues.baseSpeed * basefactor;
-        }
-        else if (PlayerPlaneVel.magnitude > movementValues.baseSpeed * basefactor)
-        {
-            currentGoalSpeed = PlayerPlaneVel.magnitude * newFactor;
-        }
         updateGoalVel = false;
+        if (PlayerPlaneVel.magnitude <= movementValues.baseSpeed * basefactor)
+        {
+            //Debug.Log($"base factor {basefactor}");
+            return basefactor;
+        }
+        else
+        {
+            //Debug.Log($"over4ride factor {currentGoalSpeedFactor * newFactor}");
+            return currentGoalSpeedFactor * newFactor;
+        }
+        
     }
 
-    void decayVelocity(float basefactor, float newFactor, AnimationCurve delayCurve)
+    float decayVelocity(float basefactor, float DecayFactor, AnimationCurve delayCurve)
     {
-        float decayFactor = Mathf.Lerp(basefactor, newFactor, delayCurve.Evaluate(Time.time - StateSwitchTime));
-        //Debug.Log(delayCurve.Evaluate(Time.time - StateSwitchTime).ToString());
+        //Debug.Log((basefactor, DecayFactor));
+        float TimedFactor = Mathf.Lerp(currentGoalSpeedFactor, basefactor, 1- delayCurve.Evaluate(Time.time - StateSwitchTime));
+        ST_debug.Log(Time.time - StateSwitchTime);
         //delayCurve.Evaluate(Time.time - StateSwitchTime);
-        if (PlayerPlaneVel.magnitude <= movementValues.baseSpeed * basefactor *1.1f)
+        if (currentGoalSpeedFactor <= basefactor *1.1f)
         {
-            currentGoalSpeed = movementValues.baseSpeed * basefactor;
+            //Debug.Log((basefactor).ToString());
+            return basefactor;
         }
-        else if (PlayerPlaneVel.magnitude > movementValues.baseSpeed * basefactor)
+        else
         {
-            currentGoalSpeed = PlayerPlaneVel.magnitude * newFactor * decayFactor;
+            //Debug.Log((currentGoalSpeedFactor, DecayFactor, (1 - delayCurve.Evaluate(Time.time - StateSwitchTime))));
+            Debug.Log(TimedFactor);
+            return TimedFactor;
         }
     }
 
@@ -401,10 +379,24 @@ public class EC_Rigidbody : AC_Component
         //Debug.DrawRay(_RB.transform.position, dir *wallValues.WallRayCastDistance, isWall ? Color.red : Color.green);
         //ST_debug.DrawSphere(wallHit.point, radius, isWall ? Color.red : Color.green);
     }
+    void CheckGrounded()
+    {
+        isGrounded =  Physics.SphereCast(
+            _RB.transform.position,
+            collider.radius * 0.5f,
+            PlayerDown,
+            out _rayHit,
+            collider.height * 0.5f + GroundValues.GCRayLength,
+            GroundValues.GroundLayer
+        );
+    }
 
     
 
 
+    public void setGravity(float gravity) => appliedGravity = gravity;
+    public void RotatePlayer(Vector2 Rotation) => _RB.transform.rotation *= Quaternion.Euler(0, Rotation.x, 0);
+    public void MoveInSpecifiedDirection(Vector3 moveVector, float moveSpeed)=> PlayerVelocity = moveVector * moveSpeed;
     public Transform PlayerTransform => _RB.transform;
     public Vector3 PlayerForward => _RB.transform.forward;
     public Vector3 PlayerRight => _RB.transform.right;
