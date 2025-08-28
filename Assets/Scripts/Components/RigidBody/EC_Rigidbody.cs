@@ -41,65 +41,66 @@ public class PlayerMovementValues
     }
 }
 
-
 [CreateAssetMenu(fileName = "Player Rigidbody", menuName = "Scriptable Object/Component/Player Rigidbody")]
 public class EC_Rigidbody : AC_Component
 {
     [Serializable]
     struct WallValues
-{
-    public float rotationAngle;
-    public float WallRayCastDistance;
-    public LayerMask WallMask;
-    public WallValues(float rotationAngle, float rayCastDistance, LayerMask layerMask)
     {
-        this.rotationAngle = rotationAngle;
-        this.WallRayCastDistance = rayCastDistance;
-        this.WallMask = layerMask;
+        public float rotationAngle;
+        public float WallRayCastDistance;
+        public LayerMask WallMask;
+        public WallValues(float rotationAngle, float rayCastDistance, LayerMask layerMask)
+        {
+            this.rotationAngle = rotationAngle;
+            this.WallRayCastDistance = rayCastDistance;
+            this.WallMask = layerMask;
+        }
     }
-}
 
     [Serializable]
     struct GroundCheckValues
-{
-    public LayerMask GroundLayer;
-    public float GCRayLength;
-    public float RideHeight;
-    public float RideSpringStrength;
-    public float RideSpringDamper;
-    public GroundCheckValues(LayerMask groundLayer, float rayLength, float rideHeight, float rideSpringStrength, float rideSpringDamper)
     {
-        this.GroundLayer = groundLayer;
-        this.GCRayLength = rayLength;
-        this.RideHeight = rideHeight;
-        this.RideSpringStrength = rideSpringStrength;
-        this.RideSpringDamper = rideSpringDamper;
+        public LayerMask GroundLayer;
+        public float GCRayLength;
+        public float RideHeight;
+        public float RideSpringStrength;
+        public float RideSpringDamper;
+        public GroundCheckValues(LayerMask groundLayer, float rayLength, float rideHeight, float rideSpringStrength, float rideSpringDamper)
+        {
+            this.GroundLayer = groundLayer;
+            this.GCRayLength = rayLength;
+            this.RideHeight = rideHeight;
+            this.RideSpringStrength = rideSpringStrength;
+            this.RideSpringDamper = rideSpringDamper;
+        }
     }
-}
+    
     [Serializable]
     struct MovementValues
-{
-    public float baseSpeed;
-    public float maxSpeed;
-    public float Speedfactor;
-    public float Acceleration;
-    public AnimationCurve AccelerationFactorFromDot;
-    public float MaxAccel;
-    public AnimationCurve MaxAccelerationFactorFromDot;
-    public float responsivenessFactor;
-
-    public MovementValues(float baseSpeed, float maxSpeed, float speedFactor, float acceleration, AnimationCurve accelerationFactorFromDot, float maxAccel, AnimationCurve maxAccelerationFactorFromDot, float responsivenessFactor)
     {
-        this.baseSpeed = baseSpeed;
-        this.maxSpeed = maxSpeed;
-        this.Speedfactor = speedFactor;
-        this.Acceleration = acceleration;
-        this.AccelerationFactorFromDot = accelerationFactorFromDot;
-        this.MaxAccel = maxAccel;
-        this.MaxAccelerationFactorFromDot = maxAccelerationFactorFromDot;
-        this.responsivenessFactor = responsivenessFactor;
+        public float baseSpeed;
+        public float maxSpeed;
+        public float Speedfactor;
+        public float Acceleration;
+        public AnimationCurve AccelerationFactorFromDot;
+        public float MaxAccel;
+        public AnimationCurve MaxAccelerationFactorFromDot;
+        public float responsivenessFactor;
+
+        public MovementValues(float baseSpeed, float maxSpeed, float speedFactor, float acceleration, AnimationCurve accelerationFactorFromDot, float maxAccel, AnimationCurve maxAccelerationFactorFromDot, float responsivenessFactor)
+        {
+            this.baseSpeed = baseSpeed;
+            this.maxSpeed = maxSpeed;
+            this.Speedfactor = speedFactor;
+            this.Acceleration = acceleration;
+            this.AccelerationFactorFromDot = accelerationFactorFromDot;
+            this.MaxAccel = maxAccel;
+            this.MaxAccelerationFactorFromDot = maxAccelerationFactorFromDot;
+            this.responsivenessFactor = responsivenessFactor;
+        }
     }
-}
+    
     #region --- Variables ---
     [SerializeField] float _GRAVITY;
     [SerializeField] public bool _CHECK_GRAVITY = true;
@@ -107,18 +108,16 @@ public class EC_Rigidbody : AC_Component
     [SerializeField] float movementDirectionCollisionCheckDistance,radius;
     [SerializeField] SO_InputAccess PlayerInput;
 
+    public  float GRAVITY { get => _GRAVITY;}
 
     [SerializeField] GroundCheckValues GroundValues;
     [SerializeField] WallValues wallValues;
     [SerializeField] MovementValues movementValues;
 
-
     public RaycastHit _rayHit, wallHit, movementDirectionCollisionCheck;
-    public  float GRAVITY { get => _GRAVITY; }
     public bool isGrounded { get; private set; }
     public bool isWall{ get; private set; }
     
-
     bool updateGoalVel = false;
     float appliedGravity;
     float currentGoalSpeedFactor = 0f;
@@ -134,22 +133,22 @@ public class EC_Rigidbody : AC_Component
         _RB = entity.GetComponent<Rigidbody>();
         collider = entity.GetComponent<CapsuleCollider>();
         setGravity(GRAVITY);
-
     }
+    
     public override void ComponentStart(){}
+    
     public override void ComponentUpdate()
     {
-        //Debug.Log(Vector3.Dot(PlayerVelocity, PlayerDown));
         ST_debug.Log(_RB.velocity.ToString("F2"));
         ST_debug.Log(PlayerPlaneVel.magnitude.ToString("F2"));
         CheckGrounded();
         CheckWallHit();
     }
+    
     public override void ComponentFixedUpdate()
     {
         PlayerGravityhandler(_rayHit);
     }
-    
 
     private void PlayerGravityhandler(RaycastHit _rayHit)
     {
@@ -218,20 +217,17 @@ public class EC_Rigidbody : AC_Component
 
     public void ApplyGravity(Vector3 dir)
     {
-        if ( PlayerDownVelocity< appliedGravity)
+        if (PlayerDownVelocity < appliedGravity)
             _RB.AddForce(dir * appliedGravity, ForceMode.Acceleration);
         else
             PlayerVelocity = PlayerPlaneVel + (PlayerDown * appliedGravity);
     }
 
-    public void Jump(AnimationCurve JumpCurve,float force, ForceMode forceMode)
+    public void Jump(AnimationCurve JumpCurve, float force, ForceMode forceMode)
     {
         //TODO this needs to be fixed
         _RB.AddForce(JumpCurve.Evaluate(Time.time - StateSwitchTime) * PlayerUp * force, forceMode);
-        //ST_debug.displayString = (JumpCurve.Evaluate(Time.time - StateSwitchTime) * PlayerUp * force).ToString("F2");
     }
-
-
 
     public void Move(PlayerMovementValues value) => Move(value, true);
     public void Move(PlayerMovementValues value, bool ChangeInputToLocalSpace)
@@ -241,7 +237,6 @@ public class EC_Rigidbody : AC_Component
                 value.UpdateDirection(DirectionRespectiveToPlayer(value.planeVector));
         MoveInPlayerPlane(value);
     }
-
 
     public Vector3 DirectionRespectiveToPlayer(Vector2 moveVector, bool AccountForZeroMagnitude = false)
     {
@@ -254,49 +249,42 @@ public class EC_Rigidbody : AC_Component
 
     public void MoveInPlayerPlane(PlayerMovementValues value)
     {
-        //Debug.Log((value.baseFactor, value.DecayFactor));
         //convert movement into a usable value
         Vector3 moveOnPlane = Vector3.Scale(value.planeVector, playerPlane);
         Debug.DrawRay(_RB.transform.position, moveOnPlane * movementDirectionCollisionCheckDistance, Color.blue);
         Vector3 wallHittingVel = GetWallSlideVector(moveOnPlane);
+        
         ST_debug.DrawSphere(
             wallHittingVel.Equals(Vector3.zero) ? 
             _RB.transform.position + moveOnPlane * movementDirectionCollisionCheckDistance: 
             movementDirectionCollisionCheck.point,
-            radius);
+            radius,
+            Color.white);
 
-        moveOnPlane = wallHittingVel.Equals( Vector3.zero)? moveOnPlane : Vector3.ProjectOnPlane(moveOnPlane, movementDirectionCollisionCheck.normal);
+        moveOnPlane = wallHittingVel.Equals(Vector3.zero)? moveOnPlane : Vector3.ProjectOnPlane(moveOnPlane, movementDirectionCollisionCheck.normal);
         
         //getting new goalVel
-        Vector3 unitVel =m_GoalVel.normalized;
+        Vector3 unitVel = m_GoalVel.normalized;
         float velDot = Vector3.Dot(moveOnPlane.normalized, unitVel);
         float accel = movementValues.Acceleration * movementValues.AccelerationFactorFromDot.Evaluate(velDot);
 
         //calcuate new actual goal
         currentGoalSpeedFactor = updateGoalVel ?  CalculateNewGoalVel(value.baseFactor, value.overrideFactor):
                                             decayVelocity(value.baseFactor, value.DecayFactor, value.DelayCurve);
-        Vector3 goalVel = moveOnPlane *movementValues.baseSpeed * currentGoalSpeedFactor * movementValues.Speedfactor;
+        Vector3 goalVel = moveOnPlane * movementValues.baseSpeed * currentGoalSpeedFactor * movementValues.Speedfactor;
 
         m_GoalVel = Vector3.MoveTowards(m_GoalVel, goalVel, accel);
-
 
         //neededVel
         Vector3 neededAccel = m_GoalVel - (PlayerPlaneVel * movementValues.responsivenessFactor);
 
-
-        //dividing by deltaTime is the issue, the Video is dividing by soemthing else enitrely, ignore this for now
-        //Vector3 neededAccel = (moveOnPlane - Vector3.Scale(PlayerVelocity, playerPlane)) / Time.deltaTime;  
         float maxAccel = movementValues.MaxAccel * movementValues.MaxAccelerationFactorFromDot.Evaluate(velDot);
 
         //clamping the neededAccel
-        neededAccel = Vector3.ClampMagnitude(neededAccel, (value.clampMaxVelocity == float.NaN) ? maxAccel: value.clampMaxVelocity);
-        //ST_debug.displayString = PlayerPlaneVel.magnitude.ToString("F2");
+        neededAccel = Vector3.ClampMagnitude(neededAccel, (value.clampMaxVelocity == float.NaN) ? maxAccel : value.clampMaxVelocity);
         
         //applying the force to the player
         _RB.AddForce(neededAccel, value.forceMode);
-
-
-        //PlayerVelocity = moveOnPlane + downVelocity;
     }
 
     public Vector3 GetWallSlideVector(Vector3 checkingDir)
@@ -316,7 +304,7 @@ public class EC_Rigidbody : AC_Component
         }
     }
 
-    public void ApplyForce(Vector3 force, ForceMode forceMode = ForceMode.Force)=> _RB.AddForce(force, forceMode);
+    public void ApplyForce(Vector3 force, ForceMode forceMode = ForceMode.Force) => _RB.AddForce(force, forceMode);
     public void UpdateGoalVel()
     {
         updateGoalVel = true;
@@ -327,32 +315,25 @@ public class EC_Rigidbody : AC_Component
         updateGoalVel = false;
         if (PlayerPlaneVel.magnitude <= movementValues.baseSpeed * basefactor)
         {
-            //Debug.Log($"base factor {basefactor}");
             return basefactor;
         }
         else
         {
-            //Debug.Log($"over4ride factor {currentGoalSpeedFactor * newFactor}");
             return currentGoalSpeedFactor * newFactor;
         }
-        
     }
 
     float decayVelocity(float basefactor, float DecayFactor, AnimationCurve delayCurve)
     {
-        //Debug.Log((basefactor, DecayFactor));
         float TimedFactor = Mathf.Lerp(currentGoalSpeedFactor, basefactor, 1- delayCurve.Evaluate(Time.time - StateSwitchTime));
-        ST_debug.Log(Time.time - StateSwitchTime);
-        //delayCurve.Evaluate(Time.time - StateSwitchTime);
-        if (currentGoalSpeedFactor <= basefactor *1.1f)
+        ST_debug.Log((Time.time - StateSwitchTime).ToString());
+        
+        if (currentGoalSpeedFactor <= basefactor * 1.1f)
         {
-            //Debug.Log((basefactor).ToString());
             return basefactor;
         }
         else
         {
-            //Debug.Log((currentGoalSpeedFactor, DecayFactor, (1 - delayCurve.Evaluate(Time.time - StateSwitchTime))));
-            Debug.Log(TimedFactor);
             return TimedFactor;
         }
     }
@@ -372,16 +353,11 @@ public class EC_Rigidbody : AC_Component
             Debug.DrawRay(_RB.transform.position, -direction * wallValues.WallRayCastDistance, isWall ? Color.red : Color.green);
             if (isWall) break;
         }
-        //Vector3 dir = Vector3.Scale( DirectionRespectiveToPlayer(PlayerInput.Movement()),playerPlane).normalized;
-        //ST_debug.Log($"GoalVel: {dir}");
-        //isWall = Physics.SphereCast(_RB.transform.position, radius, dir, out wallHit, wallValues.WallRayCastDistance, wallValues.WallMask);
-        ////Debug.DrawRay(_RB.transform.position, direction * wallValues.rayCastDistance, isWall ? Color.red : Color.green);
-        //Debug.DrawRay(_RB.transform.position, dir *wallValues.WallRayCastDistance, isWall ? Color.red : Color.green);
-        //ST_debug.DrawSphere(wallHit.point, radius, isWall ? Color.red : Color.green);
     }
+    
     void CheckGrounded()
     {
-        isGrounded =  Physics.SphereCast(
+        isGrounded = Physics.SphereCast(
             _RB.transform.position,
             collider.radius * 0.5f,
             PlayerDown,
@@ -390,13 +366,13 @@ public class EC_Rigidbody : AC_Component
             GroundValues.GroundLayer
         );
     }
-
-    
-
+    public void RotatePlayer(Vector2 Rotation) 
+    {
+        _RB.MoveRotation(_RB.rotation * Quaternion.Euler(0, Rotation.x, 0))/*_RB.transform.rotation *= Quaternion.Euler(0, Rotation.x, 0)*/;
+    }
 
     public void setGravity(float gravity) => appliedGravity = gravity;
-    public void RotatePlayer(Vector2 Rotation) => _RB.transform.rotation *= Quaternion.Euler(0, Rotation.x, 0);
-    public void MoveInSpecifiedDirection(Vector3 moveVector, float moveSpeed)=> PlayerVelocity = moveVector * moveSpeed;
+    public void MoveInSpecifiedDirection(Vector3 moveVector, float moveSpeed) => PlayerVelocity = moveVector * moveSpeed;
     public Transform PlayerTransform => _RB.transform;
     public Vector3 PlayerForward => _RB.transform.forward;
     public Vector3 PlayerRight => _RB.transform.right;
@@ -404,5 +380,5 @@ public class EC_Rigidbody : AC_Component
     public float PlayerDownVelocity => Vector3.Dot(PlayerVelocity, PlayerDown);
     public Vector3 PlayerVelocity { get => _RB.velocity; set => _RB.velocity = value; }
     public Vector3 PlayerPlaneVel { get => Vector3.Scale(PlayerVelocity, playerPlane);}
-           Vector3 PlayerDown => _RB.transform.TransformDirection(Vector3.down);
+    Vector3 PlayerDown => _RB.transform.TransformDirection(Vector3.down);
 }

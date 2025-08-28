@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using TMPro;
@@ -11,7 +12,7 @@ public class ST_debug : MonoBehaviour
 {
     // --- Singleton ---
     private static ST_debug _instance;
-
+    
     // --- Inspector References ---
     [Header("UI References")]
     [SerializeField] private TMP_Text _debugText;
@@ -52,7 +53,7 @@ public class ST_debug : MonoBehaviour
             _spheresToDraw.Clear(); // Clear static list on destroy
         }
     }
-
+    
     private void Update()
     {
         // 1. Remove any timed spheres that have expired.
@@ -63,6 +64,7 @@ public class ST_debug : MonoBehaviour
         {
             _debugText.text = _debugStringBuilder.ToString();
         }
+        
         if (_stateText != null)
         {
             _stateText.text = _stateStringBuilder.ToString();
@@ -78,7 +80,7 @@ public class ST_debug : MonoBehaviour
         // As requested, clear all single-frame (non-timed) spheres every FixedUpdate cycle.
         _spheresToDraw.RemoveAll(sphere => !sphere.ExpirationTime.HasValue);
     }
-
+    
     // OnDrawGizmos is called by the editor to draw gizmos.
     private void OnDrawGizmos()
     {
@@ -92,7 +94,7 @@ public class ST_debug : MonoBehaviour
         }
     }
     #endregion
-
+    
     #region Public Static API
     /// <summary>
     /// Appends a message to the main debug text display for one frame.
@@ -115,7 +117,7 @@ public class ST_debug : MonoBehaviour
             _instance._stateStringBuilder.AppendLine(message.ToString());
         }
     }
-
+    
     /// <summary>
     /// Schedules a sphere to be drawn by Gizmos.
     /// If duration is null, it will be drawn for one frame (cleared on FixedUpdate).
@@ -123,16 +125,36 @@ public class ST_debug : MonoBehaviour
     /// </summary>
     public static void DrawSphere(Vector3 position, float radius, Color? color = null, float? duration = null)
     {
+        Color finalColor = color ?? Color.white;
+        
         if (Application.isPlaying && _instance != null)
         {
             _spheresToDraw.Add(new SphereGizmo
             {
                 Position = position,
                 Radius = radius,
-                Color = color ?? Color.red,
+                Color = finalColor,
                 ExpirationTime = duration.HasValue ? Time.time + duration.Value : (float?)null
             });
         }
+    }
+    
+    /// <summary>
+    /// Legacy method for simple single-frame sphere drawing using Debug.DrawLine
+    /// </summary>
+    public static void DrawSphere(Vector3 pos, float radius, Color color)
+    {
+        // Use the main DrawSphere method but with null duration
+        DrawSphere(pos, radius, color, null);
+    }
+    
+    /// <summary>
+    /// Legacy method for timed sphere drawing using Debug.DrawLine
+    /// </summary>
+    public static void DrawSphere(Vector3 pos, float radius, Color color, float duration)
+    {
+        // Use the main DrawSphere method with specified duration
+        DrawSphere(pos, radius, color, (float?)duration);
     }
     #endregion
 }

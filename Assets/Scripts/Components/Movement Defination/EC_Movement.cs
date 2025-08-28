@@ -47,8 +47,7 @@ public class EC_Movement : AC_Component
 
     Vector2 cameraInput()
     {
-        Vector2 outp = Vector2.zero;
-        inputAccessSO.Camera(out outp); 
+        inputAccessSO.Camera(out Vector2 outp); 
         return outp;
     }
 

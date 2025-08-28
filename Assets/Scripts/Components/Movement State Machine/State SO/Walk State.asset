@@ -54,3 +54,4 @@ MonoBehaviour:
       m_RotationOrder: 4
     clampMaxVelocity: NaN
     forceMode: 0
+  headbob: {fileID: 11400000, guid: 19357ed7e89603e4bbf606020969a603, type: 2}

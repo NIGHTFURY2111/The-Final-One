@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 853059121646855591}
   - component: {fileID: 3123596930265496616}
   - component: {fileID: 8608553154943483375}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Test Death Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}

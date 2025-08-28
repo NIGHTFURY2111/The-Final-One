@@ -8,6 +8,8 @@ public class SO_WalkState : AC_BaseState
 {
     [SerializeField] PlayerMovementValues WalkValue;
 
+    [SerializeField] Headbob_Effect headbob;
+
     public SO_WalkState(EC_Movement ctx) : base(ctx)
     {
     }
@@ -18,6 +20,7 @@ public class SO_WalkState : AC_BaseState
 
     public override void ExitState()
     {
+        headbob.OnHeadbobStop?.Invoke();
     }
 
     public override bool SwitchCondintion()
@@ -28,6 +31,7 @@ public class SO_WalkState : AC_BaseState
     public override void UpdateState()
     {
         //Debug.Log("Walking with input: " + ctx.inputAccessSO.Movement());
+        headbob.OnHeadbobUpdate?.Invoke();
     }
 
     public override void FixedUpdate()

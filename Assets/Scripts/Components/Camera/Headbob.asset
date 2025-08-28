@@ -9,11 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd1806a733e0b5f4fa5faea108e278ca, type: 3}
-  m_Name: Dash State
+  m_Script: {fileID: 11500000, guid: cbe38aa806d0c4147a1803f13b89c0b6, type: 3}
+  m_Name: Headbob
   m_EditorClassIdentifier: 
-  ctx: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
-  stateTypeEnum: 16
-  next: 08000000800000000400000002000000
-  dashSpeed: 100
-  dashDuration: 0.1
+  intensity: 0.00838
+  frequency: 20.33
+  smoothing: 70.8

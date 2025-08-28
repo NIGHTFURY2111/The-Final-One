@@ -4,21 +4,22 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Dash State", menuName = "Scriptable Object/State Machine/Dash State")]
-
 public class SO_DashState : AC_BaseState
 {
+    [Header("Dash Settings")]
+    [SerializeField] float dashSpeed = 20f;
+    [SerializeField] float dashDuration = 0.5f;
+    
+    private bool canExit;
+    private Vector3 dashDirection;
 
-    [SerializeField] float dashSpeed;
-    [SerializeField] float dashDuration;
-    bool canExit;
-    Vector3 dashDirection;
     public SO_DashState(EC_Movement ctx) : base(ctx)
     {
     }
 
     public override async void EnterState()
     {
-        dashDirection = p_Rigidbody.DirectionRespectiveToPlayer(p_Input.Movement(),true);
+        dashDirection = p_Rigidbody.DirectionRespectiveToPlayer(p_Input.Movement(), true);
         await DashTask(dashDirection);
     }
 
@@ -26,16 +27,20 @@ public class SO_DashState : AC_BaseState
     {
         canExit = false;
         p_Rigidbody.setGravity(0);
-        p_Rigidbody.MoveInSpecifiedDirection(dashDirection, p_Rigidbody.PlayerPlaneVel.magnitude+dashSpeed);
-        await Task.Delay((int)(dashDuration *1000));
+        p_Rigidbody.MoveInSpecifiedDirection(dashDirection, p_Rigidbody.PlayerPlaneVel.magnitude + dashSpeed);
+
+        // FOV will be handled automatically by the centralized velocity-based system
+        // No need for manual FOV changes since dash increases velocity
+        
+        await Task.Delay((int)(dashDuration * 1000));
+
         p_Rigidbody.setGravity(ctx.EC_Rigidbody.GRAVITY);
         canExit = true;
     }
 
     public override void ExitState()
     {
-        //p_Rigidbody.MoveInSpecifiedDirection(Vector3.zero, 0f);
-        //p_Rigidbody.MoveInSpecifiedDirection(Vector3.zero, 0f);
+        // Clean exit - no FOV cleanup needed since we're not manually controlling it
     }
 
     public override bool SwitchCondintion()
@@ -47,5 +52,6 @@ public class SO_DashState : AC_BaseState
 
     public override void UpdateState()
     {
+        // Nothing to update
     }
 }
