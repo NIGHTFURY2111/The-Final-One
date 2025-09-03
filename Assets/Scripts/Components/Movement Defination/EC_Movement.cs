@@ -13,7 +13,7 @@ public class EC_Movement : AC_Component
     [SerializeReference] public StateManager stateManager;
 
     public Action<Vector2> OnCameraMove;
-    public Action<Vector3,float,float> OnPlayerMove;
+    public Action<PlayerMovementValues,bool> OnPlayerMove;
 
 
     public override void ComponentAwake()
@@ -51,7 +51,7 @@ public class EC_Movement : AC_Component
         return outp;
     }
 
-    public void MovePlayer(Vector3 moveVector, float baseFactor,float overrideFactor) => OnPlayerMove?.Invoke(moveVector,baseFactor, overrideFactor);
+    public void MovePlayer(PlayerMovementValues PMV,bool ChangeInputToLocalSpace = true) => OnPlayerMove?.Invoke(PMV, ChangeInputToLocalSpace);
     public void UpdateGoalVel() => EC_Rigidbody.UpdateGoalVel();
     public bool IsGrounded => EC_Rigidbody.isGrounded;
 }

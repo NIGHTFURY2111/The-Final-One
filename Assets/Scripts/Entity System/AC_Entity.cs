@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 public abstract class AC_Entity : MonoBehaviour
@@ -22,4 +23,14 @@ public abstract class AC_Entity : MonoBehaviour
     public abstract void FixedUpdate();
     public abstract void EventLinker();
     public abstract void Ondeath();
+
+    public static void TryEvent(Action subscribeAction, params object[] sourceObjects)
+    {
+        if (sourceObjects.All(obj => obj != null))
+        {
+            subscribeAction?.Invoke();
+        }
+    }
+
+
 }

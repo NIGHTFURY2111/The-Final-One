@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Player Rigidbody
   m_EditorClassIdentifier: 
   entity: {fileID: 0}
-  _GRAVITY: 9.81
+  _GRAVITY: 15
   _CHECK_GRAVITY: 1
   playerPlane: {x: 1, y: 0, z: 1}
   movementDirectionCollisionCheckDistance: 0.31

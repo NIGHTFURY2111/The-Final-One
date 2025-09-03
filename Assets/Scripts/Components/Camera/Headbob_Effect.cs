@@ -50,14 +50,17 @@ public class Headbob_Effect: ScriptableObject
         {
             tween.Kill();
         }
-        headbobDelta = Vector3.zero;
-        headbobDelta.y = Mathf.Lerp(headbobDelta.y, Mathf.Sin(Time.time * frequency) * intensity, Time.deltaTime * smoothing);
-        headbobDelta.x = Mathf.Lerp(headbobDelta.x, Mathf.Cos(Time.time * frequency/2f) * intensity, Time.deltaTime * smoothing);
-        cameraParentTransform.localPosition += headbobDelta;
+        if (cameraParentTransform!= null)
+        {
+            headbobDelta = Vector3.zero;
+            headbobDelta.y = Mathf.Lerp(headbobDelta.y, Mathf.Sin(Time.time * frequency) * intensity, Time.deltaTime * smoothing);
+            headbobDelta.x = Mathf.Lerp(headbobDelta.x, Mathf.Cos(Time.time * frequency/2f) * intensity, Time.deltaTime * smoothing);
+            cameraParentTransform.localPosition += headbobDelta;
+        }
     }
 
     private void StopHeadbob()
-    {
+    { if (cameraParentTransform == null) return;
         if (cameraParentTransform.localPosition == headbobStartPos) return;
         tween = cameraParentTransform.DOLocalMove(headbobStartPos,Time.deltaTime* smoothing);
     }

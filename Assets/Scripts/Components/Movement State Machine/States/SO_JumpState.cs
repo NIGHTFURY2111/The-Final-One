@@ -38,7 +38,6 @@ public class SO_JumpState : AC_BaseState
 
     private async Task JumpTask()
     {
-        p_Rigidbody.Jump(JumpCurve,JumpPower,forceType);
         await Task.Delay((int)(JumpTime * 1000));
         canExit = true;
     }
@@ -49,6 +48,7 @@ public class SO_JumpState : AC_BaseState
 
     public override async void FixedUpdate()
     {
+        p_Rigidbody.Jump(JumpCurve,JumpPower,forceType);
         await JumpTask();
     }
 }

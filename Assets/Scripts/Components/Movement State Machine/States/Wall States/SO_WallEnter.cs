@@ -30,7 +30,7 @@ public class SO_WallEnter : AC_BaseState
     }
     public override void FixedUpdate()
     {
-        p_Rigidbody.Move(FallValue.UpdateDirection(p_Input.Movement()));
+        ctx.MovePlayer(FallValue.UpdateDirection(p_Input.Movement()));
     }
 
 }

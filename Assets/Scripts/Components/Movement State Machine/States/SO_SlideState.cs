@@ -18,7 +18,7 @@ public class SO_SlideState : AC_BaseState
     }
     public override void UpdateState()
     {
-        p_Rigidbody.Move(slideValues, false);
+        ctx.MovePlayer(slideValues, false);
     }
 
     public override void ExitState()

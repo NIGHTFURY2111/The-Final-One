@@ -1,4 +1,5 @@
 using System;
+using Unity.Collections;
 using UnityEngine;
 
 [Serializable]
@@ -106,7 +107,6 @@ public class EC_Rigidbody : AC_Component
     [SerializeField] public bool _CHECK_GRAVITY = true;
     [SerializeField] Vector3Int playerPlane;
     [SerializeField] float movementDirectionCollisionCheckDistance,radius;
-    [SerializeField] SO_InputAccess PlayerInput;
 
     public  float GRAVITY { get => _GRAVITY;}
 
@@ -114,7 +114,7 @@ public class EC_Rigidbody : AC_Component
     [SerializeField] WallValues wallValues;
     [SerializeField] MovementValues movementValues;
 
-    public RaycastHit _rayHit, wallHit, movementDirectionCollisionCheck;
+    public RaycastHit _groundRayHit, wallHit, movementDirectionCollisionCheck;
     public bool isGrounded { get; private set; }
     public bool isWall{ get; private set; }
     
@@ -141,13 +141,13 @@ public class EC_Rigidbody : AC_Component
     {
         ST_debug.Log(_RB.velocity.ToString("F2"));
         ST_debug.Log(PlayerPlaneVel.magnitude.ToString("F2"));
-        CheckGrounded();
         CheckWallHit();
     }
     
     public override void ComponentFixedUpdate()
     {
-        PlayerGravityhandler(_rayHit);
+        CheckGrounded();
+        PlayerGravityhandler(_groundRayHit);
     }
 
     private void PlayerGravityhandler(RaycastHit _rayHit)
@@ -227,6 +227,10 @@ public class EC_Rigidbody : AC_Component
     {
         //TODO this needs to be fixed
         _RB.AddForce(JumpCurve.Evaluate(Time.time - StateSwitchTime) * PlayerUp * force, forceMode);
+        float grnd =Vector3.Dot( _groundRayHit.point,PlayerUp);
+        float jumpApex = grnd + force;
+        ST_debug.Log("JT: " + (Time.time - StateSwitchTime).ToString());
+
     }
 
     public void Move(PlayerMovementValues value) => Move(value, true);
@@ -361,7 +365,7 @@ public class EC_Rigidbody : AC_Component
             _RB.transform.position,
             collider.radius * 0.5f,
             PlayerDown,
-            out _rayHit,
+            out _groundRayHit,
             collider.height * 0.5f + GroundValues.GCRayLength,
             GroundValues.GroundLayer
         );

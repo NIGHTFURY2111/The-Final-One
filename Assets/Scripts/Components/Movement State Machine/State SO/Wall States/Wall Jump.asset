@@ -15,5 +15,5 @@ MonoBehaviour:
   ctx: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
   stateTypeEnum: 512
   next: 080000001000000002000000
-  WallJumpHeight: 20
-  WallJumpAwayForce: 20
+  WallJumpHeight: 9.46
+  WallJumpAwayForce: 14.74

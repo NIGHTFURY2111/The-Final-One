@@ -36,6 +36,6 @@ public class SO_WalkState : AC_BaseState
 
     public override void FixedUpdate()
     {
-        p_Rigidbody.Move(WalkValue.UpdateDirection(p_Input.Movement()));
+        ctx.MovePlayer(WalkValue.UpdateDirection(p_Input.Movement()));
     }
 }

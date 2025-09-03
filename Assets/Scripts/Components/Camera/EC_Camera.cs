@@ -31,14 +31,12 @@ public class EC_Camera : AC_Component
 
     private void OnEnable()
     {
-        if (camera == null)
-        {
-        camera = Camera.main;
-        }
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        //if (camera == null)     camera = Camera.main;
+        if (Headbob != null)    Headbob.Initialize(camera.transform.parent);
     }
-    
     public override void ComponentAwake()
     {
         // Get camera reference and cache default FOV
@@ -57,7 +55,6 @@ public class EC_Camera : AC_Component
             fovController.OnFOVChange += UpdateCameraFOVSmooth;
         }
         #endregion
-        Headbob.Initialize(camera.transform.parent);
     }
 
     public override void ComponentStart() { }
@@ -135,6 +132,7 @@ public class EC_Camera : AC_Component
             fovController.OnFOVChange -= UpdateCameraFOVSmooth;
         }
 
+        if (Headbob != null)
         Headbob.terminate();
     }
 }
