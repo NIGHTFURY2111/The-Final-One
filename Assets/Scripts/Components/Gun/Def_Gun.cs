@@ -52,11 +52,6 @@ public class Def_Gun : MonoBehaviour
             Shoot();
         }
 
-
-
-        string jjj = "";
-        // sorting the list
-
         //if direct hit, then put that enemy at the top
         if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit hit, float.MaxValue, LayerMask.GetMask("Enemy")))
         {
@@ -67,7 +62,7 @@ public class Def_Gun : MonoBehaviour
             }
         }
 
-        #region coloring the enemies for debuggign
+        #region coloring the enemies for debugging
         foreach (GameObject enemy in magnetableEnemies)
         {
             if (enemy == null)
@@ -83,20 +78,8 @@ public class Def_Gun : MonoBehaviour
             {
                 enemy.GetComponent<MeshRenderer>().material = debugSeenMaterial;
             }
-            jjj += enemy.name + "   ";
-
         }
         #endregion
-
-        // get the edges, maths style (deprecated now ig)
-        //magnetableEnemies[0].TryGetComponent<ReturnEdges>(out ReturnEdges edgeScript);
-
-        //new way to get closest point on the edge of the selected enemy
-
-        #region debugging sphere to the targeted position
-        // Calculate the projected point
-        #endregion
-
 
     }
     public void Shoot()
@@ -158,6 +141,7 @@ public class Def_Gun : MonoBehaviour
             //(The discard _ = is used to call the async method without awaiting it.)
             _ = SpawnTrail(trail, hit.point, hit.normal, BounceDistance, impactMade, bounceImpact);
 
+            BulletInteraction(hit);
 
             LastShootTime = Time.time;
         }
@@ -234,6 +218,16 @@ public class Def_Gun : MonoBehaviour
         Destroy(Trail.gameObject, Trail.time);
     }
 
+    void BulletInteraction(RaycastHit hitpoint)
+    {
+        if (hitpoint.transform == null) return;
+
+        if (hitpoint.collider.gameObject.HasTag(Enum_Tag.interactable))
+        {
+            hitpoint.collider.gameObject.TryGetComponent<interactionEvents>(out interactionEvents interactable);
+            interactable?.OnHit();
+        }
+    }
 
     Vector3 findEnemy(Vector3 hitPoint)
     {
@@ -261,8 +255,6 @@ public class Def_Gun : MonoBehaviour
         }
     }
 
-
-
     public void TriggerEnter(Collider other)
     {   // uses the cone collider and checks only on the "enemy layer"
         //if (other.CompareTag("Enemy") || other.)
@@ -289,7 +281,6 @@ public class Def_Gun : MonoBehaviour
         //Debug.Log(magnetableEnemies.Count);
         //}
     }
-
 
     void DetectNearestEnemy()
     {

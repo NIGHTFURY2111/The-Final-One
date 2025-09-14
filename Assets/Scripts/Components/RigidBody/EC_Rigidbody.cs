@@ -116,6 +116,7 @@ public class EC_Rigidbody : AC_Component
 
     public RaycastHit _groundRayHit, wallHit, movementDirectionCollisionCheck;
     public bool isGrounded { get; private set; }
+    public float lastGrounded{ get; private set; }
     public bool isWall{ get; private set; }
     
     bool updateGoalVel = false;
@@ -123,6 +124,7 @@ public class EC_Rigidbody : AC_Component
     float currentGoalSpeedFactor = 0f;
     float StateSwitchTime;
     Vector3 m_GoalVel = Vector3.zero;
+    float m_JumpVel = 0f;
     Rigidbody _RB;
     CapsuleCollider collider;
     public override Enum_ComponentType componentType => Enum_ComponentType.RigidBody;
@@ -139,6 +141,7 @@ public class EC_Rigidbody : AC_Component
     
     public override void ComponentUpdate()
     {
+        ST_debug.Log(lastGrounded.ToString("F2"));
         ST_debug.Log(_RB.velocity.ToString("F2"));
         ST_debug.Log(PlayerPlaneVel.magnitude.ToString("F2"));
         CheckWallHit();
@@ -223,14 +226,28 @@ public class EC_Rigidbody : AC_Component
             PlayerVelocity = PlayerPlaneVel + (PlayerDown * appliedGravity);
     }
 
-    public void Jump(AnimationCurve JumpCurve, float force, ForceMode forceMode)
+    public void Jump(AnimationCurve jumpCurve, float jumpHeight, ForceMode forceMode)
     {
-        //TODO this needs to be fixed
-        _RB.AddForce(JumpCurve.Evaluate(Time.time - StateSwitchTime) * PlayerUp * force, forceMode);
-        float grnd =Vector3.Dot( _groundRayHit.point,PlayerUp);
-        float jumpApex = grnd + force;
-        ST_debug.Log("JT: " + (Time.time - StateSwitchTime).ToString());
+        // time since jump started (StateSwitchTime is already set in UpdateGoalVel)
+        float t = Time.time - StateSwitchTime;
+        
+        // --- 1. Evaluate desired height from curve ---
+        float targetHeight = jumpCurve.Evaluate(t) * jumpHeight;
 
+        // --- 2. Get baseline from when jump started ---
+        float groundY = Vector3.Dot(_groundRayHit.point, PlayerUp);   // spring-defined contact
+        float currentY = Vector3.Dot(PlayerVelocity, PlayerUp);
+
+        m_JumpVel = Mathf.MoveTowards(m_JumpVel, (groundY + jumpHeight) * movementValues.Speedfactor, targetHeight);
+        // --- 3. Desired vertical velocity to reach curve height this frame ---
+        float desiredVelY = m_JumpVel - currentY;
+        //float desiredVelY = (groundY+targetHeight - (currentY)) / Time.fixedDeltaTime;
+
+        // --- 4. Apply delta as an impulse to steer velocity toward curve ---
+        float deltaVelY = desiredVelY - Vector3.Dot(PlayerVelocity, PlayerUp) * movementValues.responsivenessFactor;
+        Vector3 correction = PlayerUp * desiredVelY;
+
+        _RB.AddForce(correction, forceMode);
     }
 
     public void Move(PlayerMovementValues value) => Move(value, true);
@@ -361,7 +378,7 @@ public class EC_Rigidbody : AC_Component
     
     void CheckGrounded()
     {
-        isGrounded = Physics.SphereCast(
+        bool tempCheck = Physics.SphereCast(
             _RB.transform.position,
             collider.radius * 0.5f,
             PlayerDown,
@@ -369,6 +386,11 @@ public class EC_Rigidbody : AC_Component
             collider.height * 0.5f + GroundValues.GCRayLength,
             GroundValues.GroundLayer
         );
+        if (isGrounded)
+        {
+            lastGrounded = Time.time;
+        }
+        isGrounded = tempCheck;
     }
     public void RotatePlayer(Vector2 Rotation) 
     {

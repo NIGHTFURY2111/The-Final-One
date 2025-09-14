@@ -9,35 +9,52 @@ public class SO_JumpState : AC_BaseState
 {
     [SerializeField] AnimationCurve JumpCurve;
     [SerializeField] float JumpPower;
+    [SerializeField] float CoyoteTiming;
     [SerializeField] ForceMode forceType;
     float JumpTime;
     bool canExit;
+    bool canJump;
+    float t ;
+    Vector3 j;
     public SO_JumpState(EC_Movement ctx) : base(ctx)
     {
     }
     public override void EnterState()
     {
         canExit = false;
+        canJump = false;
         p_Rigidbody._CHECK_GRAVITY = false;
         JumpTime = JumpCurve.keys[^1].time;
+        
+        j = p_Rigidbody.PlayerPlaneVel;
         p_Rigidbody.MoveInSpecifiedDirection(p_Rigidbody.PlayerPlaneVel,1f);
+        
         //Debug.Log(p_Rigidbody.PlayerVelocity);
+        t = Time.time;
     }
 
     public override void ExitState()
     {
         p_Rigidbody._CHECK_GRAVITY = true;
+        //Debug.Log($"Jump Time: {Time.time - t}\t vel at start {j}\t max height {p_Rigidbody.PlayerTransform.position}");
     }
 
     public override bool SwitchCondintion()
     {
-        return p_Input.Jump() && ctx.IsGrounded;
+        canJump = ctx.IsGrounded? true : canJump;
+
+        return  p_Input.Jump()  && 
+                canJump         &&
+                    (ctx.IsGrounded || 
+                    (Time.time - p_Rigidbody.lastGrounded <CoyoteTiming)
+                    );
     }
 
     public override bool CanExit() => canExit;
 
     private async Task JumpTask()
     {
+        p_Rigidbody.Jump(JumpCurve,JumpPower,forceType);
         await Task.Delay((int)(JumpTime * 1000));
         canExit = true;
     }
@@ -48,7 +65,6 @@ public class SO_JumpState : AC_BaseState
 
     public override async void FixedUpdate()
     {
-        p_Rigidbody.Jump(JumpCurve,JumpPower,forceType);
-        await JumpTask();
+         await JumpTask();
     }
 }
