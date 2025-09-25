@@ -13,5 +13,6 @@ public abstract class AC_Component: ScriptableObject
     public abstract void ComponentStart();
     public abstract void ComponentUpdate();
     public virtual void ComponentFixedUpdate() { }
+    public abstract void ComponentDisable();
 
 }

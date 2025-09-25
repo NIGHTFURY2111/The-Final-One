@@ -16,6 +16,7 @@ MonoBehaviour:
   LookSpeed: 0.15
   inputAccessSO: {fileID: 11400000, guid: c4b30f4e049c13e4c9c218b599c91d7c, type: 2}
   EC_Rigidbody: {fileID: 11400000, guid: 7079a5ae2acd7c54680237a23d93ad55, type: 2}
+  detector: {fileID: 11400000, guid: cd89a89f043f174499a52398337d6cbd, type: 2}
   stateManager:
     rid: 1313339419740864512
   references:

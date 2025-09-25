@@ -9,11 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e47a173da60424f459b5e1c576600989, type: 3}
-  m_Name: Wall Jump
+  m_Script: {fileID: 11500000, guid: 7e6a94d45e6d36c409b49907a38842f9, type: 3}
+  m_Name: Camera Tilt
   m_EditorClassIdentifier: 
-  ctx: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
-  stateTypeEnum: 512
-  next: 10000000080000000200000004000000
-  WallJumpHeight: 9.46
-  WallJumpAwayForce: 14.74
+  tiltSmoothing: 5
+  maxTiltAngle: 15

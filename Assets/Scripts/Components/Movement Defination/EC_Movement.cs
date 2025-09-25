@@ -9,11 +9,13 @@ public class EC_Movement : AC_Component
 
     [SerializeField] public SO_InputAccess inputAccessSO;
     [SerializeField] public EC_Rigidbody EC_Rigidbody;
+    [SerializeField] public SO_detector detector;
     [SerializeReferenceDropdown]
     [SerializeReference] public StateManager stateManager;
 
     public Action<Vector2> OnCameraMove;
     public Action<PlayerMovementValues,bool> OnPlayerMove;
+    public Action<bool> OnCrouch;
 
 
     public override void ComponentAwake()
@@ -30,7 +32,7 @@ public class EC_Movement : AC_Component
     {
         stateManager.Update();
         ProcessMouseInput();
-        //Debug.Log(inputAccessSO.Dash());
+        //Debug.Log(detector.isGrounded);
     }
 
     public override void ComponentFixedUpdate()
@@ -53,5 +55,8 @@ public class EC_Movement : AC_Component
 
     public void MovePlayer(PlayerMovementValues PMV,bool ChangeInputToLocalSpace = true) => OnPlayerMove?.Invoke(PMV, ChangeInputToLocalSpace);
     public void UpdateGoalVel() => EC_Rigidbody.UpdateGoalVel();
-    public bool IsGrounded => EC_Rigidbody.isGrounded;
+    public bool IsGrounded => detector.isGrounded;
+
+    public void crouchCamera(bool iscrouching) => OnCrouch?.Invoke(iscrouching);
+    public override void ComponentDisable() { }
 }

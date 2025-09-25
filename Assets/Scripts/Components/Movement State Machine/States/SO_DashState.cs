@@ -19,7 +19,7 @@ public class SO_DashState : AC_BaseState
 
     public override async void EnterState()
     {
-        dashDirection = p_Rigidbody.DirectionRespectiveToPlayer(p_Input.Movement(), true);
+        dashDirection = p_Rigidbody.DirectionInLocalSpace(p_Input.Movement(), true);
         await DashTask(dashDirection);
     }
 
@@ -27,7 +27,7 @@ public class SO_DashState : AC_BaseState
     {
         canExit = false;
         p_Rigidbody.setGravity(0);
-        p_Rigidbody.MoveInSpecifiedDirection(dashDirection, p_Rigidbody.PlayerPlaneVel.magnitude + dashSpeed);
+        p_Rigidbody.OverrideVelocity(dashDirection, p_Rigidbody.PlayerPlaneVel.magnitude + dashSpeed);
 
         // FOV will be handled automatically by the centralized velocity-based system
         // No need for manual FOV changes since dash increases velocity

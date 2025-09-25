@@ -8,6 +8,7 @@ public enum Enum_ComponentType
     Camera = 1 << 1,
     CameraEffects = 1 << 3,
     RigidBody = 1 << 2,
+    Detector = 1 << 4,
     Health = 1 << -1,
     Animation = 1 << -1,
     Audio = 1 << -1

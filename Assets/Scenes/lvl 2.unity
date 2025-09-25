@@ -194,7 +194,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1224822593}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!43 &256720674
+--- !u!43 &71658428
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -935,7 +935,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 256720674}
+  m_Mesh: {fileID: 71658428}
 --- !u!114 &1224822596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1307,9 +1307,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 887974ceb2e0b5a4ca07b37d95716d66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSO: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
-  cameraSO: {fileID: 11400000, guid: ac5d7e53b4e9cb042b247d1a37e46d0c, type: 2}
-  rigidbodySO: {fileID: 11400000, guid: 7079a5ae2acd7c54680237a23d93ad55, type: 2}
+  OnDeathTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+  Components: []
   Gun: {fileID: 879433}
 --- !u!114 &1584665402
 MonoBehaviour:
@@ -1534,7 +1535,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1856879159
 MonoBehaviour:
   m_ObjectHideFlags: 0

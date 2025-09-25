@@ -7,6 +7,7 @@ public abstract class AC_BaseState: ScriptableObject
     [SerializeField] protected EC_Movement ctx;
 
     protected EC_Rigidbody p_Rigidbody => ctx.EC_Rigidbody;
+    protected SO_detector p_Detector=> ctx.detector;
     protected SO_InputAccess p_Input => ctx.inputAccessSO;
 
     //idk if this needs to be [SerializeField] or not, it was to begin with but i dont see a use for it

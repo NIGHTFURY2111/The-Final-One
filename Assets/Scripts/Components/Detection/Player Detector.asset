@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9875ce3bafa8dc48ae69106c7112f97, type: 3}
+  m_Name: Player Detector
+  m_EditorClassIdentifier: 
+  entity: {fileID: 0}
+  GroundValues:
+    GroundLayer:
+      serializedVersion: 2
+      m_Bits: 320
+    GCRayLength: 0.61
+  wallValues:
+    rotationAngle: 30
+    WallRayCastDistance: 1
+    WallMask:
+      serializedVersion: 2
+      m_Bits: 256

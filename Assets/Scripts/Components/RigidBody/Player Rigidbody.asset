@@ -13,17 +13,16 @@ MonoBehaviour:
   m_Name: Player Rigidbody
   m_EditorClassIdentifier: 
   entity: {fileID: 0}
-  _GRAVITY: 15
-  _CHECK_GRAVITY: 1
+  detector: {fileID: 11400000, guid: cd89a89f043f174499a52398337d6cbd, type: 2}
   playerPlane: {x: 1, y: 0, z: 1}
-  movementDirectionCollisionCheckDistance: 0.31
+  moveDirCollisionCheckDistance: 0.48
   radius: 0.35
-  PlayerInput: {fileID: 11400000, guid: c4b30f4e049c13e4c9c218b599c91d7c, type: 2}
+  _CHECK_GRAVITY: 1
+  _GRAVITY: 15
   GroundValues:
-    GroundLayer:
+    SpringHitLayers:
       serializedVersion: 2
       m_Bits: 64
-    GCRayLength: 0.61
     RideHeight: 1
     RideSpringStrength: 500
     RideSpringDamper: 20
@@ -32,7 +31,7 @@ MonoBehaviour:
     WallRayCastDistance: 1
     WallMask:
       serializedVersion: 2
-      m_Bits: 64
+      m_Bits: 256
   movementValues:
     baseSpeed: 15
     maxSpeed: 0

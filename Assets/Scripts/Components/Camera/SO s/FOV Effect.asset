@@ -16,9 +16,11 @@ MonoBehaviour:
   useSmoothFOVForVelocity: 1
   smoothFOVDuration: 0.1
   fovValues:
-    minVelocityThreshold: 5
-    maxVelocityThreshold: 40
+    VelocityThreshold:
+      x: 5
+      y: 40
     maxFOVIncrease: 25
+    fovChangeSpeed: 0.2
     velocityToFOVCurve:
       serializedVersion: 2
       m_Curve:
@@ -43,4 +45,3 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    fovChangeSpeed: 0.2

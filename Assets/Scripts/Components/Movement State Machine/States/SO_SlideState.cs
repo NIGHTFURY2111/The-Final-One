@@ -14,7 +14,8 @@ public class SO_SlideState : AC_BaseState
     }
     public override void EnterState()
     {
-        slideValues.UpdateDirection(p_Rigidbody.DirectionRespectiveToPlayer( p_Input.Movement(), true).normalized);
+        slideValues.UpdateDirection(p_Rigidbody.DirectionInLocalSpace( p_Input.Movement(), true).normalized);
+        ctx.crouchCamera(true);
     }
     public override void UpdateState()
     {
@@ -23,6 +24,7 @@ public class SO_SlideState : AC_BaseState
 
     public override void ExitState()
     {
+        ctx.crouchCamera(false);
     }
 
     public override bool SwitchCondintion()

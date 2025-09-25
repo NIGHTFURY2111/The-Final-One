@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Player Camera
   m_EditorClassIdentifier: 
   entity: {fileID: 0}
-  lookXLimit: 60
   fovController: {fileID: 11400000, guid: f97739fb4ed654448a36cbe2e9d85671, type: 2}
   Headbob: {fileID: 11400000, guid: 19357ed7e89603e4bbf606020969a603, type: 2}
+  cameraTilt: {fileID: 11400000, guid: 0ea43c1ca0573d548be8ef5892f1fd0d, type: 2}
+  lookXLimit: 60
+  CrouchCamPosition: {x: 0, y: -0.75, z: 0}

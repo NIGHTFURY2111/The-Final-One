@@ -1,5 +1,4 @@
 using System;
-using Unity.Collections;
 using UnityEngine;
 
 [Serializable]
@@ -42,6 +41,23 @@ public class PlayerMovementValues
     }
 }
 
+[Serializable]
+public struct SpringValues
+{
+    public LayerMask SpringHitLayers;
+
+    public float RideHeight;
+    public float RideSpringStrength;
+    public float RideSpringDamper;
+    public SpringValues(LayerMask groundLayer, float rideHeight, float rideSpringStrength, float rideSpringDamper)
+    {
+        SpringHitLayers = groundLayer;
+        RideHeight = rideHeight;
+        RideSpringStrength = rideSpringStrength;
+        RideSpringDamper = rideSpringDamper;
+    }
+}
+
 [CreateAssetMenu(fileName = "Player Rigidbody", menuName = "Scriptable Object/Component/Player Rigidbody")]
 public class EC_Rigidbody : AC_Component
 {
@@ -59,23 +75,6 @@ public class EC_Rigidbody : AC_Component
         }
     }
 
-    [Serializable]
-    struct GroundCheckValues
-    {
-        public LayerMask GroundLayer;
-        public float GCRayLength;
-        public float RideHeight;
-        public float RideSpringStrength;
-        public float RideSpringDamper;
-        public GroundCheckValues(LayerMask groundLayer, float rayLength, float rideHeight, float rideSpringStrength, float rideSpringDamper)
-        {
-            this.GroundLayer = groundLayer;
-            this.GCRayLength = rayLength;
-            this.RideHeight = rideHeight;
-            this.RideSpringStrength = rideSpringStrength;
-            this.RideSpringDamper = rideSpringDamper;
-        }
-    }
     
     [Serializable]
     struct MovementValues
@@ -101,96 +100,71 @@ public class EC_Rigidbody : AC_Component
             this.responsivenessFactor = responsivenessFactor;
         }
     }
-    
+
     #region --- Variables ---
-    [SerializeField] float _GRAVITY;
-    [SerializeField] public bool _CHECK_GRAVITY = true;
+
+    [Header("Rigidbody specific Values")]
+    [SerializeField] SO_detector detector;
     [SerializeField] Vector3Int playerPlane;
-    [SerializeField] float movementDirectionCollisionCheckDistance,radius;
+    [SerializeField] float moveDirCollisionCheckDistance,radius;
+    [SerializeField] public bool _CHECK_GRAVITY = true;
+    [SerializeField] float _GRAVITY;
 
-    public  float GRAVITY { get => _GRAVITY;}
 
-    [SerializeField] GroundCheckValues GroundValues;
+    [Header("Struct Values")]
+    [SerializeField] SpringValues GroundValues;
     [SerializeField] WallValues wallValues;
     [SerializeField] MovementValues movementValues;
 
+
     public RaycastHit _groundRayHit, wallHit, movementDirectionCollisionCheck;
-    public bool isGrounded { get; private set; }
-    public float lastGrounded{ get; private set; }
-    public bool isWall{ get; private set; }
-    
-    bool updateGoalVel = false;
+    public  float GRAVITY { get => _GRAVITY;}
     float appliedGravity;
+
+    bool updateGoalVel = false;
     float currentGoalSpeedFactor = 0f;
     float StateSwitchTime;
+
     Vector3 m_GoalVel = Vector3.zero;
     float m_JumpVel = 0f;
+
     Rigidbody _RB;
-    CapsuleCollider collider;
     public override Enum_ComponentType componentType => Enum_ComponentType.RigidBody;
 
     #endregion
     public override void ComponentAwake()
     {
         _RB = entity.GetComponent<Rigidbody>();
-        collider = entity.GetComponent<CapsuleCollider>();
         setGravity(GRAVITY);
     }
-    
     public override void ComponentStart(){}
     
     public override void ComponentUpdate()
     {
-        ST_debug.Log(lastGrounded.ToString("F2"));
-        ST_debug.Log(_RB.velocity.ToString("F2"));
-        ST_debug.Log(PlayerPlaneVel.magnitude.ToString("F2"));
-        CheckWallHit();
+        ST_debug.Log($"last Grounded: {detector.lastGrounded.ToString("F2")} " +
+            $"\nTotal vel: {_RB.velocity.ToString("F2")} " +
+            $"\nplane Vel: {PlayerPlaneVel.magnitude.ToString("F2")}");
     }
     
     public override void ComponentFixedUpdate()
     {
-        CheckGrounded();
         PlayerGravityhandler(_groundRayHit);
     }
 
     private void PlayerGravityhandler(RaycastHit _rayHit)
     {
-        if (!isGrounded || !_CHECK_GRAVITY)
+        if (!detector.isGrounded || !_CHECK_GRAVITY)
         {
             ApplyGravity(PlayerDown);
             return;
         }
 
-        //ApplySpringPull(_rayHit);
-        #region depreciate this into a generic function, mentioned below
-        Rigidbody other = _rayHit.rigidbody;
-        Vector3 otherVel = other != null ? other.velocity : Vector3.zero;
-
-        float rayDirVel = Vector3.Dot(PlayerDown, PlayerVelocity);
-        float otherDirVel = Vector3.Dot(PlayerDown, otherVel);
-
-        float relativeVel = rayDirVel - otherDirVel;
-
-        //float x = Vector3.Distance(_RB.transform.position,SpringPoint) - GroundValues.RideHeight;
-        // Alternative to _rayHit.distance
-
-        float x = _rayHit.distance - GroundValues.RideHeight;
-        float springForce = (x * GroundValues.RideSpringStrength) - (relativeVel * GroundValues.RideSpringDamper);
-
-        _RB.AddForce(PlayerDown * springForce);
-
-        Debug.DrawLine(_RB.transform.position, _RB.transform.position + (PlayerDown * GroundValues.GCRayLength), Color.yellow);
-
-        if (other != null)
-        {
-            other.AddForceAtPosition(PlayerDown * -springForce, _rayHit.point);
-        }
-
-        #endregion
+        ApplySpringPull(detector._groundRayHit);
     }
 
-    public void ApplySpringPull(RaycastHit _rayHit) => ApplySpringPull(_rayHit.rigidbody, -_rayHit.normal, _rayHit.point);
-    public void ApplySpringPull(Rigidbody otherRB, Vector3 springDirection, Vector3 SpringPoint)
+    #region --- Spring and Gravity Physics ---
+    public void ApplySpringPull(RaycastHit _rayHit) => ApplySpringPull(_rayHit.rigidbody, -_rayHit.normal, _rayHit.point,GroundValues);
+    public void ApplySpringPull(Rigidbody otherRB, Vector3 springDirection, Vector3 SpringPoint, SpringValues GroundValues)
     {
         springDirection = springDirection.normalized;
         Rigidbody other = otherRB;
@@ -210,7 +184,7 @@ public class EC_Rigidbody : AC_Component
 
         _RB.AddForce(springDirection * springForce);
 
-        Debug.DrawLine(_RB.transform.position, _RB.transform.position + (springDirection * GroundValues.GCRayLength), Color.yellow);
+        //Debug.DrawLine(_RB.transform.position, _RB.transform.position + (springDirection * GroundValues.GCRayLength), Color.yellow);
 
         if (other != null)
         {
@@ -226,6 +200,8 @@ public class EC_Rigidbody : AC_Component
             PlayerVelocity = PlayerPlaneVel + (PlayerDown * appliedGravity);
     }
 
+    #endregion
+
     public void Jump(AnimationCurve jumpCurve, float jumpHeight, ForceMode forceMode)
     {
         // time since jump started (StateSwitchTime is already set in UpdateGoalVel)
@@ -235,10 +211,10 @@ public class EC_Rigidbody : AC_Component
         float targetHeight = jumpCurve.Evaluate(t) * jumpHeight;
 
         // --- 2. Get baseline from when jump started ---
-        float groundY = Vector3.Dot(_groundRayHit.point, PlayerUp);   // spring-defined contact
+        //float groundY = Vector3.Dot(_groundRayHit.point, PlayerUp);   // spring-defined contact
         float currentY = Vector3.Dot(PlayerVelocity, PlayerUp);
 
-        m_JumpVel = Mathf.MoveTowards(m_JumpVel, (groundY + jumpHeight) * movementValues.Speedfactor, targetHeight);
+        m_JumpVel = Mathf.MoveTowards(m_JumpVel, (jumpHeight) * movementValues.Speedfactor, targetHeight);
         // --- 3. Desired vertical velocity to reach curve height this frame ---
         float desiredVelY = m_JumpVel - currentY;
         //float desiredVelY = (groundY+targetHeight - (currentY)) / Time.fixedDeltaTime;
@@ -255,11 +231,11 @@ public class EC_Rigidbody : AC_Component
     {
         // Get the movement vector in local space
         if (ChangeInputToLocalSpace)
-                value.UpdateDirection(DirectionRespectiveToPlayer(value.planeVector));
+                value.UpdateDirection(DirectionInLocalSpace(value.planeVector));
         MoveInPlayerPlane(value);
     }
 
-    public Vector3 DirectionRespectiveToPlayer(Vector2 moveVector, bool AccountForZeroMagnitude = false)
+    public Vector3 DirectionInLocalSpace(Vector2 moveVector, bool AccountForZeroMagnitude = false)
     {
         if (AccountForZeroMagnitude && moveVector.magnitude == 0)
         {
@@ -272,12 +248,12 @@ public class EC_Rigidbody : AC_Component
     {
         //convert movement into a usable value
         Vector3 moveOnPlane = Vector3.Scale(value.planeVector, playerPlane);
-        Debug.DrawRay(_RB.transform.position, moveOnPlane * movementDirectionCollisionCheckDistance, Color.blue);
+        Debug.DrawRay(_RB.transform.position, moveOnPlane * moveDirCollisionCheckDistance, Color.blue);
         Vector3 wallHittingVel = GetWallSlideVector(moveOnPlane);
         
         ST_debug.DrawSphere(
             wallHittingVel.Equals(Vector3.zero) ? 
-            _RB.transform.position + moveOnPlane * movementDirectionCollisionCheckDistance: 
+            _RB.transform.position + moveOnPlane * moveDirCollisionCheckDistance: 
             movementDirectionCollisionCheck.point,
             radius,
             Color.white);
@@ -315,7 +291,7 @@ public class EC_Rigidbody : AC_Component
             radius,
             checkingDir,
             out movementDirectionCollisionCheck,
-            movementDirectionCollisionCheckDistance))
+            moveDirCollisionCheckDistance))
         {
             return Vector3.ProjectOnPlane(checkingDir, movementDirectionCollisionCheck.normal);
         }
@@ -325,7 +301,7 @@ public class EC_Rigidbody : AC_Component
         }
     }
 
-    public void ApplyForce(Vector3 force, ForceMode forceMode = ForceMode.Force) => _RB.AddForce(force, forceMode);
+    #region Velocity  modifiers
     public void UpdateGoalVel()
     {
         updateGoalVel = true;
@@ -334,71 +310,32 @@ public class EC_Rigidbody : AC_Component
     float CalculateNewGoalVel(float basefactor, float newFactor)
     {
         updateGoalVel = false;
-        if (PlayerPlaneVel.magnitude <= movementValues.baseSpeed * basefactor)
-        {
-            return basefactor;
-        }
-        else
-        {
-            return currentGoalSpeedFactor * newFactor;
-        }
-    }
 
+         return (PlayerPlaneVel.magnitude <= movementValues.baseSpeed * basefactor)?
+                basefactor:
+                (currentGoalSpeedFactor * newFactor);
+    }
     float decayVelocity(float basefactor, float DecayFactor, AnimationCurve delayCurve)
     {
-        float TimedFactor = Mathf.Lerp(currentGoalSpeedFactor, basefactor, 1- delayCurve.Evaluate(Time.time - StateSwitchTime));
-        ST_debug.Log((Time.time - StateSwitchTime).ToString());
-        
-        if (currentGoalSpeedFactor <= basefactor * 1.1f)
-        {
-            return basefactor;
-        }
-        else
-        {
-            return TimedFactor;
-        }
+        ST_debug.Log("Last switched:"+(Time.time - StateSwitchTime).ToString());
+
+        return  (currentGoalSpeedFactor <= basefactor * 1.1f)?
+                basefactor:
+                Mathf.Lerp(currentGoalSpeedFactor, basefactor, 1 - delayCurve.Evaluate(Time.time - StateSwitchTime));
     }
 
-    void CheckWallHit()
-    {
-        Vector3[] dirList = new Vector3[]
-        {
-        Quaternion.AngleAxis(wallValues.rotationAngle, PlayerUp) * PlayerRight,
-        Quaternion.AngleAxis(-wallValues.rotationAngle, PlayerUp) * PlayerRight
-        };
-        foreach (Vector3 direction in dirList)
-        {
-            isWall = Physics.Raycast(_RB.transform.position, direction, out wallHit, wallValues.WallRayCastDistance, wallValues.WallMask)
-                || Physics.Raycast(_RB.transform.position, -direction, out wallHit, wallValues.WallRayCastDistance, wallValues.WallMask);
-            Debug.DrawRay(_RB.transform.position, direction * wallValues.WallRayCastDistance, isWall ? Color.red : Color.green);
-            Debug.DrawRay(_RB.transform.position, -direction * wallValues.WallRayCastDistance, isWall ? Color.red : Color.green);
-            if (isWall) break;
-        }
-    }
-    
-    void CheckGrounded()
-    {
-        bool tempCheck = Physics.SphereCast(
-            _RB.transform.position,
-            collider.radius * 0.5f,
-            PlayerDown,
-            out _groundRayHit,
-            collider.height * 0.5f + GroundValues.GCRayLength,
-            GroundValues.GroundLayer
-        );
-        if (isGrounded)
-        {
-            lastGrounded = Time.time;
-        }
-        isGrounded = tempCheck;
-    }
+    #endregion
+
     public void RotatePlayer(Vector2 Rotation) 
     {
-        _RB.MoveRotation(_RB.rotation * Quaternion.Euler(0, Rotation.x, 0))/*_RB.transform.rotation *= Quaternion.Euler(0, Rotation.x, 0)*/;
+        _RB.MoveRotation(_RB.rotation * Quaternion.Euler(0, Rotation.x, 0));
     }
 
+    public void ApplyForce(Vector3 force, ForceMode forceMode = ForceMode.Force) => _RB.AddForce(force, forceMode);
     public void setGravity(float gravity) => appliedGravity = gravity;
-    public void MoveInSpecifiedDirection(Vector3 moveVector, float moveSpeed) => PlayerVelocity = moveVector * moveSpeed;
+    public void OverrideVelocity(Vector3 moveVector, float moveSpeed) => PlayerVelocity = moveVector * moveSpeed;
+    public override void ComponentDisable() { }
+
     public Transform PlayerTransform => _RB.transform;
     public Vector3 PlayerForward => _RB.transform.forward;
     public Vector3 PlayerRight => _RB.transform.right;

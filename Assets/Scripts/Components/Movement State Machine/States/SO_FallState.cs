@@ -22,7 +22,7 @@ public class SO_FallState : AC_BaseState
 
     public override bool SwitchCondintion()
     {
-        return !ctx.IsGrounded && !p_Rigidbody.isWall;
+        return !ctx.IsGrounded && !p_Detector.isWall;
     }
 
     public override void UpdateState()

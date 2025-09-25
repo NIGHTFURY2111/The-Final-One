@@ -28,8 +28,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.03280543
     - serializedVersion: 3
-      time: 0.1
-      value: 1
+      time: 0.051782228
+      value: 1.09095
       inSlope: 0
       outSlope: 0
       tangentMode: 136
@@ -48,6 +48,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  JumpPower: 2.5
+  JumpHeight: 3
   CoyoteTiming: 0.5
   forceType: 1

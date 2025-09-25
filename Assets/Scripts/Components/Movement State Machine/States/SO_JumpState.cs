@@ -8,7 +8,7 @@ using UnityEngine;
 public class SO_JumpState : AC_BaseState
 {
     [SerializeField] AnimationCurve JumpCurve;
-    [SerializeField] float JumpPower;
+    [SerializeField] float JumpHeight;
     [SerializeField] float CoyoteTiming;
     [SerializeField] ForceMode forceType;
     float JumpTime;
@@ -27,7 +27,7 @@ public class SO_JumpState : AC_BaseState
         JumpTime = JumpCurve.keys[^1].time;
         
         j = p_Rigidbody.PlayerPlaneVel;
-        p_Rigidbody.MoveInSpecifiedDirection(p_Rigidbody.PlayerPlaneVel,1f);
+        p_Rigidbody.OverrideVelocity(p_Rigidbody.PlayerPlaneVel,1f);
         
         //Debug.Log(p_Rigidbody.PlayerVelocity);
         t = Time.time;
@@ -46,7 +46,7 @@ public class SO_JumpState : AC_BaseState
         return  p_Input.Jump()  && 
                 canJump         &&
                     (ctx.IsGrounded || 
-                    (Time.time - p_Rigidbody.lastGrounded <CoyoteTiming)
+                    (Time.time - p_Detector.lastGrounded <CoyoteTiming)
                     );
     }
 
@@ -54,7 +54,7 @@ public class SO_JumpState : AC_BaseState
 
     private async Task JumpTask()
     {
-        p_Rigidbody.Jump(JumpCurve,JumpPower,forceType);
+        p_Rigidbody.Jump(JumpCurve,JumpHeight,forceType);
         await Task.Delay((int)(JumpTime * 1000));
         canExit = true;
     }

@@ -15,7 +15,7 @@ MonoBehaviour:
   ctx: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
   stateTypeEnum: 256
   next: 1000000000020000080000000400000002000000
-  minWallRunVelocity: 10
+  minWallRunVelocity: 5
   wallRunSpeed: 10
   wallRunDuration: 5
   wallStickForce: 3
@@ -43,4 +43,11 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  upwardForce: 0
+  WallSpringValues:
+    SpringHitLayers:
+      serializedVersion: 2
+      m_Bits: 320
+    RideHeight: 0.73
+    RideSpringStrength: 500
+    RideSpringDamper: 20
+  cameraTilt: {fileID: 11400000, guid: 0ea43c1ca0573d548be8ef5892f1fd0d, type: 2}

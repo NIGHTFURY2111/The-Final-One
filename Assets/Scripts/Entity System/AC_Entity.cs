@@ -7,6 +7,8 @@ using UnityEngine.Events;
 public abstract class AC_Entity : MonoBehaviour
 {
     public Action OnStartTick;
+    public Action OnAwakeTick;
+    public Action OnDisableTick;
     public Action OnUpdateTick;
     public Action OnFixedUpdateTick;
     public Action<Collider> OnTriggerEnterTick;
@@ -21,7 +23,8 @@ public abstract class AC_Entity : MonoBehaviour
     public abstract void Start();
     public abstract void Update();
     public abstract void FixedUpdate();
-    public abstract void EventLinker();
+    public abstract void EventSubscribe();
+    public abstract void EventUnsubscribe();
     public abstract void Ondeath();
 
     public static void TryEvent(Action subscribeAction, params object[] sourceObjects)
