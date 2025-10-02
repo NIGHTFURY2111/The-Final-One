@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class PlayerEntity : AC_Entity
+public class Player_Entity : AC_Entity
 {
     [SerializeField] private List<AC_Component> Components;
     [SerializeField] private Dictionary<Enum_ComponentType, AC_Component> ComponentDict = new();

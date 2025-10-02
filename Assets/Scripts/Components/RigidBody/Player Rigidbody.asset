@@ -18,7 +18,7 @@ MonoBehaviour:
   moveDirCollisionCheckDistance: 0.48
   radius: 0.35
   _CHECK_GRAVITY: 1
-  _GRAVITY: 15
+  _GRAVITY: 30
   GroundValues:
     SpringHitLayers:
       serializedVersion: 2
@@ -35,7 +35,7 @@ MonoBehaviour:
   movementValues:
     baseSpeed: 15
     maxSpeed: 0
-    Speedfactor: 3.5
+    Speedfactor: 7
     Acceleration: 200
     AccelerationFactorFromDot:
       serializedVersion: 2
@@ -86,4 +86,4 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    responsivenessFactor: 3.5
+    responsivenessFactor: -0.1

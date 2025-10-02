@@ -9,7 +9,7 @@ public class DeathPlane : MonoBehaviour
         if (other.gameObject.HasTag(Enum_Tag.entity))
         {
         Debug.Log("DeathPlane Triggered by " + other.gameObject.name);
-            other.gameObject.GetComponent<PlayerEntity>().Ondeath();
+            other.gameObject.GetComponent<Player_Entity>().Ondeath();
         }
     }
 }
