@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pages:
   - items: []
-    name: Forest Environment Assets
+    name: Page 1
     _id: 1060316499
   - items: []
     name: Page 2

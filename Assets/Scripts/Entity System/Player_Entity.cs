@@ -49,7 +49,9 @@ public class Player_Entity : AC_Entity
         // Pass the current velocity from rigidbody to camera for FOV effects
         if (rigidbodySO != null && cameraSO != null)
         {
-            cameraSO.ProcessVelocityForFOV(Vector3.Dot(rigidbodySO.PlayerPlaneVel, rigidbodySO.PlayerForward));
+            float processed_vel = Vector3.Dot(rigidbodySO.PlayerPlaneVel, rigidbodySO.PlayerForward);
+            cameraSO.ProcessVelocityForFOV(
+                rigidbodySO.PlayerPlaneVel.magnitude * Mathf.Clamp01(Vector3.Dot(rigidbodySO.PlayerPlaneVel.normalized, rigidbodySO.PlayerForward) + 1f));
         }
         
         OnUpdateTick?.Invoke();

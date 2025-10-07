@@ -61,7 +61,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    MaxAccel: 0
+    MaxAccel: 2
     MaxAccelerationFactorFromDot:
       serializedVersion: 2
       m_Curve:
@@ -86,4 +86,4 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    responsivenessFactor: -0.1
+    responsivenessFactor: 7

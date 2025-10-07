@@ -56,6 +56,7 @@ public class EC_Camera : AC_Component
         // Initialize FOV controller if present
         if (fovController != null)
         {
+            defaultFOV = camera.fieldOfView;
             fovController.ComponentAwake(defaultFOV);
             // Connect FOV events
             fovController.OnFOVChangeDirect += SetCameraFOVDirect;
