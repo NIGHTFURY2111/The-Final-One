@@ -11,7 +11,7 @@ public class CustomPass : ScriptableRenderPass
     private Material BloomMaterial;
     private Material CompositeMaterial;
     private RTHandle ColorTarget;
-    private RTHandle DepthTarget;
+  
     private RenderTextureDescriptor CamDesc;
     const int k_MaxPyramidSize = 16;
     private int[] _BloomMipUp;
@@ -25,6 +25,7 @@ public class CustomPass : ScriptableRenderPass
         BloomMaterial = Bloom;
         CompositeMaterial = Composite;
         renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing;
+  
         _BloomMipUp = new int[k_MaxPyramidSize];
         _BloomMipDown = new int[k_MaxPyramidSize];
         m_BloomMipUp = new RTHandle[k_MaxPyramidSize];
@@ -60,7 +61,7 @@ public class CustomPass : ScriptableRenderPass
         {
             Texture ssaotexx = Shader.GetGlobalTexture("_ScreenSpaceOcclusionTexture");
             CompositeMaterial.SetTexture("_SSAO", ssaotexx);
-            //Do the bloom pass here first
+            //Do the bloom pass here first  
             SetupBloom(cmd, ColorTarget);
             CompositeMaterial.SetFloat("_Density", Bloom.dostDensity.value);
             CompositeMaterial.SetFloat("_Cutoff", Bloom.dotsCutoff.value);
@@ -73,6 +74,7 @@ public class CustomPass : ScriptableRenderPass
            
             Blitter.BlitCameraTexture(cmd, tempRT, ColorTarget,CompositeMaterial, 0);
             
+          
             RTHandles.Release(tempRT);
         }
 
@@ -84,10 +86,10 @@ public class CustomPass : ScriptableRenderPass
     {
         CamDesc = renderingData.cameraData.cameraTargetDescriptor;
     }
-    public void setTarget(RTHandle Color,RTHandle Depth) 
+    public void setTarget(RTHandle Color) 
     {
         ColorTarget = Color;
-        DepthTarget = Depth;
+        
     }
 
     RenderTextureDescriptor GetCompatibleDescriptor(int width, int height, GraphicsFormat format, DepthBits depthBufferBits = DepthBits.None)

@@ -1,7 +1,6 @@
 {
   "dependencies": {
-    "com.actioncode.attributes": "file:D:/unity/packages/Attributes-3.0.0",
-    "com.alexeytaranov.serializereferencedropdown": "file:D:/unity/packages/SerializeReferenceDropdown-1.0.0",
+    "com.alexeytaranov.serializereferencedropdown": "file:C:/Projects/Packages/SerializeReferenceDropdown-1.0.0/SerializeReferenceDropdown-1.0.0",
     "com.unity.ai.navigation": "1.1.7",
     "com.unity.burst": "1.8.21",
     "com.unity.cinemachine": "2.10.3",
