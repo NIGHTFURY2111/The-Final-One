@@ -1,9 +1,15 @@
 {
   "dependencies": {
-    "com.alexeytaranov.serializereferencedropdown": {
-      "version": "file:C:/Projects/Packages/SerializeReferenceDropdown-1.0.0/SerializeReferenceDropdown-1.0.0",
+    "com.actioncode.attributes": {
+      "version": "file:Attributes-3.0.0",
       "depth": 0,
-      "source": "local",
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.alexeytaranov.serializereferencedropdown": {
+      "version": "file:SerializeReferenceDropdown-1.0.0",
+      "depth": 0,
+      "source": "embedded",
       "dependencies": {
         "com.unity.nuget.newtonsoft-json": "3.2.0"
       }
