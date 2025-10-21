@@ -24,6 +24,8 @@ public class SO_WallRun : AC_BaseState
     private Vector3 wallRunDirection;
     private PlayerMovementValues wallRunValue;
     private Collider wallCollider;
+    private float enterSpeed;
+
 
     public SO_WallRun(EC_Movement ctx) : base(ctx)
     {
@@ -33,47 +35,24 @@ public class SO_WallRun : AC_BaseState
     {
         p_Rigidbody._CHECK_GRAVITY = false;
         p_Rigidbody.setGravity(0f);
-        //p_Rigidbody.OverrideVelocity(p_Rigidbody.PlayerPlaneVel, 1f);
+        
         wallRunTimer = 0f;
 
         // Store wall normal and calculate run direction
         wallNormal = p_Detector.wallHit.normal;
         wallCollider = p_Detector.wallHit.collider;
         wallPoint = wallCollider.ClosestPoint(p_Rigidbody.PlayerTransform.position);
+        enterSpeed = p_Rigidbody.PlayerPlaneVel.magnitude;
 
-        //        // Calculate wall run direction (along the wall)
-        //        wallRunDirection = Vector3.Cross(wallNormal, Vector3.up).normalized;
 
-        //        // Ensure we're going in the right direction (forward not backward)
-        //        if (Vector3.Dot(wallRunDirection, p_Rigidbody.PlayerVelocity) < 0)
-        //            wallRunDirection = -wallRunDirection;
-
-        //        ST_debug.LogState("WALL RUN");
-
-        //        wallRunValue = new PlayerMovementValues(
-        //    wallRunDirection,
-        //    1.0f,
-        //    1.0f,
-        //    AnimationCurve.Linear(0, 1, 1, 0),
-        //    0f,
-        //    wallRunSpeed,
-        //    ForceMode.Force
-        //);
 
     }
 
     public override void UpdateState()
     {
-        Debug.Log("aikjnads");
+      
         cameraTilt.calculateTilt(wallPoint- p_Rigidbody.PlayerTransform.position, p_Rigidbody.PlayerForward, p_Rigidbody.PlayerRight);
-        //Vector2 input = p_Input.Movement();
-
-        //float forwardInput = Vector3.Dot(new Vector3(input.x, 0, input.y), wallRunDirection);
-
-        //Vector3 adjustedDirection = wallRunDirection * Mathf.Max(forwardInput, 0.4f); // Always keep some forward momentum
-
-
-        //ST_debug.Log($"Wall Run: {wallRunTimer:F1}s");
+       
     }
 
     private void ApplyWallSpring()
@@ -93,13 +72,8 @@ public class SO_WallRun : AC_BaseState
 
         ApplyWallSpring();
         p_Rigidbody.OverrideVelocity(Vector3.Lerp(p_Rigidbody.PlayerVelocity, p_Rigidbody.PlayerPlaneVel, Time.deltaTime*2f), 1f);
-        //p_Rigidbody.ApplyForce(-p_Rigidbody.wallHit.normal * wallStickForce, ForceMode.Force);
+        
 
-        //float upwardMultiplier = wallRunCurve.Evaluate(wallRunTimer / wallRunDuration);
-        //p_Rigidbody.ApplyForce(Vector3.up * upwardForce * upwardMultiplier, ForceMode.Force);
-
-        //p_Rigidbody.MoveInSpecifiedDirection(wallRunDirection,
-        //    wallRunSpeed * wallRunCurve.Evaluate(wallRunTimer / wallRunDuration));
     }
 
     public override void ExitState()
@@ -131,31 +105,7 @@ public class SO_WallRun : AC_BaseState
                wallRunTimer >= wallRunDuration ||
                speedAlongWall < minWallRunVelocity;
     }
-    private void RecalculateRunDirection()
-    {
-        if (!p_Detector.isWall) return;
-
-        Vector3 wallNormal = p_Detector.wallHit.normal;
-        Vector3 newDirection = Vector3.Cross(wallNormal, Vector3.up).normalized;
-
-        // Only switch direction if it's a large change, or first calculation
-        if (wallRunDirection == Vector3.zero ||
-            Vector3.Angle(newDirection, wallRunDirection) > 30f)
-        {
-            // Ensure we're going in the right direction
-            if (Vector3.Dot(newDirection, p_Rigidbody.PlayerVelocity) < 0)
-                newDirection = -newDirection;
-
-            wallRunDirection = newDirection;
-        }
-
-        // Debug wall normal
-        ST_debug.DrawSphere(
-            p_Detector.wallHit.point,
-            0.1f,
-            Color.blue,
-            0.1f
-        );
-    }
+    
+    
 
 }
