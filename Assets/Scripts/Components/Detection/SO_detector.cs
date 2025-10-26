@@ -9,10 +9,13 @@ public class SO_detector : AC_Component
     {
         public LayerMask GroundLayer;
         public float GCRayLength;
-        public GroundCheckValues(LayerMask groundLayer, float rayLength)
+        [Range(0,1)]
+        public float GCSpherePercent;
+        public GroundCheckValues(LayerMask groundLayer, float rayLength, float spherePercent)
         {
             this.GroundLayer = groundLayer;
             this.GCRayLength = rayLength;
+            this.GCSpherePercent = spherePercent;
         }
     }
 
@@ -67,7 +70,7 @@ public class SO_detector : AC_Component
     {
         bool tempCheck = Physics.SphereCast(
             _RB.transform.position,
-            collider.radius * 0.5f,
+            collider.radius * GroundValues.GCSpherePercent,
             PlayerDown,
             out _groundRayHit,
             collider.height * 0.5f + GroundValues.GCRayLength,

@@ -1,14 +1,19 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class Enemy_Entity : AC_Entity
 {
+    [SerializeField] private float PathFindingTickDelay;
+                     private float nextTickTime = 0f;
     [SerializeField] private List<AC_Component> Components;
     [SerializeField] private Dictionary<Enum_ComponentType, AC_Component> ComponentDict = new();
-    //[SerializeField] private Def_Gun Gun;
-    public GameObject target;
-    public NavMeshAgent navMeshAgent;
+
+    public Action enemyPathFindingTick;
+
+    public Enum_Tag targetTags;
+    [HideInInspector]public NavMeshAgent navMeshAgent;
     public float shootDistance;
 
     private void Awake()
@@ -16,7 +21,6 @@ public class Enemy_Entity : AC_Entity
         BuildDictionary();
         MassAssign();
         EventSubscribe();
-
         // Only invoke OnAwakeTick after everything is properly set up
         OnAwakeTick?.Invoke();
     }
@@ -25,8 +29,10 @@ public class Enemy_Entity : AC_Entity
     {
         ComponentDict.Clear();
 
-        foreach (AC_Component comp in Components)
+        foreach (AC_Component compCopy in Components)
         {
+            var comp = Instantiate(compCopy);
+
             if (comp == null) continue;
             if (!ComponentDict.ContainsKey(comp.componentType))
             {
@@ -35,44 +41,28 @@ public class Enemy_Entity : AC_Entity
         }
     }
 
+
     public override void Start()
     {
-        OnStartTick?.Invoke();
         navMeshAgent = GetComponent<NavMeshAgent>();
         shootDistance = navMeshAgent.stoppingDistance;
+        OnStartTick?.Invoke();
     }
 
     public override void Update()
     {
-
-        bool inrange = Vector3.Distance(transform.position, target.transform.position) <= shootDistance;
-        if (inrange) 
-        {
-            navMeshAgent.isStopped = true;
-            transform.LookAt(target.transform);
-        }
-        else 
-        {
-            navMeshAgent.isStopped = false;
-            navMeshAgent.SetDestination(target.transform.position);
-        }
-
-
-
-        if (movementSO != null && movementSO.stateManager?.currentState != null)
-        {
-            ST_debug.LogState(movementSO.stateManager.currentState.name);
-        }
-
-        // Pass the current velocity from rigidbody to camera for FOV effects
-        if (rigidbodySO != null && cameraSO != null)
-        {
-            cameraSO.ProcessVelocityForFOV(Vector3.Dot(rigidbodySO.PlayerPlaneVel, rigidbodySO.PlayerForward));
-        }
-
         OnUpdateTick?.Invoke();
+        pathFindingtimer();
     }
 
+    void pathFindingtimer()
+    {
+        if (Time.deltaTime > nextTickTime)
+        {
+            enemyPathFindingTick?.Invoke();
+            nextTickTime = Time.deltaTime + PathFindingTickDelay;
+        }
+    }
 
 
     private void OnTriggerEnter(Collider other)
@@ -152,6 +142,4 @@ public class Enemy_Entity : AC_Entity
     }
 
     public EC_Movement movementSO => getComponenet(Enum_ComponentType.Movement) as EC_Movement;
-    public EC_Camera cameraSO => getComponenet(Enum_ComponentType.Camera) as EC_Camera;
-    public EC_Rigidbody rigidbodySO => getComponenet(Enum_ComponentType.RigidBody) as EC_Rigidbody;
 }

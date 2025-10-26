@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Abstract class for all components that can be added to an AC_Entity.
+/// </summary>
 public abstract class AC_Component: ScriptableObject
 {
     [HideInInspector]

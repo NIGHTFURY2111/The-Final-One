@@ -18,6 +18,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 320
     GCRayLength: 0.61
+    GCSpherePercent: 0.88
   wallValues:
     rotationAngle: 30
     WallRayCastDistance: 1

@@ -92,7 +92,7 @@ public class FOV_Effects : ScriptableObject
     {
         float targetFOV = fovValues.CalculateFOV(currentVelocity, defaultFOV);
         
-        if (Mathf.Abs(currentFOV - targetFOV) > 0.01f)
+        if (Mathf.Abs(currentFOV - targetFOV) > velocityChangeThreshold)
         {
             currentFOV = targetFOV;
             
