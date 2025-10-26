@@ -32,7 +32,9 @@ public class PlayerMovementValues
         this.clampMaxVelocity = clampMaxVelocity;
         this.forceMode = forceMode;
     }
-    public static PlayerMovementValues zero => new PlayerMovementValues(Vector3.zero, 0f, 0f, AnimationCurve.Linear(0,0,0,0), 0f, float.NaN, ForceMode.Acceleration);
+    public PlayerMovementValues() => new PlayerMovementValues(Vector3.zero, 1f, 1f, AnimationCurve.Linear(0, 0, 0, 0));
+    public static PlayerMovementValues zero => 
+        new PlayerMovementValues(Vector3.zero, 0f, 0f, AnimationCurve.Linear(0,0,0,0), 0f, float.NaN, ForceMode.Acceleration);
 
     public PlayerMovementValues UpdateDirection(Vector3 newDirection)
     {
@@ -343,5 +345,6 @@ public class EC_Rigidbody : AC_Component
     public float PlayerDownVelocity => Vector3.Dot(PlayerVelocity, PlayerDown);
     public Vector3 PlayerVelocity { get => _RB.velocity; set => _RB.velocity = value; }
     public Vector3 PlayerPlaneVel { get => Vector3.Scale(PlayerVelocity, playerPlane);}
+    public float CurrentSpeedFactor { get => currentGoalSpeedFactor; }
     Vector3 PlayerDown => _RB.transform.TransformDirection(Vector3.down);
 }

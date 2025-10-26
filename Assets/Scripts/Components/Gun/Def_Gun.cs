@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -27,6 +28,8 @@ public class Def_Gun : MonoBehaviour
     [SerializeField] GameObject Enemies;
     [SerializeField] float maxBulletBounceDist = 1000f;
 
+    private Physics physics;
+
     GameObject[] enemies;
     List<GameObject> magnetableEnemies = new();
     Transform cameraTransform;
@@ -51,7 +54,19 @@ public class Def_Gun : MonoBehaviour
         {
             Shoot();
         }
+        //RaycastHit[] coneList = physics.ConeCastAll(
+        //    cameraTransform.position,
+        //    4.7f,
+        //    cameraTransform.forward,
+        //    20f,
+        //    23f,
+        //    EnemyMask);
 
+        //foreach (var c in coneList)
+        //{
+        //    Debug.Log(c.collider.name);
+        //}
+        //magnetableEnemies = coneList.Select(hit => hit.collider.gameObject).ToList();
         //if direct hit, then put that enemy at the top
         if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit hit, float.MaxValue, LayerMask.GetMask("Enemy")))
         {
@@ -257,29 +272,29 @@ public class Def_Gun : MonoBehaviour
 
     public void TriggerEnter(Collider other)
     {   // uses the cone collider and checks only on the "enemy layer"
-        //if (other.CompareTag("Enemy") || other.)
-        //   {
-        if (other.gameObject != null && other.CompareTag("Enemy"))
-        {
-            magnetableEnemies.Add(other.gameObject);
-            other.GetComponent<MeshRenderer>().material = debugSeenMaterial;
-        }
-        //Debug.Log(magnetableEnemies.Count);
+        ////if (other.CompareTag("Enemy") || other.)
+        ////   {
+        //if (other.gameObject != null && other.CompareTag("Enemy"))
+        //{
+        //    magnetableEnemies.Add(other.gameObject);
+        //    other.GetComponent<MeshRenderer>().material = debugSeenMaterial;
+        //}
+        ////Debug.Log(magnetableEnemies.Count);
 
-        //Debug.Log(other.name);
+        ////Debug.Log(other.name);
     }
 
     public void TriggerExit(Collider other)
     {
-        //if (other.CompareTag("Enemy"))
-        //   {
-        if (other.gameObject != null && other.CompareTag("Enemy"))
-        {
-            magnetableEnemies.Remove(other.gameObject);
-            other.GetComponent<MeshRenderer>().material = debugNotMaterial;
-        }
-        //Debug.Log(magnetableEnemies.Count);
+        ////if (other.CompareTag("Enemy"))
+        ////   {
+        //if (other.gameObject != null && other.CompareTag("Enemy"))
+        //{
+        //    magnetableEnemies.Remove(other.gameObject);
+        //    other.GetComponent<MeshRenderer>().material = debugNotMaterial;
         //}
+        ////Debug.Log(magnetableEnemies.Count);
+        ////}
     }
 
     void DetectNearestEnemy()

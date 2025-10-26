@@ -9,11 +9,12 @@ public class SO_WallRun : AC_BaseState
 {
     [Header("Wall Run Settings")]
     [SerializeField] float minWallRunVelocity = 5f;    // Minimum velocity to enter wall run
-    [SerializeField] float wallRunSpeed = 8f;          // Speed along the wall
+    //[SerializeField] float wallRunSpeed = 8f;          // Speed along the wall
     [SerializeField] float wallRunDuration = 2f;       // Maximum wall run time
-    [SerializeField] float wallStickForce = 5f;        // Force sticking player to wall
+    //[SerializeField] float wallStickForce = 5f;        // Force sticking player to wall
     [SerializeField] AnimationCurve wallRunCurve;      // Speed curve over time
-    /*    [SerializeField] float upwardForce = 2f;    */       // Slight upward force to counteract gravity
+    /*    [SerializeField] float upwardForce = 2f;   
+     *    */       // Slight upward force to counteract gravity
     [SerializeField] SpringValues WallSpringValues;
     [SerializeField] CameraTilt cameraTilt;
 
@@ -22,9 +23,8 @@ public class SO_WallRun : AC_BaseState
     private Vector3 wallNormal;
     private Vector3 wallPoint;
     private Vector3 wallRunDirection;
-    private PlayerMovementValues wallRunValue;
+    private PlayerMovementValues wallRunValue = new();
     private Collider wallCollider;
-    private float enterSpeed;
 
 
     public SO_WallRun(EC_Movement ctx) : base(ctx)
@@ -35,24 +35,46 @@ public class SO_WallRun : AC_BaseState
     {
         p_Rigidbody._CHECK_GRAVITY = false;
         p_Rigidbody.setGravity(0f);
-        
+        //p_Rigidbody.OverrideVelocity(p_Rigidbody.PlayerPlaneVel, 1f);
         wallRunTimer = 0f;
 
         // Store wall normal and calculate run direction
         wallNormal = p_Detector.wallHit.normal;
         wallCollider = p_Detector.wallHit.collider;
         wallPoint = wallCollider.ClosestPoint(p_Rigidbody.PlayerTransform.position);
-        enterSpeed = p_Rigidbody.PlayerPlaneVel.magnitude;
+        float goalSpeed = p_Rigidbody.CurrentSpeedFactor;
+        wallRunValue.baseFactor = goalSpeed;
+        //        // Calculate wall run direction (along the wall)
+        //        wallRunDirection = Vector3.Cross(wallNormal, Vector3.up).normalized;
 
+        //        // Ensure we're going in the right direction (forward not backward)
+        //        if (Vector3.Dot(wallRunDirection, p_Rigidbody.PlayerVelocity) < 0)
+        //            wallRunDirection = -wallRunDirection;
 
+        //        ST_debug.LogState("WALL RUN");
+
+        //        wallRunValue = new PlayerMovementValues(
+        //    wallRunDirection,
+        //    1.0f,
+        //    1.0f,
+        //    AnimationCurve.Linear(0, 1, 1, 0),
+        //    0f,
+        //    wallRunSpeed,
+        //    ForceMode.Force
+        //);
 
     }
 
     public override void UpdateState()
     {
-      
+        Debug.Log("aikjnads");
         cameraTilt.calculateTilt(wallPoint- p_Rigidbody.PlayerTransform.position, p_Rigidbody.PlayerForward, p_Rigidbody.PlayerRight);
-       
+
+        Vector3 wallForward = Vector3.Cross(wallNormal, Vector3.up).normalized;
+
+        wallRunDirection = Vector3.Dot(wallForward, p_Rigidbody.PlayerVelocity) < 0 ?
+                            -wallForward : wallForward;
+        ctx.MovePlayer(wallRunValue.UpdateDirection(wallForward), false);
     }
 
     private void ApplyWallSpring()
@@ -72,8 +94,6 @@ public class SO_WallRun : AC_BaseState
 
         ApplyWallSpring();
         p_Rigidbody.OverrideVelocity(Vector3.Lerp(p_Rigidbody.PlayerVelocity, p_Rigidbody.PlayerPlaneVel, Time.deltaTime*2f), 1f);
-        
-
     }
 
     public override void ExitState()
@@ -106,6 +126,4 @@ public class SO_WallRun : AC_BaseState
                speedAlongWall < minWallRunVelocity;
     }
     
-    
-
 }
