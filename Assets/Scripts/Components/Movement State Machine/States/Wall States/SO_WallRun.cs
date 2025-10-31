@@ -74,7 +74,7 @@ public class SO_WallRun : AC_BaseState
 
         wallRunDirection = Vector3.Dot(wallForward, p_Rigidbody.PlayerVelocity) < 0 ?
                             -wallForward : wallForward;
-        ctx.MovePlayer(wallRunValue.UpdateDirection(wallForward), false);
+        //ctx.MovePlayer(wallRunValue.UpdateDirection(wallForward), false);
     }
 
     private void ApplyWallSpring()
