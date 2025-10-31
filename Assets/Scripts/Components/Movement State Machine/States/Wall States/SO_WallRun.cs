@@ -44,6 +44,7 @@ public class SO_WallRun : AC_BaseState
         wallPoint = wallCollider.ClosestPoint(p_Rigidbody.PlayerTransform.position);
         float goalSpeed = p_Rigidbody.CurrentSpeedFactor;
         wallRunValue.baseFactor = goalSpeed;
+        //ctx.MovePlayer(wallRunValue.UpdateDirection(Vector3.forward));
         //        // Calculate wall run direction (along the wall)
         //        wallRunDirection = Vector3.Cross(wallNormal, Vector3.up).normalized;
 
@@ -67,14 +68,12 @@ public class SO_WallRun : AC_BaseState
 
     public override void UpdateState()
     {
-        Debug.Log("aikjnads");
         cameraTilt.calculateTilt(wallPoint- p_Rigidbody.PlayerTransform.position, p_Rigidbody.PlayerForward, p_Rigidbody.PlayerRight);
 
         Vector3 wallForward = Vector3.Cross(wallNormal, Vector3.up).normalized;
 
         wallRunDirection = Vector3.Dot(wallForward, p_Rigidbody.PlayerVelocity) < 0 ?
                             -wallForward : wallForward;
-        //ctx.MovePlayer(wallRunValue.UpdateDirection(wallForward), false);
     }
 
     private void ApplyWallSpring()
@@ -86,6 +85,7 @@ public class SO_WallRun : AC_BaseState
 
         Vector3 springDir = wallPoint - playerPos;
         p_Rigidbody.ApplySpringPull(p_Detector.wallHit.rigidbody, springDir, wallPoint, WallSpringValues);
+        ctx.MovePlayer(wallRunValue.UpdateDirection(wallRunDirection),false);
     }
 
     public override void FixedUpdate()
@@ -120,10 +120,10 @@ public class SO_WallRun : AC_BaseState
 
         return (!p_Detector.isWall) ||
                p_Detector.isGrounded ||
-               p_Input.Jump() || 
+               speedAlongWall < minWallRunVelocity ||
+               p_Input.Jump() ||
                p_Input.Dash() ||
-               wallRunTimer >= wallRunDuration ||
-               speedAlongWall < minWallRunVelocity;
+               wallRunTimer >= wallRunDuration;
     }
     
 }

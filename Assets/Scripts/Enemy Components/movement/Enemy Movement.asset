@@ -13,3 +13,17 @@ MonoBehaviour:
   m_Name: Enemy Movement
   m_EditorClassIdentifier: 
   entity: {fileID: 0}
+  settings:
+    pathUpdateInterval: 0.2
+    destinationReachedThreshold: 0.5
+    waypointReachedDistance: 2
+    patrolRadius: 15
+    defaultRotationSpeed: 399.7
+    aimRotationSpeed: 90
+    searchRotationSpeed: 180
+    rotationCompleteThreshold: 5
+    lockYAxisByDefault: 1
+    moveSpeed: 3.5
+    angularSpeed: 120
+    acceleration: 8
+    stoppingDistance: 0.5

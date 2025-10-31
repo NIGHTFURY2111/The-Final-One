@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 
 public class Player_Entity : AC_Entity
@@ -8,7 +9,9 @@ public class Player_Entity : AC_Entity
     [SerializeField] private List<AC_Component> Components;
     [SerializeField] private Dictionary<Enum_ComponentType, AC_Component> ComponentDict = new();
     [SerializeField] private Def_Gun Gun;
+    public UnityAction<GameObject, GameObject> OnRespawnTrigger;
 
+    private GameObject currentRespawnPoint;
 
     private void Awake()
     {
@@ -86,7 +89,10 @@ public class Player_Entity : AC_Entity
 
     public override void Ondeath()
     {
-        OnDeathTrigger.Invoke();
+        if (currentRespawnPoint != null)
+            OnRespawnTrigger?.Invoke(gameObject, currentRespawnPoint);
+        else
+            OnDeathTrigger?.Invoke();
     }
     public override void EventSubscribe()
     {
@@ -148,6 +154,13 @@ public class Player_Entity : AC_Entity
         ComponentDict.TryGetValue(type, out AC_Component comp);
         return comp;
     }
+
+    public void UpdateRespawnPoint(GameObject newRespawnPoint)
+    {
+        Debug.Log("set resp");
+        currentRespawnPoint = newRespawnPoint;
+    }
+
 
     public EC_Movement movementSO => getComponenet(Enum_ComponentType.Movement) as EC_Movement;
     public EC_Camera cameraSO => getComponenet(Enum_ComponentType.Camera) as EC_Camera;

@@ -13,3 +13,8 @@ MonoBehaviour:
   m_Name: Enemy Detection Manager
   m_EditorClassIdentifier: 
   entity: {fileID: 0}
+  targetSelector: {fileID: 11400000, guid: 2f60a83f703382743b023579add06b67, type: 2}
+  degradationHandler:
+    alertedForgetTime: 3
+    chasingDegradeTime: 5
+  debugMode: 0

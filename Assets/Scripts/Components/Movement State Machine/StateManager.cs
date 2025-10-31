@@ -36,7 +36,7 @@ public class StateManager
     {
         currentState.UpdateState();
         if (currentState.CanExit())
-            switchCheck(currentState.next);
+        switchCheck(currentState.next);
     }
 
     public void FixedUpdate()
