@@ -20,6 +20,7 @@ public class CustomPass : ScriptableRenderPass
     private RTHandle[] m_BloomMipDown;
     private GraphicsFormat hdrFormat;
     private BenDayBloomEffectComponent Bloom;
+    private CrosshatchEffectComponent CrossHatch;
     public CustomPass(Material Bloom,Material Composite)
     {
         BloomMaterial = Bloom;
@@ -56,6 +57,7 @@ public class CustomPass : ScriptableRenderPass
     public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
     {
         Bloom = VolumeManager.instance.stack.GetComponent<BenDayBloomEffectComponent>();
+        CrossHatch = VolumeManager.instance.stack.GetComponent<CrosshatchEffectComponent>();
         CommandBuffer cmd = CommandBufferPool.Get();
         using (new ProfilingScope(cmd, new ProfilingSampler("Custom Post Process Effects")))
         {
@@ -65,6 +67,8 @@ public class CustomPass : ScriptableRenderPass
             SetupBloom(cmd, ColorTarget);
             CompositeMaterial.SetFloat("_Density", Bloom.dostDensity.value);
             CompositeMaterial.SetFloat("_Cutoff", Bloom.dotsCutoff.value);
+            CompositeMaterial.SetFloat("_Line_Density", CrossHatch.Density.value);
+            CompositeMaterial.SetFloat("_Line_WIdth", CrossHatch.Width.value);
 
             RenderTextureDescriptor d = ColorTarget.rt.descriptor;
             RTHandle tempRT = RTHandles.Alloc(d, name: "_TempRT");
