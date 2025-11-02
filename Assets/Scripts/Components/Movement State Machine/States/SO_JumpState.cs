@@ -52,10 +52,10 @@ public class SO_JumpState : AC_BaseState
 
     public override bool CanExit() => canExit;
 
-    private async Task JumpTask()
+    private IEnumerator JumpTask()
     {
         p_Rigidbody.Jump(JumpCurve,JumpHeight,forceType);
-        await Task.Delay((int)(JumpTime * 1000));
+        yield return new WaitForSecondsRealtime(JumpTime);
         canExit = true;
     }
 
@@ -63,8 +63,8 @@ public class SO_JumpState : AC_BaseState
     {
     }
 
-    public override async void FixedUpdate()
+    public override void FixedUpdate()
     {
-         await JumpTask();
+         ctx.entity.StartCoroutine(JumpTask());
     }
 }
