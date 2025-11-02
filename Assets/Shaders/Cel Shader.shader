@@ -4,9 +4,10 @@ Shader "Custom/CelShader"
    
     Properties
     {
-        _Thickness ("Thickness", Float) = 1
+        _MainTex ("Texture", 2D) = "white" {}
+    
         _Color ("Color", Color) = (1, 1, 1, 1)
-        _OutlineColor ("Outline Color", Color) = (1, 1, 1, 1)
+        _FresnelColor ("Fresnel Color", Color) = (1, 1, 1, 1)
         _ColorStrength("Albedo Strength",Range (0, 1)) = 0.8
         _DifuseStrength("Diffuse Strength",Range (0, 1)) = 0.3
         _DifuseStep1("Diffuse Step 1",Range (0, 1)) = 0.3
@@ -16,6 +17,8 @@ Shader "Custom/CelShader"
         _SpecularPower("specular Power",float) = 300
         _SsaoStrength("SSAO Strength",Range (0, 1)) = 1
         [Toggle(USE_PRECALCULATED_OUTLINE_NORMALS)]_PrecalculateNormals("Use Optimised normals", Float) = 0
+        [Toggle(Fresnel_Highlights)]_FresnelHighlights("Fresnel Highlights", Float) = 0
+        _FresnelPower("Fresnel Power",float) = 10
      
     }
 
@@ -31,6 +34,7 @@ Shader "Custom/CelShader"
             #pragma fragment frag            
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN 
             #pragma shader_feature Specular_Highlights
+            #pragma shader_feature Fresnel_Highlights
             #pragma multi_compile_fragment _ _SHADOWS_SOFT
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
@@ -41,6 +45,7 @@ Shader "Custom/CelShader"
             {
                 float4 positionOS : POSITION;
                 float3 normalOS : NORMAL;
+                float2 uv : TEXCOORD0;
                 
             };
 
@@ -50,43 +55,29 @@ Shader "Custom/CelShader"
                 float3 normalWS : TEXCOORD0;
                 float3 positionWS : TEXCOORD2;
                 float4 shadowCoords : TEXCOORD3;
+                float2 uv : TEXCOORD4;
             };
 
+            sampler2D _MainTex;
+            float4 _MainTex_ST;
             float4 _Color;
+            float4 _FresnelColor;
             float _ColorStrength;
             float _DifuseStrength;
             float _SpecularStrength;
             float _SpecularPower;
             float _DifuseStep1;
             float _DifuseStep2;
+            float _FresnelPower;
 
-
-            Varyings vert(Attributes IN)
+            float3 celShadedLight(Light l,float3 n,float3 v)
             {
-                Varyings OUT;
-                VertexPositionInputs positions = GetVertexPositionInputs(IN.positionOS.xyz);
-                OUT.positionHCS = positions.positionCS;
-                OUT.normalWS = TransformObjectToWorldNormal(IN.normalOS);
-                OUT.positionWS = positions.positionWS;
-                float4 shadowCoordinates = GetShadowCoord(positions);
-                OUT.shadowCoords = shadowCoordinates;
-                
-                
-                return OUT;
-            }
-
-            float4 frag(Varyings IN) : SV_Target
-            {   
-                
-                Light mainLight = GetMainLight(IN.shadowCoords);
-                float shadowAmount = mainLight.shadowAttenuation;    
-                shadowAmount = step(0.5, shadowAmount); 
-             
-                
-                float3 N = normalize(IN.normalWS);
-                float3 L = normalize(normalize(mainLight.direction));
+                float3 L = normalize(normalize(l.direction));
                     
-                float diffuseLight = saturate(dot(L,N));
+                float diffuseLight = saturate(dot(L,n));
+
+               
+
                 if(diffuseLight < _DifuseStep1)
                 {
                     diffuseLight = 0;
@@ -101,19 +92,55 @@ Shader "Custom/CelShader"
                 }
                 
                
-                float3 finalColor = diffuseLight * _DifuseStrength * mainLight.color * shadowAmount ;
+                float3 finalColor = diffuseLight * _DifuseStrength * l.color * l.shadowAttenuation ;
                 
                 
                 #ifdef Specular_Highlights
-                    float3 V = normalize(_WorldSpaceCameraPos - IN.positionWS);
-                    float3 H = normalize(L+V);
-                    float specularLight = pow(saturate(dot(H,N))  ,_SpecularPower );
+                   
+                    float3 H = normalize(L+v);
+                    float specularLight = pow(saturate(dot(H,n))  ,_SpecularPower );
                     specularLight = step(0.5,specularLight) ;
-                    finalColor += specularLight   * _SpecularStrength * (1-step(diffuseLight,_DifuseStep2)) *mainLight.color * shadowAmount ; 
+                    finalColor += specularLight   * _SpecularStrength * (1-step(diffuseLight,_DifuseStep2)) * l.color * l.shadowAttenuation ; 
                 #endif
+                return finalColor;
+
+            }
+
+            Varyings vert(Attributes IN)
+            {
+                Varyings OUT;
+                VertexPositionInputs positions = GetVertexPositionInputs(IN.positionOS.xyz);
+                OUT.positionHCS = positions.positionCS;
+                OUT.normalWS = TransformObjectToWorldNormal(IN.normalOS);
+                OUT.positionWS = positions.positionWS;
+                float4 shadowCoordinates = GetShadowCoord(positions);
+                OUT.shadowCoords = shadowCoordinates;
+                OUT.uv = TRANSFORM_TEX(IN.uv, _MainTex);
                 
-               
-                finalColor += _Color.xyz * _ColorStrength ;
+                return OUT;
+            }
+
+            float4 frag(Varyings IN) : SV_Target
+            {   
+                
+                Light mainLight = GetMainLight(IN.shadowCoords);
+                
+                
+                float3 N = normalize(IN.normalWS);
+                float3 V = normalize(_WorldSpaceCameraPos - IN.positionWS);
+                float3 finalColor = celShadedLight(mainLight,N,V);
+                uint addLightcount = GetAdditionalLightsCount();
+                for(uint i = 0;i<addLightcount;i++)
+                {
+                    
+                    finalColor += celShadedLight(GetAdditionalLight(i, IN.positionWS),N,V);
+                }
+                #ifdef Fresnel_Highlights
+                    float3 fresnel = saturate(1- dot(V,N));
+                    finalColor +=  smoothstep(0.2,0.7,pow(fresnel,_FresnelPower))* _FresnelColor;
+                #endif
+                float4 tex = tex2D(_MainTex, IN.uv);
+                finalColor += _Color.xyz * _ColorStrength * tex.xyz ;
                 
                 return float4(saturate(finalColor),1);
             }
@@ -121,57 +148,7 @@ Shader "Custom/CelShader"
                
             ENDHLSL
         }
-        Pass
-        {
-            Name "Outline"
-            Tags { "LightMode" = "SRPDefaultUnlit"}
-            Cull Front
-            
-            HLSLPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma shader_feature USE_PRECALCULATED_OUTLINE_NORMALS
-            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-
-            struct Attributes
-            {
-                float4 positionOS : POSITION;
-                float3 normalOS : NORMAL;
-                #ifdef USE_PRECALCULATED_OUTLINE_NORMALS
-                    float3 smoothNormalOS   : TEXCOORD1; 
-                #endif
-
-            };
-
-            struct Varyings
-            {
-                float4 positionCS : SV_POSITION;
-            };
-
-            float _Thickness;
-            float4 _OutlineColor;
-
-            Varyings vert(Attributes IN)
-            {
-                Varyings OUT;
-                float3 normalOS;
-                #ifdef USE_PRECALCULATED_OUTLINE_NORMALS
-                    normalOS = IN.smoothNormalOS;
-                #else
-                    normalOS = IN.normalOS;
-                #endif
-                float3 posOS = IN.positionOS.xyz + normalOS * _Thickness;
-                OUT.positionCS = TransformObjectToHClip(posOS);
-                return OUT;
-            }
-
-            float4 frag(Varyings IN) : SV_Target
-            {
-                
-                return _OutlineColor;
-            }
-            ENDHLSL
-        }
+        
         Pass
         {
             Name "DepthNormals"
