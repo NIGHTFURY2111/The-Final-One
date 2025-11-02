@@ -54,33 +54,32 @@ public class SO_Patrol : SO_BehaviourNode
     {
         if (movement == null || detector.CurrentState != Enum_DetectionState.Idle )
         {
-            state = NodeState.Failure;
-            return state;
+            return state = NodeState.Failure;
         }
 
         // Handle waiting at waypoint
         if (isWaiting)
         {
             waitTimer -= Time.deltaTime;
-            
+
             if (waitTimer <= 0f)
             {
                 isWaiting = false;
                 hasWaypoint = false;
-                
+
                 if (debugMode)
                     Debug.Log("[SO_Patrol] Finished waiting");
             }
-            
-            state = NodeState.Running;
-            return state;
+
+            return state = NodeState.Running;
+
         }
-        
+
         // Get threshold from settings or custom value
-        float reachedDistance = useCustomReachedDistance 
-            ? customWaypointReachedDistance 
+        float reachedDistance = useCustomReachedDistance
+            ? customWaypointReachedDistance
             : movement.Settings.waypointReachedDistance;
-        
+
         // Check if reached current waypoint
         if (hasWaypoint && movement.IsAtPosition(currentWaypoint, reachedDistance))
         {
@@ -88,9 +87,9 @@ public class SO_Patrol : SO_BehaviourNode
             {
                 isWaiting = true;
                 waitTimer = waitTimeAtWaypoint;
-                
+
                 movement.StopMovement();
-                
+
                 if (debugMode)
                     Debug.Log($"[SO_Patrol] Reached waypoint, waiting {waitTimeAtWaypoint}s");
             }
@@ -99,27 +98,27 @@ public class SO_Patrol : SO_BehaviourNode
                 hasWaypoint = false;
             }
         }
-        
+
         // Get next waypoint if needed
         if (!hasWaypoint)
         {
-            currentWaypoint = patrolMode == PatrolMode.Waypoints 
-                ? GetNextWaypointPosition() 
+            currentWaypoint = patrolMode == PatrolMode.Waypoints
+                ? GetNextWaypointPosition()
                 : GetRandomPatrolPoint();
             hasWaypoint = true;
-            
+
             if (debugMode)
                 Debug.DrawLine(BT_Entity.transform.position, currentWaypoint, Color.blue, waitTimeAtWaypoint);
         }
-        
+
         // Move to waypoint
         movement.SetDestination(currentWaypoint);
         if (debugMode)
-            ST_debug.DrawSphere(currentWaypoint, 0.5f, Color.green);    
+            ST_debug.DrawSphere(currentWaypoint, 0.5f, Color.green);
 
         if (debugMode)
             Debug.DrawLine(BT_Entity.transform.position, currentWaypoint, Color.cyan);
-        
+
         state = NodeState.Running;
         return state;
     }

@@ -33,6 +33,9 @@ public class SO_WallRun : AC_BaseState
 
     public override void EnterState()
     {
+        if (wallRunValue == null)
+            wallRunValue = new PlayerMovementValues();
+
         p_Rigidbody._CHECK_GRAVITY = false;
         p_Rigidbody.setGravity(0f);
         //p_Rigidbody.OverrideVelocity(p_Rigidbody.PlayerPlaneVel, 1f);
@@ -85,7 +88,7 @@ public class SO_WallRun : AC_BaseState
 
         Vector3 springDir = wallPoint - playerPos;
         p_Rigidbody.ApplySpringPull(p_Detector.wallHit.rigidbody, springDir, wallPoint, WallSpringValues);
-        ctx.MovePlayer(wallRunValue.UpdateDirection(wallRunDirection),false);
+        //ctx.MovePlayer(wallRunValue.UpdateDirection(wallRunDirection),false);
     }
 
     public override void FixedUpdate()

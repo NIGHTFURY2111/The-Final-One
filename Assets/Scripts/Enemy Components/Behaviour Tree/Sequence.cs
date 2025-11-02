@@ -7,7 +7,6 @@ using UnityEngine;
 // Only returns success when all nodes return success
 public class Sequence : Node
 {
-    
     public Sequence():base() { }
     public Sequence(List<Node> children) : base(children) { }
     public override NodeState Evaluate()

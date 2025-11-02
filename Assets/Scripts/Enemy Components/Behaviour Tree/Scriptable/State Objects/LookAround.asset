@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1aa92bb351ebeaa448c7ea864452d145, type: 3}
   m_Name: LookAround
   m_EditorClassIdentifier: 
-  lookAroundDuration: 3
-  numberOfLookDirections: 4
-  rotationSpeed: 120
-  pauseBetweenLooks: 0.5
+  leftRightLookAngle: 50.7
+  pauseBetweenLooks: 0.83
+  timeoutDuration: 15
+  useCustomRotationSpeed: 0
+  customRotationSpeed: 120
   debugMode: 0

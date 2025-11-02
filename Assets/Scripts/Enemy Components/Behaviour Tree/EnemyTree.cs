@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Enemy Tree", menuName = "Behaviour Tree/Enemy BTree")]
 public class EnemyTree : BehaviourTree
 {
-    [Header("=== NODE TEMPLATES ===")]
+    [Header("NODE TEMPLATES ")]
     [SerializeField] private SO_InRange inRangeTemplate;
     [SerializeField] private SO_Aim aimTemplate;
     [SerializeField] private SO_Shoot shootTemplate;
@@ -29,7 +29,7 @@ public class EnemyTree : BehaviourTree
 
     public override void ComponentAwake()
     {
-        enemyEntity = (Enemy_Entity)entity;
+        enemyEntity = entity as Enemy_Entity;
         detector = enemyEntity.DetectorManager;
 
         CreateRuntimeNodeInstances();
@@ -41,30 +41,30 @@ public class EnemyTree : BehaviourTree
     protected override Node SetupTree()
     {
         // Behavior Tree Structure:
-        
+
         return new Selector(new List<Node>
         {
-            // Combat: Shoot if target exists and is within weapon range
-            // This allows shooting even when not in vision (e.g., at last known position)
-            new Sequence(new List<Node>
-            {
-                new SO_LeafNode(inRange),  // Check weapon range (could be > vision range)
-                new SO_LeafNode(aim),      // Aim at target
-                new SO_LeafNode(shoot)     // Shoot
-            }),
-            
-            // Chase: Actively pursue the target when in Chasing state
-            new SO_LeafNode(chase),
-            
-            // Investigation: When Alerted (lost sight), go to last known position and look around
+            //// Combat: Shoot if target exists and is within weapon range
+            //// This allows shooting even when not in vision (e.g., at last known position)
+            //new Sequence(new List<Node>
+            //{
+            //    new SO_LeafNode(inRange),  // Check weapon range (could be > vision range)
+            //    new SO_LeafNode(aim),      // Aim at target
+            //    new SO_LeafNode(shoot)     // Shoot
+            //}),
+
+            //// Chase: Actively pursue the target when in Chasing state
+            //new SO_LeafNode(chase),
+
+            //// Investigation: When Alerted (lost sight), go to last known position and look around
             new Sequence(new List<Node>
             {
                 new SO_LeafNode(moveToLastKnown),
                 new SO_LeafNode(lookAround)
             }),
-            
-            // Patrol: Default idle behavior
-            new SO_LeafNode(patrol)
+
+            //// Patrol: Default idle behavior
+            //new SO_LeafNode(patrol)
         });
     }
 

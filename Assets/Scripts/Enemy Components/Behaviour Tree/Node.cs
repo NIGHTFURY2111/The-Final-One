@@ -11,10 +11,10 @@ public enum NodeState
 
 public abstract class Node
 {
-    protected   NodeState state;
-
     [HideInInspector]
     public      Node parent;
+
+    protected   NodeState state;
     
     [SerializeField] 
     protected   List<Node> children = new List<Node>();

@@ -15,12 +15,7 @@ public class Player_Entity : AC_Entity
 
     private void Awake()
     {
-        BuildDictionary();
-        MassAssign();
-        EventSubscribe();
-        
-        // Only invoke OnAwakeTick after everything is properly set up
-        OnAwakeTick?.Invoke();
+
     }
 
     void BuildDictionary()
@@ -39,6 +34,13 @@ public class Player_Entity : AC_Entity
 
     public override void Start()
     {
+        BuildDictionary();
+        MassAssign();
+        EventSubscribe();
+
+        // Only invoke OnAwakeTick after everything is properly set up
+        OnAwakeTick?.Invoke();
+
         OnStartTick?.Invoke();
     }
 

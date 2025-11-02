@@ -21,4 +21,4 @@ MonoBehaviour:
   customPatrolRadius: 15
   useCustomReachedDistance: 0
   customWaypointReachedDistance: 2
-  debugMode: 0
+  debugMode: 1

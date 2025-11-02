@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -153,8 +152,8 @@ public class Def_Gun : MonoBehaviour
            ST_debug.DrawSphere(hit.point, .5f, Color.yellow,1f);
             //Debug.Log(hit.point.ToString());
 
-            //(The discard _ = is used to call the async method without awaiting it.)
-            _ = SpawnTrail(trail, hit.point, hit.normal, BounceDistance, impactMade, bounceImpact);
+            // Start the coroutine instead of using async/await
+            StartCoroutine(SpawnTrail(trail, hit.point, hit.normal, BounceDistance, impactMade, bounceImpact));
 
             BulletInteraction(hit);
 
@@ -162,7 +161,7 @@ public class Def_Gun : MonoBehaviour
         }
     }
 
-    private async Task SpawnTrail(TrailRenderer Trail, Vector3 HitPoint, Vector3 HitNormal, float BounceDistance, bool MadeImpact, bool BounceImpact)
+    private IEnumerator SpawnTrail(TrailRenderer Trail, Vector3 HitPoint, Vector3 HitNormal, float BounceDistance, bool MadeImpact, bool BounceImpact)
     {
         Vector3 startPosition = Trail.transform.position;
         Vector3 direction = (HitPoint - Trail.transform.position).normalized;
@@ -175,7 +174,7 @@ public class Def_Gun : MonoBehaviour
             Trail.transform.position = Vector3.Lerp(startPosition, HitPoint, 1 - (distance / startingDistance));
             distance -= Time.deltaTime * Speed;
 
-            await Task.Yield();
+            yield return null; // Wait for next frame instead of Task.Yield()
         }
 
         Trail.transform.position = HitPoint;
@@ -192,40 +191,41 @@ public class Def_Gun : MonoBehaviour
                 {
                     if (Physics.Raycast(HitPoint, bounceDirection, out RaycastHit hit1, BounceDistance, BounceMask))
                     {
-
-
-                        await SpawnTrail(
-                        Trail,
-                        hit1.point,
-                        hit.normal,
-                        BounceDistance - Vector3.Distance(hit.point, HitPoint),
-                        true,
-                        true
-                        );
+                        yield return StartCoroutine(
+                            SpawnTrail(
+                            Trail,
+                            hit1.point,
+                            hit.normal,
+                            BounceDistance - Vector3.Distance(hit.point, HitPoint),
+                            true,
+                            true
+                        ));
                     }
                     else
                     {
-                        await SpawnTrail(
-                        Trail,
-                        hit.point,
-                        hit.normal,
-                        BounceDistance - Vector3.Distance(hit.point, HitPoint),
-                        true,
-                        false
-                        );
+                        yield return StartCoroutine(
+                            SpawnTrail(
+                            Trail,
+                            hit.point,
+                            hit.normal,
+                            BounceDistance - Vector3.Distance(hit.point, HitPoint),
+                            true,
+                            false
+                        ));
                     }
 
                 }
                 else
                 {
-                    await SpawnTrail(
+                    yield return StartCoroutine(
+                        SpawnTrail(
                         Trail,
                         HitPoint + bounceDirection * BounceDistance,
                         Vector3.zero,
                         0,
                         false,
                         false
-                    );
+                    ));
                 }
             }
         }
@@ -272,29 +272,29 @@ public class Def_Gun : MonoBehaviour
 
     public void TriggerEnter(Collider other)
     {   // uses the cone collider and checks only on the "enemy layer"
-        ////if (other.CompareTag("Enemy") || other.)
-        ////   {
-        //if (other.gameObject != null && other.CompareTag("Enemy"))
-        //{
-        //    magnetableEnemies.Add(other.gameObject);
-        //    other.GetComponent<MeshRenderer>().material = debugSeenMaterial;
-        //}
-        ////Debug.Log(magnetableEnemies.Count);
+        //if (other.CompareTag("Enemy") || other.)
+        //   {
+        if (other.gameObject != null && other.CompareTag("Enemy"))
+        {
+            magnetableEnemies.Add(other.gameObject);
+            other.GetComponent<MeshRenderer>().material = debugSeenMaterial;
+        }
+        //Debug.Log(magnetableEnemies.Count);
 
-        ////Debug.Log(other.name);
+        //Debug.Log(other.name);
     }
 
     public void TriggerExit(Collider other)
     {
-        ////if (other.CompareTag("Enemy"))
-        ////   {
-        //if (other.gameObject != null && other.CompareTag("Enemy"))
-        //{
-        //    magnetableEnemies.Remove(other.gameObject);
-        //    other.GetComponent<MeshRenderer>().material = debugNotMaterial;
+        //if (other.CompareTag("Enemy"))
+        //   {
+        if (other.gameObject != null && other.CompareTag("Enemy"))
+        {
+            magnetableEnemies.Remove(other.gameObject);
+            other.GetComponent<MeshRenderer>().material = debugNotMaterial;
+        }
+        //Debug.Log(magnetableEnemies.Count);
         //}
-        ////Debug.Log(magnetableEnemies.Count);
-        ////}
     }
 
     void DetectNearestEnemy()
@@ -326,4 +326,4 @@ public class Def_Gun : MonoBehaviour
 //                   * enemy closest by distance(?)
 //                   * straight forward
 
-// *  
+// *
