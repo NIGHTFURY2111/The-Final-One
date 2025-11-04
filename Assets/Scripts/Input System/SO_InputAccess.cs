@@ -1,10 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
 using UnityEngine.InputSystem;
 
 [CreateAssetMenu(fileName = "Input Accessor", menuName = "Scriptable Object/Input/Input Accessors")]
@@ -121,6 +116,21 @@ public class SO_InputAccess : ScriptableObject
     public bool Shoot()
     {
         Shoot(out InputAction val);
+        return val != null && val.WasPressedThisFrame();
+    }
+
+    #endregion
+    #region escape
+    public bool Pause(out InputAction value)
+    {
+        bool output = buffer.GetInputValueThisFrame("Pause", out value);
+        return output;
+
+    }
+
+    public bool Pause()
+    {
+        Pause(out InputAction val);
         return val != null && val.WasPressedThisFrame();
     }
 

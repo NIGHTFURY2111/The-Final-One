@@ -15,7 +15,7 @@ MonoBehaviour:
   active: 1
   Density:
     m_OverrideState: 1
-    m_Value: 150
+    m_Value: 200
   Width:
     m_OverrideState: 1
     m_Value: 0.814
@@ -52,7 +52,7 @@ MonoBehaviour:
     m_Value: 50.33
   intensity:
     m_OverrideState: 1
-    m_Value: 462.2
+    m_Value: 0
   scatter:
     m_OverrideState: 1
     m_Value: 0.7

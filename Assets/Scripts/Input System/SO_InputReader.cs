@@ -35,6 +35,7 @@ public class SO_InputReader : ScriptableObject, PlayerInputAction.IPlayerActions
     public void OnJump(InputAction.CallbackContext context) => StoreInputBool(context, defaultBufferTime);
 
     public void OnDash(InputAction.CallbackContext context) => StoreInputBool(context, defaultBufferTime);
+    public void OnPause(InputAction.CallbackContext context) => StoreInputBool(context, defaultBufferTime);
 
     public void OnGrapple(InputAction.CallbackContext context) => StoreInputBool(context);
     public void OnGrappleHold(InputAction.CallbackContext context) => StoreInputBool(context);
@@ -55,4 +56,5 @@ public class SO_InputReader : ScriptableObject, PlayerInputAction.IPlayerActions
     {
         _InputBuffer.AddInput(context.action, context.ReadValue<Vector2>());
     }
+
 }
