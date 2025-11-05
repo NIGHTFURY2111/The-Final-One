@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf5456fbadac0d04282b76faf401b5dd, type: 3}
+  m_Name: Enemy Tree
+  m_EditorClassIdentifier: 
+  entity: {fileID: 0}
+  inRangeTemplate: {fileID: 11400000, guid: df144e014db522f48b8335b0b5ed8f7a, type: 2}
+  aimTemplate: {fileID: 11400000, guid: bb3fb76bb518c0e4691d78d53cededc5, type: 2}
+  shootTemplate: {fileID: 11400000, guid: 65f893ddbaa3dd744af2099b033736d8, type: 2}
+  chaseTemplate: {fileID: 11400000, guid: 9a2b35222d37f374c8b39dda0fb9e093, type: 2}
+  moveToLastKnownTemplate: {fileID: 11400000, guid: 90dc3d932a127b94e940a2d86e1ef954,
+    type: 2}
+  lookAroundTemplate: {fileID: 11400000, guid: 988c9d1bdb66ed243aa8149a489bd9d1, type: 2}
+  patrolTemplate: {fileID: 11400000, guid: a9bdafd05970f7442967f5a1da7365fd, type: 2}
+  detector: {fileID: 11400000, guid: 4eae633edeb69d544922b10e96e00636, type: 2}
+  enemyEntity: {fileID: 0}

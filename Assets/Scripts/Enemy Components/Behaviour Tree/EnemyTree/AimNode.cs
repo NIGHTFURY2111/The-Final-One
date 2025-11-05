@@ -1,21 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 
 public class AimNode : Node
 {
-    Transform player;
-    Transform enemyTransform;
-    public AimNode(GameObject enemy)
+    Enemy_Entity enemy;
+    DetectionManager detector;
+
+    public AimNode(Enemy_Entity enemy, DetectionManager detector)
     {
-        enemyTransform = enemy.transform;
-        player = GameObject.FindWithTag("Player").transform;
+        this.enemy = enemy;
+        this.detector = detector;
     }
+
     public override NodeState Evaluate()
     {
-        enemyTransform.forward = player.position - enemyTransform.position; 
-        state = NodeState.Success; 
+        if (detector.CurrentTarget == null)
+        {
+            state = NodeState.Failure;
+            return state;
+        }
+
+        enemy.transform.forward = detector.CurrentTarget.transform.position - enemy.transform.position;
+        
+        state = NodeState.Success;
         return state;
     }
 }

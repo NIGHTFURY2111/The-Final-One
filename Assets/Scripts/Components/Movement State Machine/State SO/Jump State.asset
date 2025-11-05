@@ -49,5 +49,5 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   JumpHeight: 3
-  CoyoteTiming: 0.5
+  CoyoteTiming: 0.75
   forceType: 1

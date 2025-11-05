@@ -1,73 +1,66 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ShootNode : Node
 {
+    Enemy_Entity enemy;
+    DetectionManager detector;
     GameObject bullet;
-    GameObject iceShard;
-    Transform shootpoint;
-    GameObject enemy;
-    bool shot = false;
-    //DamageConstructor damage;
-    //colors color;
+    Transform shootPoint;
+    
+    [SerializeField] float bulletSpeed = 20f;
+    float shootCooldown = 1f;
+    float lastShootTime = 0f;
 
-    public ShootNode(GameObject b,Transform s,GameObject e,GameObject i)
+    public ShootNode(Enemy_Entity enemy, DetectionManager detector, 
+                     GameObject bullet, Transform shootPoint, float bulletSpeed)
     {
-        bullet = b; 
-        shootpoint = s;
-        enemy = e;
-        //damage = e.GetComponent<DamageConstructor>();
-        //color = damage._color;
-        iceShard =i;
+        this.enemy = enemy;
+        this.detector = detector;
+        this.bullet = bullet;
+        this.shootPoint = shootPoint;
+        this.bulletSpeed = bulletSpeed;
     }
 
-    IEnumerator shooting()
-    {
-        //shot = true;
-        //switch (color)
-        //{
-        //    case colors.green:
-        //        GameObject bulletshot = GameObject.Instantiate(bullet, shootpoint.position, shootpoint.rotation);
-        //        bulletshot.GetComponent<EnemyBulletScript>().SetValues(damage._DMG_earth);
-        //        break;
-        //    case colors.red:
-        //        Collider[] colliders = Physics.OverlapCapsule(enemy.transform.position + (enemy.transform.forward * 2), enemy.transform.position + (enemy.transform.forward * 10), 7f);
-
-        //        foreach (Collider c in colliders)
-        //        {
-        //            if (c.gameObject.CompareTag("Player"))
-        //            {
-                        
-        //                c.gameObject.GetComponent<PlayerDamageReciever>().getDamageValue(damage._DMG_fire);
-
-        //            }
-
-        //            if (c.GetComponent<MeshDestroy>()) { c.GetComponent<MeshDestroy>().DestroyMesh(); }
-
-        //        }
-        //        break;
-        //    case colors.blue:
-        //        GameObject shard1 = Object.Instantiate(iceShard, shootpoint.position + shootpoint.right * 1.5f, enemy.transform.rotation);
-
-        //        EnemyBulletScript[] vv = new EnemyBulletScript[9];
-        //        vv = shard1.GetComponentsInChildren<EnemyBulletScript>();
-        //        foreach (EnemyBulletScript script in vv)
-        //        {
-        //            script.SetValues( damage._DMG_ice);
-        //        }
-        //        break;
-        //}
-        yield return new WaitForSecondsRealtime(0.5f);
-        shot = false;
-        
-    }
     public override NodeState Evaluate()
     {
-        //if(!shot)
-        //    enemy.GetComponent<DamageConstructor>().StartCoroutine(shooting());
-        //state = NodeState.Success; 
+        if (detector.CurrentTarget == null)
+        {
+            state = NodeState.Failure;
+            return state;
+        }
+
+        if (Time.time - lastShootTime < shootCooldown)
+        {
+            state = NodeState.Running;
+            return state;
+        }
+
+        Debug.Log("Shooting at target!");
+
+        //Shoot();
+        lastShootTime = Time.time;
+
+        state = NodeState.Success;
         return state;
+    }
+
+    void Shoot()
+    {
+        if (bullet == null || shootPoint == null || detector.CurrentTarget == null) return;
+
+        Vector3 directionToTarget = detector.CurrentTarget.transform.position - enemy.transform.position;
+        directionToTarget.y = 0;
+        
+        if (directionToTarget != Vector3.zero)
+            enemy.transform.forward = directionToTarget;
+
+        GameObject bulletInstance = Object.Instantiate(bullet, shootPoint.position, shootPoint.rotation);
+        
+        Rigidbody bulletRb = bulletInstance.GetComponent<Rigidbody>();
+        if (bulletRb != null)
+        {
+            Vector3 shootDirection = (detector.CurrentTarget.transform.position - shootPoint.position).normalized;
+            bulletRb.velocity = shootDirection * bulletSpeed;
+        }
     }
 }

@@ -142,4 +142,6 @@ public class Enemy_Entity : AC_Entity
     }
 
     public EC_Movement movementSO => getComponenet(Enum_ComponentType.Movement) as EC_Movement;
+    public DetectionManager DetectorManager => getComponenet(Enum_ComponentType.Detector) as DetectionManager;
+    public Enemy_Movement EnemyMovement => getComponenet(Enum_ComponentType.Movement) as Enemy_Movement;
 }

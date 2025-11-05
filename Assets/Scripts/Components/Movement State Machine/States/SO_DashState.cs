@@ -17,13 +17,14 @@ public class SO_DashState : AC_BaseState
     {
     }
 
-    public override async void EnterState()
+    public override void EnterState()
     {
         dashDirection = p_Rigidbody.DirectionInLocalSpace(p_Input.Movement(), true);
-        await DashTask(dashDirection);
+        ctx.entity.StartCoroutine(DashTask(dashDirection));
+        //DashTask(dashDirection);
     }
 
-    async Task DashTask(Vector3 direction)
+    IEnumerator DashTask(Vector3 direction)
     {
         canExit = false;
         p_Rigidbody.setGravity(0);
@@ -32,7 +33,7 @@ public class SO_DashState : AC_BaseState
         // FOV will be handled automatically by the centralized velocity-based system
         // No need for manual FOV changes since dash increases velocity
         
-        await Task.Delay((int)(dashDuration * 1000));
+        yield return new WaitForSecondsRealtime(dashDuration);
 
         p_Rigidbody.setGravity(ctx.EC_Rigidbody.GRAVITY);
         canExit = true;

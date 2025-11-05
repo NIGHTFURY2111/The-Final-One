@@ -9,10 +9,7 @@ public abstract class BehaviourTree : AC_Component
 
     public override void ComponentUpdate()
     {
-        if (root != null)
-        {
-            root.Evaluate();
-        }
+        root?.Evaluate();
     }
     protected abstract Node SetupTree();
 }
