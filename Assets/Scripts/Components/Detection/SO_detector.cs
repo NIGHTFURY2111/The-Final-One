@@ -53,7 +53,11 @@ public class SO_detector : AC_Component
         collider = entity.GetComponent<CapsuleCollider>();
     }
 
-    public override void ComponentDisable() { }
+    public override void ComponentDisable()
+    { 
+        Debug.Log("Detector Component Disabled");
+        Destroy(this);
+    }
 
     public override void ComponentStart() {
     }

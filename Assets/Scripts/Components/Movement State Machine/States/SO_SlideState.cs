@@ -9,9 +9,6 @@ public class SO_SlideState : AC_BaseState
 {
     [SerializeField] PlayerMovementValues slideValues;
     Vector3 SlideDirection;
-    public SO_SlideState(EC_Movement ctx) : base(ctx)
-    {
-    }
     public override void EnterState()
     {
         slideValues.UpdateDirection(p_Rigidbody.DirectionInLocalSpace( p_Input.Movement(), true).normalized);

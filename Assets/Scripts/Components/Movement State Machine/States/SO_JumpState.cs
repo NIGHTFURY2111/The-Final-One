@@ -16,9 +16,6 @@ public class SO_JumpState : AC_BaseState
     bool canJump;
     float t ;
     Vector3 j;
-    public SO_JumpState(EC_Movement ctx) : base(ctx)
-    {
-    }
     public override void EnterState()
     {
         canExit = false;

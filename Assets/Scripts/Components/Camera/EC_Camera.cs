@@ -167,5 +167,7 @@ public class EC_Camera : AC_Component
 
         if (Headbob != null)
         Headbob.terminate();
+        Debug.Log("Camera Component Disabled");
+        Destroy(this);
     }
 }

@@ -6,9 +6,6 @@ using UnityEngine;
 
 public class SO_IdleState : AC_BaseState
 {
-    public SO_IdleState(EC_Movement ctx) : base(ctx)
-    {
-    }
 
     public override void EnterState()
     {

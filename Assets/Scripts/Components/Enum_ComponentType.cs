@@ -10,6 +10,7 @@ public enum Enum_ComponentType
     RigidBody = 1 << 3,
     Detector = 1 << 4,
     Behaviour_Tree = 1 << 5,
+    Input = 1 << 6,
     Health = 1 << -1,
     Animation = 1 << -1,
     Audio = 1 << -1

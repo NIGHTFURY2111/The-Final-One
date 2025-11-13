@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class AC_BaseState: ScriptableObject
 {
-    [SerializeField] protected EC_Movement ctx;
+    protected EC_Movement ctx;
 
     protected EC_Rigidbody p_Rigidbody => ctx.EC_Rigidbody;
     protected SO_detector p_Detector=> ctx.detector;
@@ -14,11 +14,12 @@ public abstract class AC_BaseState: ScriptableObject
     [SerializeReferenceDropdown]
     [SerializeField] public Enum_StateList stateTypeEnum;
     [SerializeField] public List<Enum_StateList> next;
-
-    public Action toSwitch;
-    public AC_BaseState(EC_Movement ctx)
+    public void setupCtx(EC_Movement context)
     {
-
+        //Debug.Log(context.EC_Rigidbody._RB);
+        ctx = context;
+        //Debug.Log(ctx.EC_Rigidbody._RB);
+        //Debug.Log(this.name);
     }
     public abstract bool SwitchCondintion();
     public abstract void EnterState();
@@ -40,5 +41,9 @@ public abstract class AC_BaseState: ScriptableObject
     //    //factory._currentState = next;
     //    //factory._currentState.EnterState();
     //}
-
+    public void Destroy()
+    {
+        Debug.Log(name+" State Destroyed");
+        Destroy(this);
+    }
 }

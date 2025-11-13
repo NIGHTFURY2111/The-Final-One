@@ -106,7 +106,7 @@ public class EC_Rigidbody : AC_Component
     #region --- Variables ---
 
     [Header("Rigidbody specific Values")]
-    [SerializeField] SO_detector detector;
+    SO_detector detector;
     [SerializeField] Vector3Int playerPlane;
     [SerializeField] float moveDirCollisionCheckDistance,radius;
     [SerializeField] public bool _CHECK_GRAVITY = true;
@@ -130,13 +130,14 @@ public class EC_Rigidbody : AC_Component
     Vector3 m_GoalVel = Vector3.zero;
     float m_JumpVel = 0f;
 
-    Rigidbody _RB;
+    public Rigidbody _RB;
     public override Enum_ComponentType componentType => Enum_ComponentType.RigidBody;
 
     #endregion
     public override void ComponentAwake()
     {
-        _RB = entity.GetComponent<Rigidbody>();
+        detector = (entity as Player_Entity).detectorSO;
+        entity.TryGetComponent<Rigidbody>(out _RB);
         setGravity(GRAVITY);
     }
     public override void ComponentStart(){}
@@ -336,7 +337,11 @@ public class EC_Rigidbody : AC_Component
     public void ApplyForce(Vector3 force, ForceMode forceMode = ForceMode.Force) => _RB.AddForce(force, forceMode);
     public void setGravity(float gravity) => appliedGravity = gravity;
     public void OverrideVelocity(Vector3 moveVector, float moveSpeed) => PlayerVelocity = moveVector * moveSpeed;
-    public override void ComponentDisable() { }
+    public override void ComponentDisable() 
+    {
+        Debug.Log("Rigidbody Component Disabled");
+        Destroy(this);
+    }
 
     public Transform PlayerTransform => _RB.transform;
     public Vector3 PlayerForward => _RB.transform.forward;

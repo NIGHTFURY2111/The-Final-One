@@ -4,9 +4,6 @@ using UnityEngine;
 public class SO_WallJump : AC_BaseState
 {
     public float WallJumpHeight, WallJumpAwayForce;
-    public SO_WallJump(EC_Movement ctx) : base(ctx)
-    {
-    }
 
     public override void EnterState()
     {

@@ -17,5 +17,11 @@ public abstract class AC_Component: ScriptableObject
     public abstract void ComponentUpdate();
     public virtual void ComponentFixedUpdate() { }
     public abstract void ComponentDisable();
+    public virtual void ComponentDestroy() 
+    { 
+        Debug.Log(name + " Component Destroyed");
+        entity.OnDestroyTick -= ComponentDestroy;
+        Destroy(this);
+    }
 
 }

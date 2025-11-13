@@ -13,9 +13,6 @@ public class SO_DashState : AC_BaseState
     private bool canExit;
     private Vector3 dashDirection;
 
-    public SO_DashState(EC_Movement ctx) : base(ctx)
-    {
-    }
 
     public override void EnterState()
     {

@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,20 +15,24 @@ public class stateholder
 [Serializable]
 public class StateManager
 {
-    [SerializeField] EC_Movement _context;
+    EC_Movement _context;
     [SerializeField] List<AC_BaseState> stateholders = new();
     [SerializeField] Enum_StateList initial;
-    [SerializeField] public AC_BaseState currentState { get; private set; }
-    private Dictionary<Enum_StateList, AC_BaseState> _stateMap;
+    public AC_BaseState currentState { get; private set; }
+    private Dictionary<Enum_StateList, AC_BaseState> _stateMap = new();
 
     private void BuildStateMap()
     {
-        _stateMap = new Dictionary<Enum_StateList, AC_BaseState>();
-        foreach (var state in stateholders)
+        _stateMap.Clear();
+        foreach (var stateRef in stateholders)
         {
-            //Debug.Log();
+            AC_BaseState state = UnityEngine.Object.Instantiate(stateRef);
+
             if (!_stateMap.ContainsKey(state.stateTypeEnum))
+            {
                 _stateMap.Add(state.stateTypeEnum, state);
+            }
+            //state.setupCtx(_context);
         }
     }
     public void Update()
@@ -69,7 +72,7 @@ public class StateManager
 
     protected AC_BaseState fetch(Enum_StateList exitStates)
     {
-        foreach (var holder in stateholders)
+        foreach (var holder in _stateMap.Values)
         {
             if (exitStates.HasFlag(holder.stateTypeEnum))
             {
@@ -78,13 +81,30 @@ public class StateManager
         }
         return null;
     }
-    public void setPrerequisites()
+    public void setPrerequisites( EC_Movement context)
     {
+        _context = context;
         BuildStateMap();
         currentState = fetch(initial);
     }
 
-    
+    public void giveCtx(EC_Movement ctx)
+    {
+        foreach (AC_BaseState state in _stateMap.Values)
+        {
+            state.setupCtx(ctx);
+        }
+    }
+
+    public void destroystates()
+    {
+        foreach (AC_BaseState state in _stateMap.Values)
+        {
+            state.Destroy();
+        }
+        
+    }
+
     //public BaseState currentState { get => currentState; set => currentState
 
 }

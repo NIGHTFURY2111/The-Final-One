@@ -1,27 +1,27 @@
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Scripting;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] GameObject player;
+    [SerializeField] Player_Entity player;
 
-    private void Awake()
+    private void Start()
     {
-        player.TryGetComponent(out Player_Entity playerEntity);
-        playerEntity.OnRespawnTrigger += respawnPlayer;
+        //Player_Entity instance =  Instantiate(player, spawnLocation.position, spawnLocation.rotation);
+        player.OnRespawnTrigger.AddListener(respawnPlayer);
+        player.OnDeathTrigger.AddListener( RestartLevel);
     }
     public void RestartLevel() 
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Debug.Log("Player DED");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    public void respawnPlayer(GameObject player, GameObject respawnPoint)
+    public void respawnPlayer()
     {
-        player.transform.position = respawnPoint.transform.position;
-        player.transform.rotation = respawnPoint.transform.rotation;
-        Debug.Log("Player Respawned at " + respawnPoint.name);
+        player.respawnPlayer();
     }
 
 }

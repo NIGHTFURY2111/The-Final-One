@@ -7,6 +7,7 @@ public abstract class AC_Entity : MonoBehaviour
     public Action OnStartTick;
     public Action OnAwakeTick;
     public Action OnDisableTick;
+    public Action OnDestroyTick;
     public Action OnUpdateTick;
     public Action OnFixedUpdateTick;
     public Action<Collider> OnTriggerEnterTick;

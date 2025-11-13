@@ -15,11 +15,10 @@ public class SO_InputReader : ScriptableObject, PlayerInputAction.IPlayerActions
         {
             input = new PlayerInputAction();
             input.Player.SetCallbacks(this);
+            input.Player.Enable();
         }
-        input.Player.Enable();
 
-        if (_InputBuffer == null)
-            _InputBuffer = new();
+        _InputBuffer ??= new();
     }
 
     private void OnDisable()
@@ -35,7 +34,7 @@ public class SO_InputReader : ScriptableObject, PlayerInputAction.IPlayerActions
     public void OnJump(InputAction.CallbackContext context) => StoreInputBool(context, defaultBufferTime);
 
     public void OnDash(InputAction.CallbackContext context) => StoreInputBool(context, defaultBufferTime);
-    public void OnPause(InputAction.CallbackContext context) => StoreInputBool(context, defaultBufferTime);
+    public void OnOpenMenu(InputAction.CallbackContext context) => StoreInputBool(context, defaultBufferTime);
 
     public void OnGrapple(InputAction.CallbackContext context) => StoreInputBool(context);
     public void OnGrappleHold(InputAction.CallbackContext context) => StoreInputBool(context);
@@ -57,4 +56,6 @@ public class SO_InputReader : ScriptableObject, PlayerInputAction.IPlayerActions
         _InputBuffer.AddInput(context.action, context.ReadValue<Vector2>());
     }
 
+    public void DisableInput() => input.Player.Disable();
+    public void EnableInput() => input.Player.Enable();
 }

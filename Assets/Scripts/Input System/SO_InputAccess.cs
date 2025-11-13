@@ -4,10 +4,13 @@ using UnityEngine.InputSystem;
 
 [CreateAssetMenu(fileName = "Input Accessor", menuName = "Scriptable Object/Input/Input Accessors")]
 
-public class SO_InputAccess : ScriptableObject
+public class SO_InputAccess : AC_Component
 {
     public SO_InputReader ReadInput;
     InputBuffer buffer => ReadInput.InputBuffer;
+
+    public override Enum_ComponentType componentType => Enum_ComponentType.Input;
+
     public bool ConsumeInput(string ActionName) => buffer.MarkInputAsUsed(ActionName);
 
     public string ListInputs() => buffer.List();
@@ -120,10 +123,11 @@ public class SO_InputAccess : ScriptableObject
     }
 
     #endregion
+
     #region escape
     public bool Pause(out InputAction value)
     {
-        bool output = buffer.GetInputValueThisFrame("Pause", out value);
+        bool output = buffer.GetInputValueThisFrame("OpenMenu", out value);
         return output;
 
     }
@@ -135,5 +139,13 @@ public class SO_InputAccess : ScriptableObject
     }
 
     #endregion
+    public override void ComponentAwake() { }
+
+    public override void ComponentStart() { }
+
+    public override void ComponentUpdate() { }
+
+    public override void ComponentDisable() { Debug.Log("input Disabled"); Destroy(this); }
+
 
 }

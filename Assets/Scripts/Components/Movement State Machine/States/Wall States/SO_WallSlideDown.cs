@@ -9,10 +9,6 @@ public class SO_WallSlideDown : AC_BaseState
     //[SerializeField] PlayerMovementValues FallValue;
     [SerializeField] float SlideGravityFactor, MinimumFallingVelocity;
 
-    public SO_WallSlideDown(EC_Movement ctx) : base(ctx)
-    {
-    }
-
     public override void EnterState()
     {
         p_Rigidbody.setGravity(p_Rigidbody.GRAVITY*SlideGravityFactor);

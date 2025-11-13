@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 [CreateAssetMenu(fileName = "Player Movement", menuName = "Scriptable Object/Component/Player Movement")]
 public class EC_Movement : AC_Component
@@ -7,25 +8,31 @@ public class EC_Movement : AC_Component
     public override Enum_ComponentType componentType => Enum_ComponentType.Movement;
     [SerializeField] float LookSpeed = 0.8f;      
 
-    [SerializeField] public SO_InputAccess inputAccessSO;
-    [SerializeField] public EC_Rigidbody EC_Rigidbody;
-    [SerializeField] public SO_detector detector;
+    [HideInInspector] public SO_InputAccess inputAccessSO;
+    [HideInInspector] public EC_Rigidbody EC_Rigidbody;
+    [HideInInspector] public SO_detector detector;
     [SerializeReferenceDropdown]
     [SerializeReference] public StateManager stateManager;
+    
+    public UnityEvent<Vector2> OnCameraMove;
+    public UnityEvent<PlayerMovementValues,bool> OnPlayerMove;
+    public UnityEvent<bool> OnCrouch;
 
-    public Action<Vector2> OnCameraMove;
-    public Action<PlayerMovementValues,bool> OnPlayerMove;
-    public Action<bool> OnCrouch;
-
+    private Player_Entity Player_Entity => entity as Player_Entity;
 
     public override void ComponentAwake()
     {
-        stateManager.setPrerequisites();
+        inputAccessSO = Player_Entity.inputSO;
+        EC_Rigidbody = Player_Entity.rigidbodySO;
+        detector = Player_Entity.detectorSO;
+        stateManager.setPrerequisites(this);
     }
 
 
     public override void ComponentStart()
     {
+        stateManager.giveCtx(this);
+        //Debug.Log(stateManager.currentState.ctx.entity.name);
         stateManager.currentState.EnterState();
     }
     public override void ComponentUpdate()
@@ -53,10 +60,16 @@ public class EC_Movement : AC_Component
         return outp;
     }
 
+
     public void MovePlayer(PlayerMovementValues PMV,bool ChangeInputToLocalSpace = true) => OnPlayerMove?.Invoke(PMV, ChangeInputToLocalSpace);
     public void UpdateGoalVel() => EC_Rigidbody.UpdateGoalVel();
     public bool IsGrounded => detector.isGrounded;
 
     public void crouchCamera(bool iscrouching) => OnCrouch?.Invoke(iscrouching);
-    public override void ComponentDisable() { }
+    public override void ComponentDisable() 
+    {
+        stateManager.destroystates();
+        Debug.Log("Movement Disabled");
+        Destroy(this);
+    }
 }

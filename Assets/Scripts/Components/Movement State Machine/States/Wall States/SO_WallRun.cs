@@ -27,9 +27,6 @@ public class SO_WallRun : AC_BaseState
     private Collider wallCollider;
 
 
-    public SO_WallRun(EC_Movement ctx) : base(ctx)
-    {
-    }
 
     public override void EnterState()
     {

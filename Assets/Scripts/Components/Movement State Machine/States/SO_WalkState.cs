@@ -10,10 +10,7 @@ public class SO_WalkState : AC_BaseState
 
     [SerializeField] Headbob_Effect headbob;
 
-    public SO_WalkState(EC_Movement ctx) : base(ctx)
-    {
-    }
-
+    
     public override void EnterState()
     {
     }

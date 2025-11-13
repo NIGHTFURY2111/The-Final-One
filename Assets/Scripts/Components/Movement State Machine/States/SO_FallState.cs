@@ -8,9 +8,6 @@ public class SO_FallState : AC_BaseState
 {
     [SerializeField] PlayerMovementValues FallValue;
 
-    public SO_FallState(EC_Movement ctx) : base(ctx)
-    {
-    }
 
     public override void EnterState()
     {
