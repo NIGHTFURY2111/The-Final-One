@@ -7,12 +7,13 @@
       "dependencies": {}
     },
     "com.alexeytaranov.serializereferencedropdown": {
-      "version": "file:SerializeReferenceDropdown-1.0.0",
+      "version": "https://github.com/AlexeyTaranov/SerializeReferenceDropdown.git",
       "depth": 0,
-      "source": "embedded",
+      "source": "git",
       "dependencies": {
         "com.unity.nuget.newtonsoft-json": "3.2.0"
-      }
+      },
+      "hash": "14ce81c9c613506bf659013c137237e0ed0e9ee7"
     },
     "com.unity.ai.navigation": {
       "version": "1.1.7",

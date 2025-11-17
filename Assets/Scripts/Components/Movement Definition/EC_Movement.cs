@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [CreateAssetMenu(fileName = "Player Movement", menuName = "Scriptable Object/Component/Player Movement")]
-public class EC_Movement : AC_Component
+public class EC_Movement : AC_Component<EC_Movement>
 {
     public override Enum_ComponentType componentType => Enum_ComponentType.Movement;
     [SerializeField] float LookSpeed = 0.8f;      
