@@ -12,12 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2a11962871d2f54ca9f36417e23fae7, type: 3}
   m_Name: Fall State
   m_EditorClassIdentifier: 
-  ctx: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
   stateTypeEnum: 8
   next: 100000004000000080000000010000000200000004000000
   FallValue:
     baseFactor: 1
-    overrideFactor: 1.2
+    overrideFactor: 1.01
     DecayFactor: 0.1
     DelayCurve:
       serializedVersion: 2
@@ -25,23 +24,23 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 1
-        inSlope: -0.125
-        outSlope: -0.125
+        inSlope: 0
+        outSlope: 0
         tangentMode: 34
         weightedMode: 0
         inWeight: 0
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 2
-        value: 0.75
-        inSlope: -0.25
-        outSlope: -0.25
+        time: 5.733032
+        value: 1
+        inSlope: 0
+        outSlope: 0
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 4
+        time: 10
         value: 0
         inSlope: 0
         outSlope: 0
@@ -53,4 +52,4 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     clampMaxVelocity: NaN
-    forceMode: 5
+    forceMode: 0

@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 [CreateAssetMenu(fileName = "Input Accessor", menuName = "Scriptable Object/Input/Input Accessors")]
 
-public class SO_InputAccess : AC_Component
+public class SO_InputAccess : AC_Component<SO_InputAccess>
 {
     public SO_InputReader ReadInput;
     InputBuffer buffer => ReadInput.InputBuffer;
@@ -145,7 +145,7 @@ public class SO_InputAccess : AC_Component
 
     public override void ComponentUpdate() { }
 
-    public override void ComponentDisable() { Debug.Log("input Disabled"); Destroy(this); }
+    public override void ComponentDisable() { Destroy(this); }
 
 
 }

@@ -10,21 +10,7 @@ public class Player_Entity : AC_Entity
     [SerializeField] private Dictionary<Enum_ComponentType, AC_Component> ComponentDict = new();
     [SerializeField] private Def_Gun Gun;
 
-    [HideInInspector]public new UnityEvent OnStartTick;
-    [HideInInspector]public new UnityEvent OnAwakeTick;
-    [HideInInspector]public new UnityEvent OnDisableTick;
-    [HideInInspector]public new UnityEvent OnDestroyTick;
-    [HideInInspector]public new UnityEvent OnUpdateTick;
-    [HideInInspector]public new UnityEvent OnFixedUpdateTick;
-    [HideInInspector]public new UnityEvent<Collider> OnTriggerEnterTick;
-    [HideInInspector]public new UnityEvent<Collider> OnTriggerExitTick;
-
-
-
-
-
-
-    public UnityEvent OnRespawnTrigger;
+    [HideInInspector] public UnityEvent OnRespawnTrigger;
 
     private GameObject currentRespawnPoint;
 
@@ -77,7 +63,6 @@ public class Player_Entity : AC_Entity
         // Call component disable first
         OnDisableTick?.Invoke();
         UnsubscribeAllEvents();
-        Debug.Log("Player Disabled");
         // Then unsubscribe everything to prevent memory leaks
         ComponentDict.Clear();
         Destroy(this);
@@ -100,7 +85,6 @@ public class Player_Entity : AC_Entity
             if (comp == null) continue;
             if (!ComponentDict.ContainsKey(comp.componentType))
             {
-                Debug.Log(comp.name + " added to Component Dictionary");
                 ComponentDict.Add(comp.componentType, comp);
             }
         }
@@ -124,7 +108,6 @@ public class Player_Entity : AC_Entity
     }
     public override void EventSubscribe()
     {
-        Debug.Log("Player Event Subscribe");
         // Connect events here - using safe event linking
         TryEvent(() => movementSO.OnCameraMove.AddListener(cameraSO.UpdateCameraTransform), movementSO, cameraSO);
         TryEvent(() => movementSO.OnCrouch.AddListener(cameraSO.crouchCameraPosition), movementSO, cameraSO);
@@ -163,9 +146,9 @@ public class Player_Entity : AC_Entity
     {
         Debug.Log("died");
 
-        if (currentRespawnPoint != null) { Debug.Log("respawn"); OnRespawnTrigger?.Invoke(); }
+        if (currentRespawnPoint != null) {OnRespawnTrigger?.Invoke(); }
 
-        else { Debug.Log("dies"); OnDeathTrigger?.Invoke(); }
+        else { OnDeathTrigger?.Invoke(); }
             
     }
 
@@ -185,14 +168,15 @@ public class Player_Entity : AC_Entity
         else { OnDeathTrigger?.Invoke(); }
     }
 
-    AC_Component getComponenet(Enum_ComponentType type)
+    T GetComponent<T>(Enum_ComponentType type) where T : AC_Component
     {
         ComponentDict.TryGetValue(type, out AC_Component comp);
-        return comp;
+        return comp as T;
     }
-    public EC_Movement movementSO => getComponenet(Enum_ComponentType.Movement) as EC_Movement;
-    public EC_Camera cameraSO => getComponenet(Enum_ComponentType.Camera) as EC_Camera;
-    public EC_Rigidbody rigidbodySO => getComponenet(Enum_ComponentType.RigidBody) as EC_Rigidbody;
-    public SO_detector detectorSO=> getComponenet(Enum_ComponentType.Detector) as SO_detector;
-    public SO_InputAccess inputSO=> getComponenet(Enum_ComponentType.Input) as SO_InputAccess;
+    
+    public EC_Movement movementSO => GetComponent<EC_Movement>(Enum_ComponentType.Movement);
+    public EC_Camera cameraSO => GetComponent<EC_Camera>(Enum_ComponentType.Camera);
+    public EC_Rigidbody rigidbodySO => GetComponent<EC_Rigidbody>(Enum_ComponentType.RigidBody);
+    public SO_detector detectorSO => GetComponent<SO_detector>(Enum_ComponentType.Detector);
+    public SO_InputAccess inputSO => GetComponent<SO_InputAccess>(Enum_ComponentType.Input);
 }

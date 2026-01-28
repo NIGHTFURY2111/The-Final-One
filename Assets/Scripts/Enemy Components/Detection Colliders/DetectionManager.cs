@@ -13,7 +13,7 @@ public enum Enum_DetectionState
 }
 
 [CreateAssetMenu(fileName = "Enemy Detection Manager", menuName = "Scriptable Object/Component/Enemy/Enemy Detection Manager")]
-public class DetectionManager : AC_Component
+public class DetectionManager : AC_Component<DetectionManager>
 {
     #region Nested Types
 

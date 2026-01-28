@@ -43,7 +43,6 @@ public abstract class AC_BaseState: ScriptableObject
     //}
     public void Destroy()
     {
-        Debug.Log(name+" State Destroyed");
         Destroy(this);
     }
 }

@@ -14,9 +14,9 @@ public class EC_Movement : AC_Component<EC_Movement>
     [SerializeReferenceDropdown]
     [SerializeReference] public StateManager stateManager;
     
-    public UnityEvent<Vector2> OnCameraMove;
-    public UnityEvent<PlayerMovementValues,bool> OnPlayerMove;
-    public UnityEvent<bool> OnCrouch;
+    [HideInInspector]public UnityEvent<Vector2> OnCameraMove;
+    [HideInInspector]public UnityEvent<PlayerMovementValues,bool> OnPlayerMove;
+    [HideInInspector] public UnityEvent<bool> OnCrouch;
 
     private Player_Entity Player_Entity => entity as Player_Entity;
 
@@ -69,7 +69,6 @@ public class EC_Movement : AC_Component<EC_Movement>
     public override void ComponentDisable() 
     {
         stateManager.destroystates();
-        Debug.Log("Movement Disabled");
         Destroy(this);
     }
 }

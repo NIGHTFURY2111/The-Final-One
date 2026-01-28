@@ -19,6 +19,15 @@ MonoBehaviour:
   detector: {fileID: 11400000, guid: cd89a89f043f174499a52398337d6cbd, type: 2}
   stateManager:
     rid: 1313339419740864512
+  OnCameraMove:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlayerMove:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCrouch:
+    m_PersistentCalls:
+      m_Calls: []
   references:
     version: 2
     RefIds:

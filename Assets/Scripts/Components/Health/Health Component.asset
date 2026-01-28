@@ -9,7 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd62a5403e9e49d479e1cdacea2fc469, type: 3}
-  m_Name: Chase
+  m_Script: {fileID: 11500000, guid: feb70fcf7e123cf44910cf2a035f0df9, type: 3}
+  m_Name: Health Component
   m_EditorClassIdentifier: 
-  debugMode: 0
+  entity: {fileID: 0}
+  healths:
+  - current: 31.9
+    max: 100
+  shields:
+  - _value: 0
+    color: {r: 0, g: 0.7, b: 1, a: 0.7}

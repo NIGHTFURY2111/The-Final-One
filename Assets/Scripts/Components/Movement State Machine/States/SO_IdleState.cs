@@ -22,7 +22,12 @@ public class SO_IdleState : AC_BaseState
 
     public override void UpdateState()
     {
-        //Debug.Log(ctx.move.IsPressed());
+    }
+    public override void FixedUpdate()
+    {
+
         ctx.MovePlayer(PlayerMovementValues.zero);
     }
+
+
 }

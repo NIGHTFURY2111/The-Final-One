@@ -14,8 +14,9 @@ public class SO_JumpState : AC_BaseState
     float JumpTime;
     bool canExit;
     bool canJump;
-    float t ;
-    Vector3 j;
+    private float t;
+    private Vector3 j;
+
     public override void EnterState()
     {
         canExit = false;

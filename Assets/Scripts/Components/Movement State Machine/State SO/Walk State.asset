@@ -12,12 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 644d3928cfbec7d4ebe88dd6666d9853, type: 3}
   m_Name: Walk State
   m_EditorClassIdentifier: 
-  ctx: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
   stateTypeEnum: 4
   next: 0200000010000000010000004000000008000000
   WalkValue:
     baseFactor: 1
-    overrideFactor: 1.1
+    overrideFactor: 1
     DecayFactor: 0.1
     DelayCurve:
       serializedVersion: 2
@@ -25,17 +24,17 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 1
-        inSlope: -0.125
-        outSlope: -0.125
+        inSlope: -0.042643204
+        outSlope: -0.042643204
         tangentMode: 34
         weightedMode: 0
         inWeight: 0
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 2
-        value: 0.75
-        inSlope: -0.25
-        outSlope: -0.25
+        time: 1.9909363
+        value: 0.9151001
+        inSlope: -0.0848999
+        outSlope: -0.0848999
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
@@ -53,5 +52,5 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     clampMaxVelocity: NaN
-    forceMode: 0
+    forceMode: 5
   headbob: {fileID: 11400000, guid: 19357ed7e89603e4bbf606020969a603, type: 2}

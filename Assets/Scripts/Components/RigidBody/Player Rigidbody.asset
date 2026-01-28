@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Player Rigidbody
   m_EditorClassIdentifier: 
   entity: {fileID: 0}
-  detector: {fileID: 11400000, guid: cd89a89f043f174499a52398337d6cbd, type: 2}
   playerPlane: {x: 1, y: 0, z: 1}
   moveDirCollisionCheckDistance: 0.48
   radius: 0.35
@@ -36,53 +35,71 @@ MonoBehaviour:
     baseSpeed: 15
     maxSpeed: 0
     Speedfactor: 7
-    Acceleration: 200
+    Acceleration: 100
     AccelerationFactorFromDot:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: -1
         value: 2
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
+        inSlope: -0.0060876952
+        outSlope: -0.0060876952
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.46074504
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: -0.0011811588
+        outSlope: -0.0011811588
+        tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
-        outWeight: 0.33333334
+        outWeight: 0.56964993
       - serializedVersion: 3
         time: 1
         value: 1
         inSlope: 0
         outSlope: 0
-        tangentMode: 136
+        tangentMode: 34
         weightedMode: 0
         inWeight: 0.33333334
-        outWeight: 0.33333334
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    MaxAccel: 2
+    MaxAccel: 50000
     MaxAccelerationFactorFromDot:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: -1
         value: 2
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
+        inSlope: -0.0060876952
+        outSlope: -0.0060876952
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.46074504
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: -0.0011811588
+        outSlope: -0.0011811588
+        tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
-        outWeight: 0.33333334
+        outWeight: 0.56964993
       - serializedVersion: 3
         time: 1
         value: 1
         inSlope: 0
         outSlope: 0
-        tangentMode: 136
+        tangentMode: 34
         weightedMode: 0
         inWeight: 0.33333334
-        outWeight: 0.33333334
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4

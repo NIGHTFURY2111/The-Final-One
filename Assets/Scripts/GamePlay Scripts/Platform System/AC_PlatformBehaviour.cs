@@ -3,13 +3,12 @@ using DG.Tweening;
 using System;
 
 /// <summary>
-/// LEGACY: This script is kept for backwards compatibility.
-/// For new platforms, use the Platform component with EC_ShiftingPlatform behaviour instead.
-/// See: Assets/Scripts/GamePlay Scripts/Platform System/
+/// Abstract base class for platform behaviors.
+/// Each platform instance has its own component with unique data.
+/// Follows the modular component pattern used throughout the project.
 /// </summary>
-[RequireComponent(typeof(Rigidbody))
-]
-public class ShiftingPlatform : MonoBehaviour
+[RequireComponent(typeof(Rigidbody))]
+public abstract class AC_PlatformBehaviour : MonoBehaviour
 {
     [Serializable]
     public class TransformData
@@ -34,51 +33,35 @@ public class ShiftingPlatform : MonoBehaviour
         }
     }
 
-    [Header("Recorded Transforms")]
-    [SerializeField] private TransformData originalTransform = new TransformData();
-    [SerializeField] private TransformData targetTransform = new TransformData();
-
     [Header("Movement Settings")]
-    [SerializeField] private float moveDuration = 1f;
-    [SerializeField] private Ease easeType = Ease.InOutQuad;
+    [SerializeField] protected float moveDuration = 1f;
+    [SerializeField] protected Ease easeType = Ease.InOutQuad;
 
-    private Rigidbody rb;
-    private DG.Tweening.Sequence activeSequence;
+    protected Rigidbody rb;
+    protected DG.Tweening.Sequence activeSequence;
 
-    private void Awake()
+    protected virtual void Awake()
     {
-        TryGetComponent(out rb);
-    }
-    
-    private void OnDisable() => activeSequence?.Kill();
-    private void OnDestroy() => activeSequence?.Kill();
-
-    public void RecordOriginalTransform()
-    {
-        originalTransform = new TransformData(transform);
+        if (!TryGetComponent(out rb))
+        {
+            Debug.LogError($"Platform {gameObject.name} requires a Rigidbody component!");
+        }
     }
 
-    public void RecordTargetTransform()
-    {
-        targetTransform = new TransformData(transform);
-    }
-
-    public void PreviewOriginalTransform()
+    protected virtual void OnDisable()
     {
         activeSequence?.Kill();
-        originalTransform.ApplyTo(transform);
     }
 
-    public void PreviewTargetTransform()
+    protected virtual void OnDestroy()
     {
         activeSequence?.Kill();
-        targetTransform.ApplyTo(transform);
     }
 
-    public void ShiftToTarget() => MoveTo(targetTransform);
-    public void ShiftToOriginal() => MoveTo(originalTransform);
-
-    private void MoveTo(TransformData target)
+    /// <summary>
+    /// Moves the platform to a target transform data with position, rotation, and scale
+    /// </summary>
+    protected void MoveTo(TransformData target, System.Action onComplete = null)
     {
         activeSequence?.Kill();
         
@@ -101,5 +84,19 @@ public class ShiftingPlatform : MonoBehaviour
         // Scale tween
         activeSequence.Join(transform.DOScale(target.scale, moveDuration)
         .SetEase(easeType));
+
+        if (onComplete != null)
+        {
+            activeSequence.OnComplete(() => onComplete());
+        }
+    }
+
+    /// <summary>
+    /// Immediately applies transform data without animation
+    /// </summary>
+    protected void ApplyTransformImmediate(TransformData data)
+    {
+        activeSequence?.Kill();
+        data.ApplyTo(transform);
     }
 }

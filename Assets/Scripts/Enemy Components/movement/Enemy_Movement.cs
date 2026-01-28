@@ -21,7 +21,7 @@ public class MovementSettings
 }
 
 [CreateAssetMenu(fileName = "Enemy Movement", menuName = "Scriptable Object/Component/Enemy/Enemy Movement")]
-public class Enemy_Movement : AC_Component
+public class Enemy_Movement : AC_Component<Enemy_Movement>
 {
     [SerializeField] private MovementSettings settings = new MovementSettings();
     

@@ -110,11 +110,11 @@ public class Enemy_Entity : AC_Entity
             component.entity = this;
 
             // Subscribe to events - these should only happen once per component
-            TryEvent(() => OnAwakeTick += component.ComponentAwake, this, component);
-            TryEvent(() => OnDisableTick += component.ComponentDisable, this, component);
-            TryEvent(() => OnStartTick += component.ComponentStart, this, component);
-            TryEvent(() => OnUpdateTick += component.ComponentUpdate, this, component);
-            TryEvent(() => OnFixedUpdateTick += component.ComponentFixedUpdate, this, component);
+            TryEvent(() => OnAwakeTick.AddListener(component.ComponentAwake), this, component);
+            TryEvent(() => OnDisableTick.AddListener(component.ComponentDisable), this, component);
+            TryEvent(() => OnStartTick.AddListener(component.ComponentStart), this, component);
+            TryEvent(() => OnUpdateTick.AddListener(component.ComponentUpdate), this, component);
+            TryEvent(() => OnFixedUpdateTick.AddListener(component.ComponentFixedUpdate), this, component);
         }
     }
 
@@ -125,23 +125,23 @@ public class Enemy_Entity : AC_Entity
         {
             if (component == null) continue;
 
-            TryEvent(() => OnAwakeTick -= component.ComponentAwake, this, component);
-            TryEvent(() => OnDisableTick -= component.ComponentDisable, this, component);
-            TryEvent(() => OnStartTick -= component.ComponentStart, this, component);
-            TryEvent(() => OnUpdateTick -= component.ComponentUpdate, this, component);
-            TryEvent(() => OnFixedUpdateTick -= component.ComponentFixedUpdate, this, component);
+            OnAwakeTick.RemoveAllListeners();
+            OnDisableTick.RemoveAllListeners();
+            OnStartTick.RemoveAllListeners();
+            OnUpdateTick.RemoveAllListeners();
+            OnFixedUpdateTick.RemoveAllListeners();
         }
 
         EventUnsubscribe();
     }
 
-    AC_Component getComponenet(Enum_ComponentType type)
+    T GetComponent<T>(Enum_ComponentType type) where T : AC_Component
     {
         ComponentDict.TryGetValue(type, out AC_Component comp);
-        return comp;
+        return comp as T;
     }
 
-    public EC_Movement movementSO => getComponenet(Enum_ComponentType.Movement) as EC_Movement;
-    public DetectionManager DetectorManager => getComponenet(Enum_ComponentType.Detector) as DetectionManager;
-    public Enemy_Movement EnemyMovement => getComponenet(Enum_ComponentType.Movement) as Enemy_Movement;
+    public EC_Movement movementSO => GetComponent<EC_Movement>(Enum_ComponentType.Movement);
+    public DetectionManager DetectorManager => GetComponent<DetectionManager>(Enum_ComponentType.Detector);
+    public Enemy_Movement EnemyMovement => GetComponent<Enemy_Movement>(Enum_ComponentType.Movement);
 }

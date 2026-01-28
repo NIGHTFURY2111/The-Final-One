@@ -5,7 +5,7 @@ using DG.Tweening;
 /// Component responsible for camera operations like rotation and applying FOV changes
 /// </summary>
 [CreateAssetMenu(fileName = "Player Camera", menuName = "Scriptable Object/Component/Player Camera")]
-public class EC_Camera : AC_Component
+public class EC_Camera : AC_Component<EC_Camera>
 {
     #region --- Variables ---
     [Header("Effect References")]
@@ -167,7 +167,6 @@ public class EC_Camera : AC_Component
 
         if (Headbob != null)
         Headbob.terminate();
-        Debug.Log("Camera Component Disabled");
         Destroy(this);
     }
 }

@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac846deefb6ad994b9345bf881046c72, type: 3}
   m_Name: Jump State
   m_EditorClassIdentifier: 
-  ctx: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
   stateTypeEnum: 1
   next: 1000000008000000800000000200000004000000
   JumpCurve:
@@ -28,8 +27,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.03280543
     - serializedVersion: 3
-      time: 0.07194043
-      value: 1.4914647
+      time: 0.06789036
+      value: 2.6406903
       inSlope: 0
       outSlope: 0
       tangentMode: 136

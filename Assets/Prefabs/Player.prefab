@@ -271,16 +271,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 887974ceb2e0b5a4ca07b37d95716d66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnDeathTrigger:
-    m_PersistentCalls:
-      m_Calls: []
-  Components:
-  - {fileID: 11400000, guid: ac5d7e53b4e9cb042b247d1a37e46d0c, type: 2}
-  - {fileID: 11400000, guid: cd89a89f043f174499a52398337d6cbd, type: 2}
-  - {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
-  - {fileID: 11400000, guid: 7079a5ae2acd7c54680237a23d93ad55, type: 2}
-  - {fileID: 11400000, guid: c4b30f4e049c13e4c9c218b599c91d7c, type: 2}
-  Gun: {fileID: 2670483002380557798}
   OnStartTick:
     m_PersistentCalls:
       m_Calls: []
@@ -305,6 +295,16 @@ MonoBehaviour:
   OnTriggerExitTick:
     m_PersistentCalls:
       m_Calls: []
+  OnDeathTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+  Components:
+  - {fileID: 11400000, guid: ac5d7e53b4e9cb042b247d1a37e46d0c, type: 2}
+  - {fileID: 11400000, guid: cd89a89f043f174499a52398337d6cbd, type: 2}
+  - {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
+  - {fileID: 11400000, guid: 7079a5ae2acd7c54680237a23d93ad55, type: 2}
+  - {fileID: 11400000, guid: c4b30f4e049c13e4c9c218b599c91d7c, type: 2}
+  Gun: {fileID: 2670483002380557798}
   OnRespawnTrigger:
     m_PersistentCalls:
       m_Calls: []

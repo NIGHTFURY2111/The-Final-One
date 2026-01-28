@@ -4,15 +4,15 @@ using UnityEngine;
 using UnityEngine.Events;
 public abstract class AC_Entity : MonoBehaviour
 {
-    public Action OnStartTick;
-    public Action OnAwakeTick;
-    public Action OnDisableTick;
-    public Action OnDestroyTick;
-    public Action OnUpdateTick;
-    public Action OnFixedUpdateTick;
-    public Action<Collider> OnTriggerEnterTick;
-    public Action<Collider> OnTriggerExitTick;
-    public UnityEvent OnDeathTrigger;
+    [HideInInspector]public UnityEvent OnStartTick;
+    [HideInInspector]public UnityEvent OnAwakeTick;
+    [HideInInspector]public UnityEvent OnDisableTick;
+    [HideInInspector]public UnityEvent OnDestroyTick;
+    [HideInInspector]public UnityEvent OnUpdateTick;
+    [HideInInspector]public UnityEvent OnFixedUpdateTick;
+    [HideInInspector]public UnityEvent<Collider> OnTriggerEnterTick;
+    [HideInInspector]public UnityEvent<Collider> OnTriggerExitTick;
+    [HideInInspector]public UnityEvent OnDeathTrigger;
 
     //TODO: public HealthSystemSO;
     //TODO: public MovementStateMachineSO;

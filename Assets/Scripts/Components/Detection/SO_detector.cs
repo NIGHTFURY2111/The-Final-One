@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Detector", menuName = "Scriptable Object/Component/Detector")]
-public class SO_detector : AC_Component
+public class SO_detector : AC_Component<SO_detector>
 {
     [Serializable]
     struct GroundCheckValues
@@ -55,7 +55,6 @@ public class SO_detector : AC_Component
 
     public override void ComponentDisable()
     { 
-        Debug.Log("Detector Component Disabled");
         Destroy(this);
     }
 

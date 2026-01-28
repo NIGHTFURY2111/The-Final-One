@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e47a173da60424f459b5e1c576600989, type: 3}
   m_Name: Wall Jump
   m_EditorClassIdentifier: 
-  ctx: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
   stateTypeEnum: 512
   next: 10000000080000000200000004000000
   WallJumpHeight: 10
-  WallJumpAwayForce: 20
+  WallJumpAwayForce: 30
+  forceMode: 1

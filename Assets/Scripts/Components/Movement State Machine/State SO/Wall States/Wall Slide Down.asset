@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4f01d32b5825bd4f890e6ad1c69f7f7, type: 3}
   m_Name: Wall Slide Down
   m_EditorClassIdentifier: 
-  ctx: {fileID: 11400000, guid: 49d171fc792aaa14da142cd674705469, type: 2}
   stateTypeEnum: 32
   next: 1000000002000000040000000002000008000000
   SlideGravityFactor: 0.1

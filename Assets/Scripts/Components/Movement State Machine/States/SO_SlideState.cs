@@ -16,6 +16,9 @@ public class SO_SlideState : AC_BaseState
     }
     public override void UpdateState()
     {
+    }
+    public override void FixedUpdate()
+    {
         ctx.MovePlayer(slideValues, false);
     }
 

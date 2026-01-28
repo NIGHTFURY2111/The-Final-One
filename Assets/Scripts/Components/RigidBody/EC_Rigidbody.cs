@@ -61,7 +61,7 @@ public struct SpringValues
 }
 
 [CreateAssetMenu(fileName = "Player Rigidbody", menuName = "Scriptable Object/Component/Player Rigidbody")]
-public class EC_Rigidbody : AC_Component
+public class EC_Rigidbody : AC_Component<EC_Rigidbody>
 {
     [Serializable]
     struct WallValues
@@ -130,7 +130,7 @@ public class EC_Rigidbody : AC_Component
     Vector3 m_GoalVel = Vector3.zero;
     float m_JumpVel = 0f;
 
-    public Rigidbody _RB;
+    private Rigidbody _RB;
     public override Enum_ComponentType componentType => Enum_ComponentType.RigidBody;
 
     #endregion
@@ -144,9 +144,12 @@ public class EC_Rigidbody : AC_Component
     
     public override void ComponentUpdate()
     {
-        ST_debug.Log($"last Grounded: {detector.lastGrounded.ToString("F2")} " +
+        ST_debug.Log("Last switched:"+(Time.time - StateSwitchTime).ToString());
+        ST_debug.Log($"goal vel: {m_GoalVel}"/*"last Grounded: {detector.lastGrounded.ToString("F2")} "*/ +
             $"\nTotal vel: {_RB.velocity.ToString("F2")} " +
             $"\nplane Vel: {PlayerPlaneVel.magnitude.ToString("F2")}");
+        ST_debug.Log((detector.isGrounded && detector._groundRayHit.rigidbody != null) + (detector.isGrounded && detector._groundRayHit.rigidbody != null ? detector._groundRayHit.rigidbody.velocity : Vector3.zero).ToString());
+        //ST_debug.Log(detector._groundRayHit.rigidbody + GroundVel.ToString());
     }
     
     public override void ComponentFixedUpdate()
@@ -166,7 +169,7 @@ public class EC_Rigidbody : AC_Component
     }
 
     #region --- Spring and Gravity Physics ---
-    public void ApplySpringPull(RaycastHit _rayHit) => ApplySpringPull(_rayHit.rigidbody, -_rayHit.normal, _rayHit.point,GroundValues);
+    public void ApplySpringPull(RaycastHit _rayHit) => ApplySpringPull(_rayHit.rigidbody, -_rayHit.normal, _rayHit.point, GroundValues);
     public void ApplySpringPull(Rigidbody otherRB, Vector3 springDirection, Vector3 SpringPoint, SpringValues GroundValues)
     {
         springDirection = springDirection.normalized;
@@ -247,45 +250,98 @@ public class EC_Rigidbody : AC_Component
         return _RB.transform.TransformDirection(new Vector3(moveVector.x,0f,moveVector.y));
     }
 
+
+
+
+
+    //public void MoveInPlayerPlane(PlayerMovementValues value)
+    //{
+    //    //convert movement into a usable value
+    //    Vector3 moveOnPlane = Vector3.Scale(value.planeVector, playerPlane);
+    //    Vector3 wallHittingVel = GetWallSlideVector(moveOnPlane);
+
+    //    moveOnPlane = wallHittingVel.Equals(Vector3.zero) ?
+    //                  moveOnPlane :
+    //                  Vector3.ProjectOnPlane(moveOnPlane, movementDirectionCollisionCheck.normal);
+
+    //    // Calculate velocity alignment for acceleration curves
+    //    Vector3 horizontalVelocity = PlayerPlaneVel;
+    //    float velocityAlignment = horizontalVelocity.magnitude > 0.01f ?
+    //        Vector3.Dot(moveOnPlane.normalized, horizontalVelocity.normalized) : 0f;
+
+    //    // Apply acceleration curve factor to both acceleration and max acceleration
+    //    float accelerationFactor = movementValues.AccelerationFactorFromDot.Evaluate(velocityAlignment);
+    //    //float maxAccelerationFactor = movementValues.MaxAccelerationFactorFromDot.Evaluate(velocityAlignment);
+
+    //    // Calculate goal speed with current factor
+    //    currentGoalSpeedFactor = updateGoalVel ?
+    //        CalculateNewGoalVel(value.baseFactor, value.overrideFactor) :
+    //        decayVelocity(value.baseFactor, value.DecayFactor, value.DelayCurve);
+
+    //    // Calculate goal velocity (includes ground velocity for moving platforms)
+    //    Vector3 goalVelocity = moveOnPlane * movementValues.baseSpeed * currentGoalSpeedFactor;
+    //    float maxDeltaVelocity = movementValues.Acceleration * accelerationFactor * Time.fixedDeltaTime;
+    //    m_GoalVel = Vector3.MoveTowards(m_GoalVel, goalVelocity + GroundVel, maxDeltaVelocity);
+
+    //    // Calculate required acceleration (more direct approach)
+    //    Vector3 neededAccel = (m_GoalVel - horizontalVelocity) / Time.fixedDeltaTime;
+
+    //    // Clamp using max acceleration with factor applied
+    //    //float maxAccel = movementValues.MaxAccel * maxAccelerationFactor;
+    //    //float clampValue = float.IsNaN(value.clampMaxVelocity) ? maxAccel : value.clampMaxVelocity;
+    //    //neededAccel = Vector3.ClampMagnitude(neededAccel, clampValue);
+
+    //    // Convert to force based on ForceMode
+    //    //Vector3 force = value.forceMode == ForceMode.Acceleration ? 
+    //    //    neededAccel : 
+    //    //    neededAccel * _RB.mass;
+
+    //    _RB.AddForce(neededAccel, value.forceMode);
+    //}
     public void MoveInPlayerPlane(PlayerMovementValues value)
     {
         //convert movement into a usable value
         Vector3 moveOnPlane = Vector3.Scale(value.planeVector, playerPlane);
-        Debug.DrawRay(_RB.transform.position, moveOnPlane * moveDirCollisionCheckDistance, Color.blue);
         Vector3 wallHittingVel = GetWallSlideVector(moveOnPlane);
-        
-        ST_debug.DrawSphere(
-            wallHittingVel.Equals(Vector3.zero) ? 
-            _RB.transform.position + moveOnPlane * moveDirCollisionCheckDistance: 
-            movementDirectionCollisionCheck.point,
-            radius,
-            Color.white);
 
-        moveOnPlane = wallHittingVel.Equals(Vector3.zero)? moveOnPlane : Vector3.ProjectOnPlane(moveOnPlane, movementDirectionCollisionCheck.normal);
-        
-        //getting new goalVel
-        Vector3 unitVel = m_GoalVel.normalized;
-        float velDot = Vector3.Dot(moveOnPlane.normalized, unitVel);
-        float accel = movementValues.Acceleration * movementValues.AccelerationFactorFromDot.Evaluate(velDot);
+        moveOnPlane = wallHittingVel.Equals(Vector3.zero) ?
+                      moveOnPlane :
+                      Vector3.ProjectOnPlane(moveOnPlane, movementDirectionCollisionCheck.normal);
 
-        //calcuate new actual goal
-        currentGoalSpeedFactor = updateGoalVel ?  CalculateNewGoalVel(value.baseFactor, value.overrideFactor):
-                                            decayVelocity(value.baseFactor, value.DecayFactor, value.DelayCurve);
-        Vector3 goalVel = moveOnPlane * movementValues.baseSpeed * currentGoalSpeedFactor * movementValues.Speedfactor;
+        // Calculate velocity alignment for acceleration curves
+        Vector3 horizontalVelocity = PlayerPlaneVel;
+        float velocityAlignment = horizontalVelocity.magnitude > 0.01f ? 
+            Vector3.Dot(moveOnPlane.normalized, horizontalVelocity.normalized) : 0f;
 
-        m_GoalVel = Vector3.MoveTowards(m_GoalVel, goalVel, accel);
+        // Apply acceleration curve factor
+        float accelerationFactor = movementValues.AccelerationFactorFromDot.Evaluate(velocityAlignment);
 
-        //neededVel
-        Vector3 neededAccel = m_GoalVel - (PlayerPlaneVel * movementValues.responsivenessFactor);
+        // Calculate goal speed with current factor
+        currentGoalSpeedFactor = updateGoalVel ? 
+            CalculateNewGoalVel(value.baseFactor, value.overrideFactor):
+            decayVelocity(value.baseFactor, value.DecayFactor, value.DelayCurve);
 
-        float maxAccel = movementValues.MaxAccel * movementValues.MaxAccelerationFactorFromDot.Evaluate(velDot);
+        // Calculate goal velocity (includes ground velocity for moving platforms)
+        Vector3 goalVelocity = moveOnPlane * movementValues.baseSpeed * currentGoalSpeedFactor;
+        float maxDeltaVelocity = movementValues.Acceleration * accelerationFactor * Time.fixedDeltaTime;
+        m_GoalVel = Vector3.MoveTowards(m_GoalVel, goalVelocity + GroundVel, maxDeltaVelocity);
 
-        //clamping the neededAccel
-        neededAccel = Vector3.ClampMagnitude(neededAccel, (value.clampMaxVelocity == float.NaN) ? maxAccel : value.clampMaxVelocity);
-        
-        //applying the force to the player
+        // Calculate required acceleration (proper physics approach)
+        Vector3 neededAccel = (m_GoalVel - horizontalVelocity) / Time.fixedDeltaTime;
+
+        // Clamp using max acceleration with factor applied
+        float maxAccelerationFactor = movementValues.MaxAccelerationFactorFromDot.Evaluate(velocityAlignment);
+        float maxAccel = movementValues.MaxAccel * maxAccelerationFactor;
+        float clampValue = float.IsNaN(value.clampMaxVelocity) ? maxAccel : value.clampMaxVelocity;
+        neededAccel = Vector3.ClampMagnitude(neededAccel, clampValue);
+
+        // Apply force
         _RB.AddForce(neededAccel, value.forceMode);
     }
+
+
+
+
 
     public Vector3 GetWallSlideVector(Vector3 checkingDir)
     {
@@ -320,7 +376,6 @@ public class EC_Rigidbody : AC_Component
     }
     float decayVelocity(float basefactor, float DecayFactor, AnimationCurve delayCurve)
     {
-        ST_debug.Log("Last switched:"+(Time.time - StateSwitchTime).ToString());
 
         return  (currentGoalSpeedFactor <= basefactor * 1.1f)?
                 basefactor:
@@ -336,13 +391,14 @@ public class EC_Rigidbody : AC_Component
 
     public void ApplyForce(Vector3 force, ForceMode forceMode = ForceMode.Force) => _RB.AddForce(force, forceMode);
     public void setGravity(float gravity) => appliedGravity = gravity;
-    public void OverrideVelocity(Vector3 moveVector, float moveSpeed) => PlayerVelocity = moveVector * moveSpeed;
+    public void OverrideVelocity(Vector3 moveVector, float moveSpeed) => m_GoalVel = PlayerVelocity = moveVector * moveSpeed;
     public override void ComponentDisable() 
     {
-        Debug.Log("Rigidbody Component Disabled");
         Destroy(this);
     }
 
+
+    public Vector3 GroundVel => detector.isGrounded && detector._groundRayHit.rigidbody != null ? detector._groundRayHit.rigidbody.velocity : Vector3.zero;
     public Transform PlayerTransform => _RB.transform;
     public Vector3 PlayerForward => _RB.transform.forward;
     public Vector3 PlayerRight => _RB.transform.right;
