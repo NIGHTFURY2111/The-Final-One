@@ -2,60 +2,67 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [CreateAssetMenu(fileName = "InputReader", menuName = "Scriptable Object/Input/Input Reader")]
-public class SO_InputReader : ScriptableObject, PlayerInputAction.IPlayerActions
+public class SO_InputReader : ScriptableObject
 {
     [SerializeField] float defaultBufferTime;
     private InputBuffer _InputBuffer;
     public InputBuffer InputBuffer => _InputBuffer;
 
-    PlayerInputAction input;
-    private void OnEnable()
-    {
-        if (input == null)
-        {
-            input = new PlayerInputAction();
-            input.Player.SetCallbacks(this);
-            input.Player.Enable();
-        }
+    private PlayerInput _playerInput;
 
+    public void Initialize(PlayerInput playerInput)
+    {
+        _playerInput = playerInput;
         _InputBuffer ??= new();
+
+        // Subscribe to the specific actions provided by this PlayerInput instance
+        _playerInput.onActionTriggered += OnActionTriggered;
     }
 
     private void OnDisable()
     {
-        if (input != null) input.Player.Disable();
+        if (_playerInput != null)
+        {
+            _playerInput.onActionTriggered -= OnActionTriggered;
+        }
     }
 
-    // --- Input Callbacks ---
+    private void OnActionTriggered(InputAction.CallbackContext context)
+    {
+        string actionName = context.action.name;
 
-    public void OnCamera(InputAction.CallbackContext context) => StoreInputVector2(context);
-    public void OnMovement(InputAction.CallbackContext context) => StoreInputVector2(context);
-
-    public void OnJump(InputAction.CallbackContext context) => StoreInputBool(context, defaultBufferTime);
-
-    public void OnDash(InputAction.CallbackContext context) => StoreInputBool(context, defaultBufferTime);
-    public void OnOpenMenu(InputAction.CallbackContext context) => StoreInputBool(context, defaultBufferTime);
-
-    public void OnGrapple(InputAction.CallbackContext context) => StoreInputBool(context);
-    public void OnGrappleHold(InputAction.CallbackContext context) => StoreInputBool(context);
-    public void OnHatThrowDynamic(InputAction.CallbackContext context) => StoreInputBool(context);
-    public void OnHatThrowStatic(InputAction.CallbackContext context) => StoreInputBool(context);
-    public void OnShoot(InputAction.CallbackContext context) => StoreInputBool(context);
-    public void OnSlide(InputAction.CallbackContext context) => StoreInputBool(context);
-
+        // Route inputs based on action name to maintain existing buffer logic
+        switch (actionName)
+        {
+            case "Camera":
+            case "Movement":
+                StoreInputVector2(context);
+                break;
+            case "Jump":
+            case "Dash":
+            case "OpenMenu":
+            case "Grapple":
+            case "GrappleHold":
+            case "HatThrowDynamic":
+            case "HatThrowStatic":
+            case "Shoot":
+            case "Slide":
+                StoreInputBool(context);
+                break;
+        }
+    }
 
     // --- Input Storage Methods ---
     void StoreInputBool(InputAction.CallbackContext context, float bufferTime = float.NaN)
     {
-            //there is no actual way to check if the input is a bool or not thanks to unity in all its glory
-            _InputBuffer.AddInput(context.action, context.action.WasPressedThisFrame(), bufferTime == float.NaN ? defaultBufferTime : bufferTime);
+        _InputBuffer.AddInput(context.action, context.action.WasPressedThisFrame(), float.IsNaN(bufferTime) ? defaultBufferTime : bufferTime);
     }
 
-    void StoreInputVector2(InputAction.CallbackContext context, float bufferTime = float.NaN)
+    void StoreInputVector2(InputAction.CallbackContext context)
     {
         _InputBuffer.AddInput(context.action, context.ReadValue<Vector2>());
     }
 
-    public void DisableInput() => input.Player.Disable();
-    public void EnableInput() => input.Player.Enable();
+    public void DisableInput() => _playerInput?.actions.Disable();
+    public void EnableInput() => _playerInput?.actions.Enable();
 }

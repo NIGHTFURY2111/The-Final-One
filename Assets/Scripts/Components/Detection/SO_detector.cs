@@ -89,19 +89,24 @@ public class SO_detector : AC_Component<SO_detector>
 
     void CheckWallHit()
     {
-        Vector3[] dirList = new Vector3[]
+        // Optimized to avoid array allocation every frame
+        Vector3 rightDir = Quaternion.AngleAxis(wallValues.rotationAngle, PlayerUp) * PlayerRight;
+        Vector3 leftDir = Quaternion.AngleAxis(-wallValues.rotationAngle, PlayerUp) * PlayerRight;
+
+        CheckDirection(rightDir);
+        if (!isWall)
         {
-        Quaternion.AngleAxis(wallValues.rotationAngle, PlayerUp) * PlayerRight,
-        Quaternion.AngleAxis(-wallValues.rotationAngle, PlayerUp) * PlayerRight
-        };
-        foreach (Vector3 direction in dirList)
-        {
-            isWall = Physics.Raycast(_RB.transform.position, direction, out wallHit, wallValues.WallRayCastDistance, wallValues.WallMask)
-                || Physics.Raycast(_RB.transform.position, -direction, out wallHit, wallValues.WallRayCastDistance, wallValues.WallMask);
-            Debug.DrawRay(_RB.transform.position, direction * wallValues.WallRayCastDistance, isWall ? Color.red : Color.green);
-            Debug.DrawRay(_RB.transform.position, -direction * wallValues.WallRayCastDistance, isWall ? Color.red : Color.green);
-            if (isWall) break;
+            CheckDirection(leftDir);
         }
+    }
+
+    void CheckDirection(Vector3 direction)
+    {
+        isWall = Physics.Raycast(_RB.transform.position, direction, out wallHit, wallValues.WallRayCastDistance, wallValues.WallMask)
+            || Physics.Raycast(_RB.transform.position, -direction, out wallHit, wallValues.WallRayCastDistance, wallValues.WallMask);
+        
+        Debug.DrawRay(_RB.transform.position, direction * wallValues.WallRayCastDistance, isWall ? Color.red : Color.green);
+        Debug.DrawRay(_RB.transform.position, -direction * wallValues.WallRayCastDistance, isWall ? Color.red : Color.green);
     }
 
 

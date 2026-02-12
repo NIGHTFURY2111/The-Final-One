@@ -49,7 +49,15 @@ public class EC_Camera : AC_Component<EC_Camera>
         Cursor.visible = false;
 
         // Get camera reference and cache default FOV
-        if (camera == null) camera = Camera.main;
+        if (camera == null)
+        {
+            camera = entity.GetComponentInChildren<Camera>();
+            if (camera == null)
+            {
+                Debug.LogWarning($"No camera found in children of {entity.name}, falling back to Camera.main");
+                camera = Camera.main;
+            }
+        }
 
         if (Headbob != null)Headbob.Initialize(camera.transform.parent);
         #region FOV initialization

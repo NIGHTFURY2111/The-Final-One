@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 
 public class Player_Entity : AC_Entity
@@ -17,12 +18,21 @@ public class Player_Entity : AC_Entity
     public override void Start()
     {
         BuildDictionary();
+        InitializeInput();
         MassAssign();
         EventSubscribe();
         
         OnAwakeTick?.Invoke();
         OnStartTick?.Invoke();
+    }
 
+    private void InitializeInput()
+    {
+        PlayerInput playerInput = GetComponent<PlayerInput>();
+        if (playerInput != null && inputSO != null)
+        {
+            inputSO.Initialize(playerInput);
+        }
     }
 
     public override void Update()

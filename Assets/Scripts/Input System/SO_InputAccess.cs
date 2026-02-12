@@ -7,17 +7,21 @@ using UnityEngine.InputSystem;
 public class SO_InputAccess : AC_Component<SO_InputAccess>
 {
     public SO_InputReader ReadInput;
-    InputBuffer buffer => ReadInput.InputBuffer;
+    InputBuffer buffer => (ReadInput != null) ? ReadInput.InputBuffer : null;
 
     public override Enum_ComponentType componentType => Enum_ComponentType.Input;
 
-    public bool ConsumeInput(string ActionName) => buffer.MarkInputAsUsed(ActionName);
+    public bool ConsumeInput(string ActionName) => buffer != null && buffer.MarkInputAsUsed(ActionName);
 
-    public string ListInputs() => buffer.List();
+    public string ListInputs() => buffer != null ? buffer.List() : "Buffer Null";
 
 
     #region Movement
-    public bool Movement( out object value ) => buffer.GetInput("Movement", out value);
+    public bool Movement( out object value ) 
+    {
+        value = null;
+        return buffer != null && buffer.GetInput("Movement", out value);
+    }
 
     //public bool Movement()
     //{
@@ -40,6 +44,9 @@ public class SO_InputAccess : AC_Component<SO_InputAccess>
     #region Camera
     public bool Camera( out Vector2 value ) 
     {
+        value = Vector2.zero;
+        if (buffer == null) return false;
+
         bool output = buffer.GetInput("Camera", out object val);
         value = val.IsUnityNull() ? Vector2.zero : (Vector2)val;
         return output;
@@ -51,9 +58,8 @@ public class SO_InputAccess : AC_Component<SO_InputAccess>
     #region Jump
     public bool Jump( out object value ) 
     {
-        bool output = buffer.GetInput("Jump", out value);
-        return output;
-
+        value = null;
+        return buffer != null && buffer.GetInput("Jump", out value);
     }
 
     public bool Jump()
@@ -66,9 +72,8 @@ public class SO_InputAccess : AC_Component<SO_InputAccess>
     #region Dash
     public bool Dash( out InputAction value ) 
     {
-        bool output = buffer.GetInputValueThisFrame("Dash", out value);
-        return output;
-
+        value = null;
+        return buffer != null && buffer.GetInputValueThisFrame("Dash", out value);
     }
 
     public bool Dash()
@@ -82,8 +87,8 @@ public class SO_InputAccess : AC_Component<SO_InputAccess>
     #region Slide
     public bool Slide( out InputAction value ) 
     {
-        bool output = buffer.GetInputValueThisFrame("Slide", out value);
-        return output;
+        value = null;
+        return buffer != null && buffer.GetInputValueThisFrame("Slide", out value);
 
     }
 
@@ -97,8 +102,8 @@ public class SO_InputAccess : AC_Component<SO_InputAccess>
     #region Grapple
     public bool Grapple( out object value ) 
     {
-        bool output = buffer.GetInput("Grapple", out value);
-        return output;
+        value = null;
+        return buffer != null && buffer.GetInput("Grapple", out value);
 
     }
 
@@ -111,8 +116,8 @@ public class SO_InputAccess : AC_Component<SO_InputAccess>
     #region Shoot
     public bool Shoot(out InputAction value)
     {
-        bool output = buffer.GetInputValueThisFrame("Shoot", out value);
-        return output;
+        value = null;
+        return buffer != null && buffer.GetInputValueThisFrame("Shoot", out value);
 
     }
 
@@ -127,8 +132,8 @@ public class SO_InputAccess : AC_Component<SO_InputAccess>
     #region escape
     public bool Pause(out InputAction value)
     {
-        bool output = buffer.GetInputValueThisFrame("OpenMenu", out value);
-        return output;
+        value = null;
+        return buffer != null && buffer.GetInputValueThisFrame("OpenMenu", out value);
 
     }
 
@@ -140,6 +145,16 @@ public class SO_InputAccess : AC_Component<SO_InputAccess>
 
     #endregion
     public override void ComponentAwake() { }
+
+    public void Initialize(PlayerInput playerInput)
+    {
+        if (ReadInput != null)
+        {
+            // Clone the reader asset so this player has a private instance
+            ReadInput = Instantiate(ReadInput);
+            ReadInput.Initialize(playerInput);
+        }
+    }
 
     public override void ComponentStart() { }
 
