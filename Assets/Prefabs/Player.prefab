@@ -220,6 +220,7 @@ GameObject:
   - component: {fileID: 3253023476347615718}
   - component: {fileID: 3955048723282220312}
   - component: {fileID: 8772508658721446872}
+  - component: {fileID: 4691442294010707436}
   m_Layer: 0
   m_Name: Virtual Camera
   m_TagString: Untagged
@@ -295,6 +296,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Brain: {fileID: 6130728928039224357}
+--- !u!114 &4691442294010707436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5572444498484698203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 729aad4491e915a41bda2b8325cf757a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FocusTracksTarget: 0
+  m_FocusTracking: 0
+  m_FocusTarget: {fileID: 0}
+  m_FocusOffset: 0
+  m_Profile: {fileID: 11400000, guid: b30725b1e472e51448e7e0bd5cd20cf3, type: 2}
 --- !u!1 &5784321723975959541
 GameObject:
   m_ObjectHideFlags: 0
@@ -462,7 +480,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5784321723975959541}
   m_Enabled: 1
-  m_CastShadows: 3
+  m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
